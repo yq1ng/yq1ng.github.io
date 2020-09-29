@@ -22,19 +22,25 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+  <meta name="description" content="个人收获：常用备份文件后缀：*.swp，*.bak                 md5函数漏洞                 php弱判断">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://example.com/2020/151FCAP/index.html">
+<meta property="og:title" content="BugkuCTF-web-备份是个好习惯 writeup">
+<meta property="og:url" content="http://example.com/2019/3HFNCNC/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta property="og:description" content="个人收获：常用备份文件后缀：*.swp，*.bak                 md5函数漏洞                 php弱判断">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-27T13:27:08.612Z">
-<meta property="article:modified_time" content="2020-09-27T15:30:59.964Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190711220141739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190711220258278.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190711221646935.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190711230722660.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019071123080461.png">
+<meta property="article:published_time" content="2019-07-11T15:10:15.000Z">
+<meta property="article:modified_time" content="2020-09-29T05:58:21.255Z">
 <meta property="article:author" content="yq1ng">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190711220141739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
 
-<link rel="canonical" href="http://example.com/2020/151FCAP/">
+<link rel="canonical" href="http://example.com/2019/3HFNCNC/">
 
 
 <script id="page-configurations">
@@ -47,7 +53,7 @@
   };
 </script>
 
-  <title>Hello World | 会下雪的晴天</title>
+  <title>BugkuCTF-web-备份是个好习惯 writeup | 会下雪的晴天</title>
   
 
 
@@ -159,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/151FCAP/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/3HFNCNC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -172,7 +178,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          BugkuCTF-web-备份是个好习惯 writeup
         </h1>
 
         <div class="post-meta">
@@ -181,9 +187,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-09-27 21:27:08 / 修改时间：23:30:59" itemprop="dateCreated datePublished" datetime="2020-09-27T21:27:08+08:00">2020-09-27</time>
+              <time title="创建时间：2019-07-11 23:10:15" itemprop="dateCreated datePublished" datetime="2019-07-11T23:10:15+08:00">2019-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-29 13:58:21" itemprop="dateModified" datetime="2020-09-29T13:58:21+08:00">2020-09-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
             </span>
 
           
@@ -199,14 +220,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>367</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -218,21 +239,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+        <blockquote>
+<p>个人收获：常用备份文件后缀：<code>*.swp，*.bak</code><br>                 md5函数漏洞<br>                 php弱判断</p>
+</blockquote>
 <a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题目传送门：<a target="_blank" rel="noopener" href="http://123.206.87.240:8002/web16/">http://123.206.87.240:8002/web16/</a><br><img src="https://img-blog.csdnimg.cn/20190711220141739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接得到的一串暂时看不懂的编码。。。<br><img src="https://img-blog.csdnimg.cn/20190711220258278.png" alt="在这里插入图片描述"><br>小白什么都不懂，直接御剑扫描吧<br><img src="https://img-blog.csdnimg.cn/20190711221646935.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看大佬的wp是用源码泄露工具搞到的备份文件，以后可能会补上此方法<br>备份地址：<a target="_blank" rel="noopener" href="http://123.206.87.240:8002/web16/index.php.bak">http://123.206.87.240:8002/web16/index.php.bak</a><br>下载文件，内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by PhpStorm.</span></span><br><span class="line"><span class="comment"> * User: Norse</span></span><br><span class="line"><span class="comment"> * Date: 2017/8/6</span></span><br><span class="line"><span class="comment"> * Time: 20:22</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">ini_set(<span class="string">&quot;display_errors&quot;</span>, <span class="number">0</span>);</span><br><span class="line">$str = strstr($_SERVER[<span class="string">&#x27;REQUEST_URI&#x27;</span>], <span class="string">&#x27;?&#x27;</span>);<span class="comment">//str=URL?后面内容</span></span><br><span class="line">$str = substr($str,<span class="number">1</span>);<span class="comment">//从第一个开始</span></span><br><span class="line">$str = str_replace(<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;&#x27;</span>,$str);<span class="comment">//把字符串中的key全部换成空格</span></span><br><span class="line">parse_str($str);</span><br><span class="line"><span class="keyword">echo</span> md5($key1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> md5($key2);</span><br><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $flag.<span class="string">&quot;取得flag&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码知识点：<br><code>strstr() 函数</code> strstr(string,search,before_search) 搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE(区分大小写)，<code>stristr() 函数</code>，这个不区分;<br><code>substr() 函数</code> substr(string,start,length) 返回字符串的一部分;<br><code>str_replace() 函数</code>str_replace(find,replace,string,count)<br>替 换字符串中的一些字符（区分大小写）。<br><code>parse_str() 函数</code>      parse_str(string,array) 把查询字符串解析到变量中</p>
+<p>所以，整段代码的意思就是j截取URL<code>?</code>后的参数，并把gat到的变量中所有<code>key</code>替换为空格，不过这里我们可以用kkeyey绕过</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)</span><br></pre></td></tr></table></figure>
+<p>但是通过这段代码可以知道，我们传进去的变量，它们的md5值要相同，但它们本身却有不同，这里我们又要用到一个小知识点：</p>
+<p>法一、md5()函数是无法处理数组的，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL,也就是相等的。</p>
+<p>所以将key1，key2写成数组，内容再不一样就行啦</p>
+<p>法二、利用==弱比较漏洞<br>科学计数法为*e**<em>，如果两个字符串解密后是0e**</em>那么他们两个就相等啦<br>下面几个都是开头为0e的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QNKCDZO</span><br><span class="line">240610708</span><br><span class="line">s878926199a</span><br><span class="line">s155964671a</span><br><span class="line">s214587387a</span><br><span class="line">s214587387a</span><br></pre></td></tr></table></figure>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>法一、构造Payload<br><img src="https://img-blog.csdnimg.cn/20190711230722660.png" alt="在这里插入图片描述"><br>法二、构造Payload<br><img src="https://img-blog.csdnimg.cn/2019071123080461.png" alt="在这里插入图片描述"></p>
 
     </div>
 
@@ -268,7 +291,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://example.com/2020/151FCAP/" title="Hello World">http://example.com/2020/151FCAP/</a>
+    <a href="http://example.com/2019/3HFNCNC/" title="BugkuCTF-web-备份是个好习惯 writeup">http://example.com/2019/3HFNCNC/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -283,6 +306,16 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/39DZ1JD/" rel="prev" title="BugkuCTF-web-点击一百万次 writeup">
+      <i class="fa fa-chevron-left"></i> BugkuCTF-web-点击一百万次 writeup
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/1XPHEJF/" rel="next" title="BugkuCTF-web-成绩单 WP">
+      BugkuCTF-web-成绩单 WP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -340,7 +373,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%97%E5%88%B0FLAG"><span class="nav-number">3.</span> <span class="nav-text">得到FLAG</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -356,9 +389,17 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
@@ -409,13 +450,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">0k</span>
+    <span title="站点总字数">47k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1 分钟</span>
+    <span title="站点阅读时长">1:19</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

