@@ -64,7 +64,7 @@
 
 {{- next_inject('footer') }}
 
-<br /> #换行
+<br />
 <!-- 网站运行时间的设置 -->
 <span id="timeDate">载入天数...</span>
 <span id="times">载入时分秒...</span>
