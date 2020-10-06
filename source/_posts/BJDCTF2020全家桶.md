@@ -19,6 +19,7 @@ categories: CTF做题记录
     - [第四个绕过：文件内容读取的比较](#第四个绕过文件内容读取的比较)
     - [第五个绕过：sha1比较](#第五个绕过sha1比较)
     - [（划重点）第六个绕过：create_function()代码注入](#划重点第六个绕过create_function代码注入)
+- [写在最后](#写在最后)
 
 <!-- /TOC -->
 
@@ -534,3 +535,8 @@ echo ")<br>";
 ![done](https://raw.githubusercontent.com/yq1ng/blog/master/BJDCTF2020/image.231la7v32wt.png)
 base64解码
 ![flag](https://raw.githubusercontent.com/yq1ng/blog/master/BJDCTF2020/image.pn3zf20v5bd.png)
+
+# 写在最后
+这次的复现真的学到不少东西，同时也发现自己菜的不行，以前知道的许多东西和题目都联系不起来，比如最后一题过滤了那么多参数，我都没想到用无参RCE，虽然也用不了吧，现在还只是看着WP才能过日子，希望能早日摆脱这种依赖，加油!\
+\
+不登高山，不知天之高也;不临深溪，不知地之厚也。 --《荀子》
