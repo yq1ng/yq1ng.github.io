@@ -10,8 +10,6 @@ date: 2020-10-06 20:52:58
 - [[MRCTF2020]PYWebsite](#mrctf2020pywebsite)
 - [[MRCTF2020]Ezpop](#mrctf2020ezpop)
 - [[MRCTF2020]套娃](#mrctf2020套娃)
-    - [第一关](#第一关)
-    - [第二关](#第二关)
 - [[MRCTF2020]Ezaudit](#mrctf2020ezaudit)
 - [MRCTF2020]Ezpop_Revenge](#mrctf2020ezpop_revenge)
 
