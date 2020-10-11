@@ -13,12 +13,6 @@ categories: CTF做题记录
 - [[BJDCTF2020]Cookie is so stable](#bjdctf2020cookie-is-so-stable)
 - [[BJDCTF2020]EasySearch](#bjdctf2020easysearch)
 - [[BJDCTF2020]EzPHP](#bjdctf2020ezphp)
-    - [第一个绕过：QUERY_STRING的正则匹配](#第一个绕过query_string的正则匹配)
-    - [第二个绕过：debu的正则匹配](#第二个绕过debu的正则匹配)
-    - [第三个绕过：$_REQUEST的字母匹配](#第三个绕过_request的字母匹配)
-    - [第四个绕过：文件内容读取的比较](#第四个绕过文件内容读取的比较)
-    - [第五个绕过：sha1比较](#第五个绕过sha1比较)
-    - [（划重点）第六个绕过：create_function()代码注入](#划重点第六个绕过create_function代码注入)
 - [写在最后](#写在最后)
 
 <!-- /TOC -->

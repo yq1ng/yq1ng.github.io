@@ -13,7 +13,6 @@ categories: CTF做题记录
 - [BabySQli](#babysqli)
 - [禁止套娃](#禁止套娃)
 - [BabyUpload](#babyupload)
-	- [!在这里插入图片描述](#img-srchttpsimg-blogcsdnimgcn20200916144920251pngx-oss-processimagewatermarktype_zmfuz3pozw5nagvpdgkshadow_10text_ahr0chm6ly9ibg9nlmnzzg4ubmv0l3dlaxhpbl80mzu3odq5mgsize_16color_fffffft_70pic_center-alt在这里插入图片描述)
 - [StrongestMind](#strongestmind)
 - [BabysqliV3.0](#babysqliv30)
 - [END](#end)
