@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
@@ -324,7 +325,7 @@
 <h1 id="BJDCTF-2nd-假猪套天下第一"><a href="#BJDCTF-2nd-假猪套天下第一" class="headerlink" title="[BJDCTF 2nd]假猪套天下第一"></a>[BJDCTF 2nd]假猪套天下第一</h1><blockquote>
 <p>HTTP Header基础知识考察<br>这道题是Y1ng大师傅出的题，考的很基础<br>Y1ng师傅出题笔记：<a target="_blank" rel="noopener" href="https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80">https://www.gem-love.com/ctf/2056.html#%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80</a><br>Y1ng推荐的HTTP Header 详解：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jxl1996/p/10245958.html">https://www.cnblogs.com/jxl1996/p/10245958.html</a></p>
 </blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20200611084438687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin弱口令登陆发现，但是用其他的账户随便输都能进去，进去后啥也没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200611084653455.png" alt="在这里插入图片描述"><br>302跳转！，进去注释给的页面<br><img src="https://img-blog.csdnimg.cn/20200611085307456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611085415184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没发现啥有用的，在抓包看看，cookie里面有个time参数，根据页面提示把他改到99年以后，又说我们不是来自本地的用户<br><img src="https://img-blog.csdnimg.cn/20200611085605328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>用xff修改后（X-Forwarded-For:127.0.0.1直接加到repeater最下面就好），说我Too young too simple，那就换种方式，用Client-IP或者X-Real-IP；<br>然后提示访问要来自gem-love.com，用Referer:gem-love.com;<br>接着提示我们的浏览器不是Commodo 64，至于Commodo 64是什么自行搜索，然后用Commodore 64把UA头改了就行；<br>然后说邮箱不对，加上From:<a href="mailto:&#114;&#111;&#x6f;&#116;&#x40;&#x67;&#101;&#x6d;&#45;&#x6c;&#x6f;&#118;&#101;&#46;&#99;&#111;&#x6d;">&#114;&#111;&#x6f;&#116;&#x40;&#x67;&#101;&#x6d;&#45;&#x6c;&#x6f;&#118;&#101;&#46;&#99;&#111;&#x6d;</a>;<br>最后提示代理服务器需要是y1ng.vip，或者你可以py100一月hhh，加上via:y1ng.vip;<br>大功告成，解一下base64就好了<br><img src="https://img-blog.csdnimg.cn/20200611091429240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200611084438687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>admin弱口令登陆发现，但是用其他的账户随便输都能进去，进去后啥也没有，抓包看看<br><img src="https://img-blog.csdnimg.cn/20200611084653455.png" alt="在这里插入图片描述"><br>302跳转！，进去注释给的页面<br><img src="https://img-blog.csdnimg.cn/20200611085307456.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200611085415184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>没发现啥有用的，在抓包看看，cookie里面有个time参数，根据页面提示把他改到99年以后，又说我们不是来自本地的用户<br><img src="https://img-blog.csdnimg.cn/20200611085605328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>用xff修改后（X-Forwarded-For:127.0.0.1直接加到repeater最下面就好），说我Too young too simple，那就换种方式，用Client-IP或者X-Real-IP；<br>然后提示访问要来自gem-love.com，用Referer:gem-love.com;<br>接着提示我们的浏览器不是Commodo 64，至于Commodo 64是什么自行搜索，然后用Commodore 64把UA头改了就行；<br>然后说邮箱不对，加上From:<a href="mailto:&#x72;&#111;&#x6f;&#116;&#64;&#103;&#x65;&#109;&#x2d;&#x6c;&#111;&#x76;&#x65;&#x2e;&#x63;&#111;&#x6d;">&#x72;&#111;&#x6f;&#116;&#64;&#103;&#x65;&#109;&#x2d;&#x6c;&#111;&#x76;&#x65;&#x2e;&#x63;&#111;&#x6d;</a>;<br>最后提示代理服务器需要是y1ng.vip，或者你可以py100一月hhh，加上via:y1ng.vip;<br>大功告成，解一下base64就好了<br><img src="https://img-blog.csdnimg.cn/20200611091429240.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <hr>
 <h1 id="BJDCTF-2nd-简单注入"><a href="#BJDCTF-2nd-简单注入" class="headerlink" title="[BJDCTF 2nd]简单注入"></a>[BJDCTF 2nd]简单注入</h1><blockquote>
 <p>py脚本练习</p>
@@ -523,7 +524,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -593,13 +594,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">110k</span>
+    <span title="站点总字数">117k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:04</span>
+    <span title="站点阅读时长">3:15</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

