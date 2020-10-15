@@ -196,8 +196,7 @@ https://www.cnblogs.com/xdans/p/5412468.html
 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20190908174128288.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70)
 	看到phpstudy可以知道网站根目录的绝对路径为：D:\phpstudy\WWW
 - **请注意在上传过程中路径的`\`会被转义，所以要用`\\`代替**
-	
-	END
+
 	---
 2、猜一下闭合方式,第三个显示正常
 		`?id=1'--+`		`?id=1')--+`		`?id=1'))--+`
@@ -213,7 +212,6 @@ https://www.cnblogs.com/xdans/p/5412468.html
 - 如果上传失败的话，可能是MySQL没有配置好，我就因为这个费点时间，打开MySQL配置`my.ini`，将`secure_file_priv`置空，如果没有，自行添加 `secure_file_priv = 
 `，这样就可以让文件上传到任何位置，等号后添加路径的话，文件只能上传到此目录下！
 
-END
 -
 ---
 5、菜刀/蚁剑连接即可
