@@ -40,8 +40,10 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.recqr7vg5vd.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.yczpw3jwgj7.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.eqke29fimo.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.yn4wg3lsner.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.s6py4ijqqr.png">
 <meta property="article:published_time" content="2020-10-14T13:24:02.000Z">
-<meta property="article:modified_time" content="2020-10-14T23:52:06.956Z">
+<meta property="article:modified_time" content="2020-10-15T16:02:09.877Z">
 <meta property="article:author" content="yq1ng">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.qh4fn20disr.png">
@@ -224,7 +226,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-15 07:52:06" itemprop="dateModified" datetime="2020-10-15T07:52:06+08:00">2020-10-15</time>
+                <time title="修改时间：2020-10-16 00:02:09" itemprop="dateModified" datetime="2020-10-16T00:02:09+08:00">2020-10-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -249,14 +251,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>6 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -288,7 +290,7 @@
 
 <h1 id="Less-1-GET-基于错误的-单引号-字符型注入"><a href="#Less-1-GET-基于错误的-单引号-字符型注入" class="headerlink" title="Less-1 GET-基于错误的-单引号-字符型注入"></a>Less-1 GET-基于错误的-单引号-字符型注入</h1><p>进门提示输入id参数<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.qh4fn20disr.png" alt="start"><br>输入<code>?id=1</code>回显给了账号密码，id较多，没必要一个一个试，先看源码，翻一下sql语句</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//including the Mysql connect parameters.</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;../sql-connections/sql-connect.php&quot;</span>);</span><br><span class="line">error_reporting(<span class="number">0</span>);<span class="comment">//关闭所有PHP错误报告</span></span><br><span class="line"><span class="comment">// take the variables </span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;id&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line">$id=$_GET[<span class="string">&#x27;id&#x27;</span>];</span><br><span class="line"><span class="comment">//logging the connection parameters to a file for analysis.</span></span><br><span class="line">$fp=fopen(<span class="string">&#x27;result.txt&#x27;</span>,<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">fwrite($fp,<span class="string">&#x27;ID:&#x27;</span>.$id.<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">fclose($fp);</span><br><span class="line"></span><br><span class="line"><span class="comment">// connectivity </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$sql=<span class="string">&quot;SELECT * FROM users WHERE id=&#x27;<span class="subst">$id</span>&#x27; LIMIT 0,1&quot;</span>;</span><br><span class="line">$result=mysql_query($sql);</span><br><span class="line">$row = mysql_fetch_array($result);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>($row)</span><br><span class="line">	&#123;</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;&lt;font size=&#x27;5&#x27; color= &#x27;#99FF00&#x27;&gt;&quot;</span>;</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&#x27;Your Login name:&#x27;</span>. $row[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&#x27;Your Password:&#x27;</span> .$row[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line">  	<span class="keyword">echo</span> <span class="string">&quot;&lt;/font&gt;&quot;</span>;</span><br><span class="line">  	&#125;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&lt;font color= &quot;#FFFF00&quot;&gt;&#x27;</span>;</span><br><span class="line">	print_r(mysql_error());</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;/font&gt;&quot;</span>;  </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123; <span class="keyword">echo</span> <span class="string">&quot;Please input the ID as parameter with numeric value&quot;</span>;&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>脚本第一行导入了连接数据库的配置文件，抑制了错误回显，GET方法接受id参数，并将每次参数值存入result.txt文件中，之后开始sql查询，注意最后<code>id=&#39;$id&#39;</code>为单引号闭合(一般数值类型的不去用单双引号包括，此处为lab需要)（sql语句不懂的建议先去学习一下MySQL的基础，只是基础就好）。那么如果我去手动闭合会怎么样，比如输入一个<code>?id=1&#39;</code>，这在sql语句中就变成了<code>SELECT * FROM users WHERE id=&#39;1&#39;&#39; LIMIT 0,1</code>，出现了MySQL的报错，在MySQL里测试会让闭合后面的单引号才能继续执行，闭合后也就相当于<code>SELECT * FROM users WHERE id=&#39;1&#39;&#39; LIMIT 0,1;&#39;;</code>，后面引号的内容被丢掉了，没效果。<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.69fl2g4cmy4.png" alt="less1_error"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.hn1lqmnbc5a.png" alt="less1_test"></p>
+<p>脚本第一行导入了连接数据库的配置文件，抑制了错误回显，GET方法接受id参数，并将每次参数值存入result.txt文件中，之后开始sql查询，注意最后<code>id=&#39;$id&#39;</code>为单引号闭合(一般数值类型的不去用单双引号包括，此处为lab需要)（sql语句不懂的建议先去学习一下MySQL的基础，只是基础就好）。那么如果我去手动闭合会怎么样，比如输入一个<code>?id=1&#39;</code>，这在sql语句中就变成了<code>SELECT * FROM users WHERE id=&#39;1&#39;&#39; LIMIT 0,1</code>，出现了MySQL的报错，在MySQL里测试会让闭合后面的单引号才能继续执行，闭合后也就相当于<code>SELECT * FROM users WHERE id=&#39;1&#39;&#39; LIMIT 0,1;&#39;;</code>，后面引号的内容被丢掉了，没效果。<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.69fl2g4cmy4.png" alt="less1_error"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.hn1lqmnbc5a.png" alt="less1_test">\</p>
 <blockquote>
 </blockquote>
 <ul>
@@ -304,16 +306,20 @@
 </ul>
 </li>
 </ul>
-<p>那我们要怎么查询其他表的内容呢？我们知道，查内容需要知道表名、列名，才可以select，在MySQL5.5以上的版本引入了information_schema库，information_schema这个数据库中保存了MySQL服务器所有数据库的信息，我们一般用其中的<code>tables</code>来获取当前数据库的所有表名。还不明白？动手实践一下。<code>TABLE_SCHEMA</code>代表数据库，<code>TABLE_NAME</code>代表数据库中的表<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.iaob8fwvw2.png" alt="information_schema.tables"><br>使用<code>select TABLE_SCHEMA, TABLE_NAME from information_schema.tables;</code>可以查询所有数据库及表，自己实践一下。在注入时常用<code>select table_name from information_schema.tables where table_schema=database();</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.b7af64mw44.png" alt="information_schema.tables"><br>此时将此语句带入到url里，例如这样<code>?id=-1&#39; union select 1,table_name,3 from information_schema.tables where table_schema=database()--+</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.dzfbttb9194.png" alt="Less1_huixian"></p>
+<p>那我们要怎么查询其他表的内容呢？我们知道，查内容需要知道表名、列名，才可以select，在MySQL5.5以上的版本引入了information_schema库，information_schema这个数据库中保存了MySQL服务器所有数据库的信息，我们一般用其中的<code>tables</code>来获取当前数据库的所有表名。还不明白？动手实践一下。<code>TABLE_SCHEMA</code>代表数据库，<code>TABLE_NAME</code>代表数据库中的表<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.iaob8fwvw2.png" alt="information_schema.tables"><br>使用<code>select TABLE_SCHEMA, TABLE_NAME from information_schema.tables;</code>可以查询所有数据库及表，自己实践一下。在注入时常用<code>select table_name from information_schema.tables where table_schema=database();</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.b7af64mw44.png" alt="information_schema.tables"><br>此时将此语句带入到url里，例如这样<code>?id=-1&#39; union select 1,table_name,3 from information_schema.tables where table_schema=database()--+</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.dzfbttb9194.png" alt="Less1_huixian">\</p>
 <blockquote>
 </blockquote>
 <ul>
 <li><p>什么是union<br>MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。多个 SELECT 语句会删除重复的数据。–<a target="_blank" rel="noopener" href="https://www.runoob.com/mysql/mysql-union-operation.html">菜鸟教程</a></p>
 </li>
-<li><p>id的值为何是-1<br>不让id为1的原因就是想让前面的select查询为空，不然union链接的后面select会被前面吃掉，看一下第一关的源码可以知道，查询数据后只进行了一次取数据，而前面不置空的话会出现两条数据导致第二条我们要的数据显示不出来<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.mrykeg0t73.png" alt="Less1_id"></p>
+<li><p>id的值为何是-1<br>不让id为1的原因就是想让前面的select查询为空，不然union链接的后面select会被前面吃掉，看一下第一关的源码可以知道，查询数据后只进行了一次取数据，而前面不置空的话会出现两条数据导致第二条我们要的数据显示不出来<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.mrykeg0t73.png" alt="Less1_id">\</p>
 </li>
 </ul>
-<p>可以发现，我们在MySQL查询的表不止一张，为什么回显就给了第一个表呢？这也是因为查询数据后只进行了一次取数据，也就只会取出第一张表的记录，这时候可以用<code>group_concat()</code>函数，此函数就是做连接字符串使用的，如果查询数据有多条，可以使用这个函数将其归为一条数据。也可以用<code>concat()</code>来连接，不过<code>group_concat()</code>会连接所有非 NULL 的字符串<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.recqr7vg5vd.png" alt="Less1_group_concat()"><br>所以可以将payload改为:<code>?id=-1&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()--+</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.yczpw3jwgj7.png" alt="Less1_payload"><br>ok，你大概也知道了怎么用注入的方法去查当前数据库里的所有表名，回头再看一下注入语句，为何使用了<code>select 1,xx,3 from xx where xx</code>？为什么不能直接<code>select xx from xx where xx</code>？这牵涉到回显的问题，在输入不同的id值时返回不同的数据，这个数据所在的地方就是回显，这个数据也不是随意输入的，需要先找这个表有多少列，然后再判断回显，如果union列数不同会怎样？<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.eqke29fimo.png" alt="Less1_diff_columns"><br>判断列数用order by</p>
+<p>可以发现，我们在MySQL查询的表不止一张，为什么回显就给了第一个表呢？这也是因为查询数据后只进行了一次取数据，也就只会取出第一张表的记录，这时候可以用<code>group_concat()</code>函数，此函数就是做连接字符串使用的，如果查询数据有多条，可以使用这个函数将其归为一条数据。也可以用<code>concat()</code>来连接，不过<code>group_concat()</code>会连接所有非 NULL 的字符串<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.recqr7vg5vd.png" alt="Less1_group_concat()"><br>所以可以将payload改为:<code>?id=-1&#39; union select 1,group_concat(table_name),3 from information_schema.tables where table_schema=database()--+</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.yczpw3jwgj7.png" alt="Less1_payload"><br>ok，你大概也知道了怎么用注入的方法去查当前数据库里的所有表名，回头再看一下注入语句，为何使用了<code>select 1,xx,3 from xx where xx</code>？为什么不能直接<code>select xx from xx where xx</code>？这牵涉到回显的问题，在输入不同的id值时返回不同的数据，这个数据所在的地方就是回显，这个数据也不是随意输入的，需要先找这个表有多少列，然后再判断回显，如果union列数不同会怎样？会失败喽<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.eqke29fimo.png" alt="Less1_diff_columns"><br>联合查询前先判断列数，判断列数用<code>order by</code>去手工查，一般也就5个左右，懒的话就丢到bp里爆破一下，例如本题，在<code>?id=1&#39; order by 4--+</code>回显异常，之前都正常回显，这说明数据库列数就是3。</p>
+<blockquote>
+<p>order by 从英文里理解就是行的排序方式，默认的为升序。 order by 后面必须列出排序的字段名，可以是多个字段名。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.yn4wg3lsner.png" alt="Less1_order_by"><br>再来想想，为何<code>order by</code>排序用的，为什么通过后面的数字就可以知道有多少列呢？因为<code>order by</code>后面不仅可以跟字段名，也可以跟数字，代表第几个字段名，动手实践一下，可以看到使用<code>select * from users order by 2;</code>时，排序以第二列进行升序<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/SQLi-labs/image.s6py4ijqqr.png" alt="Less1_order_by_num"></p>
 <h1 id="Less-2-GET-基于错误的-数字型"><a href="#Less-2-GET-基于错误的-数字型" class="headerlink" title="Less-2 GET-基于错误的-数字型"></a>Less-2 GET-基于错误的-数字型</h1><h1 id="Less-3-GET-基于错误的-单引号变形的字符型注入"><a href="#Less-3-GET-基于错误的-单引号变形的字符型注入" class="headerlink" title="Less-3 GET-基于错误的-单引号变形的字符型注入"></a>Less-3 GET-基于错误的-单引号变形的字符型注入</h1><h1 id="Less-4-GET-基于错误的-双引号字符型注入"><a href="#Less-4-GET-基于错误的-双引号字符型注入" class="headerlink" title="Less-4 GET-基于错误的-双引号字符型注入"></a>Less-4 GET-基于错误的-双引号字符型注入</h1><h1 id="Less-5-GET-双注入-单引号字符型注入"><a href="#Less-5-GET-双注入-单引号字符型注入" class="headerlink" title="Less-5 GET-双注入-单引号字符型注入"></a>Less-5 GET-双注入-单引号字符型注入</h1><h1 id="LESS-6-GET-双注入-双引号字符型注入"><a href="#LESS-6-GET-双注入-双引号字符型注入" class="headerlink" title="LESS-6 GET-双注入-双引号字符型注入"></a>LESS-6 GET-双注入-双引号字符型注入</h1><h1 id="LESS-7-GET-导出文件-字符型注入"><a href="#LESS-7-GET-导出文件-字符型注入" class="headerlink" title="LESS-7 GET-导出文件-字符型注入"></a>LESS-7 GET-导出文件-字符型注入</h1><h1 id="LESS-8-GET-布尔盲注-单引号字符型注入"><a href="#LESS-8-GET-布尔盲注-单引号字符型注入" class="headerlink" title="LESS-8 GET-布尔盲注-单引号字符型注入"></a>LESS-8 GET-布尔盲注-单引号字符型注入</h1><h1 id="LESS-9-GET-基于时间的盲注-单引号字符型注入"><a href="#LESS-9-GET-基于时间的盲注-单引号字符型注入" class="headerlink" title="LESS-9 GET-基于时间的盲注-单引号字符型注入"></a>LESS-9 GET-基于时间的盲注-单引号字符型注入</h1><h1 id="LESS-10-GET-基于时间的盲注-双引号字符型注入"><a href="#LESS-10-GET-基于时间的盲注-双引号字符型注入" class="headerlink" title="LESS-10 GET-基于时间的盲注-双引号字符型注入"></a>LESS-10 GET-基于时间的盲注-双引号字符型注入</h1>
     </div>
 
@@ -514,13 +520,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">117k</span>
+    <span title="站点总字数">118k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:15</span>
+    <span title="站点阅读时长">3:16</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
