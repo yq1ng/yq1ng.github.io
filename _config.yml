@@ -131,3 +131,7 @@ search:
   limit: 10000
 local_search:
     enable: true
+
+#Google---站点地图
+sitemap:
+      path: sitemap.xml
