@@ -211,7 +211,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-16 00:02:09" itemprop="dateModified" datetime="2020-10-16T00:02:09+08:00">2020-10-16</time>
+                <time title="修改时间：2020-10-17 22:11:01" itemprop="dateModified" datetime="2020-10-17T22:11:01+08:00">2020-10-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -229,14 +229,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.9k</span>
+              <span>21k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>7 分钟</span>
+              <span>35 分钟</span>
             </span>
 
         </div>
@@ -248,7 +248,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>本lab旨在培养注入思维，提供注入思路，lab不要求找flag，别为了做题而做题！有些东西能自己动手的就试试，我重写lab的原因之一就是没有动手实践<br>搭建环境较多，可以自行百度，本lab目的是查其他表或者库</p>
+          <p>本lab旨在培养注入思维，提供注入思路，lab不要求找flag，别为了做题而做题！有些东西能自己动手的就自己动手试试，我重写lab的原因之一就是没有动手实践<br>搭建环境较多，可以自行百度，本lab目的是查其他表或者库里面的内容<br><a href="https://yq1ng.github.io/z_post/SQLi-Labs%20%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C%20%EF%BC%88Less-1-10%EF%BC%89/">第一次的lab之旅</a>随便看看，只顾抄blog了</p>
 <!-- TOC -->
 
 <ul>
@@ -256,12 +256,14 @@
 <li><a href="#less-2-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B">Less-2 GET-基于错误的-数字型</a></li>
 <li><a href="#less-3-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-3 GET-基于错误的-单引号变形的字符型注入</a></li>
 <li><a href="#less-4-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-4 GET-基于错误的-双引号字符型注入</a></li>
+<li><a href="#%E5%89%8D%E5%9B%9B%E9%A2%98%E5%B0%8F%E7%BB%93">前四题小结</a></li>
 <li><a href="#less-5-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-5 GET-双注入-单引号字符型注入</a></li>
 <li><a href="#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-6 GET-双注入-双引号字符型注入</a></li>
 <li><a href="#less-7-get-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-7 GET-导出文件-字符型注入</a></li>
 <li><a href="#less-8-get-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-8 GET-布尔盲注-单引号字符型注入</a></li>
 <li><a href="#less-9-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-9 GET-基于时间的盲注-单引号字符型注入</a></li>
 <li><a href="#less-10-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-10 GET-基于时间的盲注-双引号字符型注入</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
 </ul>
 <!-- /TOC -->
           <!--noindex-->
@@ -1291,13 +1293,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">118k</span>
+    <span title="站点总字数">135k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:16</span>
+    <span title="站点阅读时长">3:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
