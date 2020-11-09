@@ -546,4 +546,4 @@ if(trim(@file_get_contents($file)) === 'ctf.show'{
 ---
 # CTFshow web1
 
-随便注册一个账号登进去，URL有`?order=id`，注入没反应，看变量名是排序，然后就把url改为`?order=email`发现回显按email列排序了，猜测sql为`select * from users order by "$_GET('order')"`，这个时候需要一个骚姿势了，可以看看我的这个文章：[[GYCTF2020]Ezsqli](https://yq1ng.github.io/z_post/GYCTF2020%E9%83%A8%E5%88%86WEB/#gyctf2020ezsqli)，MySQL查询的按位比较，那就在猜一下password在数据库的字段名，常见的有password，passwd，pwd，试出来是`?order=pwd`，回显发生变化，我注册的账号密码都是`a`，结果此账号排在了第一位，
+随便注册一个账号登进去，URL有`?order=id`，注入没反应，看变量名是排序，然后就把url改为`?order=email`发现回显按email列排序了，猜测sql为`select * from users order by "$_GET('order')"`，这个时候需要一个骚姿势了，可以看看我的这个文章：[[GYCTF2020]Ezsqli](https://yq1ng.github.io/z_post/GYCTF2020%E9%83%A8%E5%88%86WEB/#gyctf2020ezsqli)，MySQL查询的按位比较，那就在猜一下password在数据库的字段名，常见的有password，passwd，pwd，试出来是`?order=pwd`，回显发生变化，我注册的账号密码都是`a`，结果此账号排在了第一位，要写脚本，先搁置了
