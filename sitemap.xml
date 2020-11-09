@@ -2,9 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2020-11-09</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/z_post/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/</loc>
+    
+    <lastmod>2020-11-07</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/z_post/ctfshow-36D-web/</loc>
+    
+    <lastmod>2020-10-31</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/z_post/BUUOJ%20%20%20%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%E5%A5%97%E9%A4%90/</loc>
+    
+    <lastmod>2020-10-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/z_post/%E5%AE%89%E6%B4%B5%E6%9D%AF2019-web-WP/</loc>
+    
+    <lastmod>2020-10-21</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/</loc>
     
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-10-19</lastmod>
     
   </url>
   
@@ -19,13 +54,6 @@
     <loc>http://yq1ng.github.io/z_post/SQLi-Labs%20%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C%20%EF%BC%88Less-1-10%EF%BC%89/</loc>
     
     <lastmod>2020-10-17</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yq1ng.github.io/z_post/%E4%B8%80%E4%BA%9B%E6%84%9F%E6%82%9F/</loc>
-    
-    <lastmod>2020-10-14</lastmod>
     
   </url>
   
@@ -68,13 +96,6 @@
     <loc>http://yq1ng.github.io/z_post/buuoj%20[%E7%BD%91%E9%BC%8E%E6%9D%AF%202020%20%E9%9D%92%E9%BE%99%E7%BB%84]%20%EF%BC%88%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0%EF%BC%89/</loc>
     
     <lastmod>2020-10-10</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yq1ng.github.io/z_post/%E5%B0%8F%E4%BC%A4%E6%84%9F/</loc>
-    
-    <lastmod>2020-10-05</lastmod>
     
   </url>
   
@@ -184,13 +205,6 @@
   </url>
   
   <url>
-    <loc>http://yq1ng.github.io/z_post/BugkuCTF-web%E8%BF%9B%E9%98%B6-%E5%AE%9E%E6%88%982-%E6%B3%A8%E5%85%A5%20writeup/</loc>
-    
-    <lastmod>2020-09-30</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yq1ng.github.io/z_post/BugkuCTF-web-%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81%E6%9F%A5%E7%9C%8Bflag%20writeup/</loc>
     
     <lastmod>2020-09-30</lastmod>
@@ -198,7 +212,7 @@
   </url>
   
   <url>
-    <loc>http://yq1ng.github.io/z_post/BUUOJ%20%20%20%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%202019%E5%A5%97%E9%A4%90/</loc>
+    <loc>http://yq1ng.github.io/z_post/BugkuCTF-web%E8%BF%9B%E9%98%B6-%E5%AE%9E%E6%88%982-%E6%B3%A8%E5%85%A5%20writeup/</loc>
     
     <lastmod>2020-09-30</lastmod>
     
@@ -305,7 +319,7 @@
 
   <url>
     <loc>http://yq1ng.github.io/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -313,21 +327,28 @@
   
   <url>
     <loc>http://yq1ng.github.io/tags/CTF-WEB/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://yq1ng.github.io/tags/CTF-WEB-SQL%E6%B3%A8%E5%85%A5/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://yq1ng.github.io/tags/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/tags/Java/</loc>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -336,14 +357,28 @@
   
   <url>
     <loc>http://yq1ng.github.io/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://yq1ng.github.io/categories/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2020-10-18</lastmod>
+    <loc>http://yq1ng.github.io/categories/%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/categories/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/</loc>
+    <lastmod>2020-11-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yq1ng.github.io/categories/PHP%E6%BC%8F%E6%B4%9E/</loc>
+    <lastmod>2020-11-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>

