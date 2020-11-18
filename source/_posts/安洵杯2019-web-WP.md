@@ -116,12 +116,13 @@ if($function == 'highlight_file'){
     $userinfo = unserialize($serialize_info);
     echo file_get_contents(base64_decode($userinfo['img']));
 }
-**```**
+```
 
 看最后，可以读`phpinfo`，在`auto_append_file`发现了`d0g3_f1ag.php`不能访问，应该是LFI去读。
 >啥是`auto_append_file`\
 在 php.ini 中有两个配置参数，auto_prepend_file 和 auto_append_file，其作用相当于php代码 require 或 include，使用这两个指令包含的文件如果该文件不存在，将产生一个警告
+
 >- `auto_prepend_file` 表示在php程序加载应用程序前加载指定的php文件\
 >- `auto_append_file` 表示在php代码执行完毕后加载指定的php文件
 
-源码最后有一个`file_get_contenets`，正好是读文件的，跟踪一下可以发现`_SESSION`在28行被加密了，不能硬来，既然题目是easy_serialize，那就从31行的反序列化下手。\
+源码最后有一个`file_get_contenets`，正好是读文件的，跟踪一下可以发现`_SESSION`在28行被加密了，不能硬来，既然题目是easy_serialize，那就从31行的反序列化下手。
