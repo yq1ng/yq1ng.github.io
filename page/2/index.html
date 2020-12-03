@@ -180,6 +180,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/%E9%87%8D%E5%90%AF%EF%BC%8CSQLi-labs-GET/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/z_post/%E9%87%8D%E5%90%AF%EF%BC%8CSQLi-labs-GET/" class="post-title-link" itemprop="url">重启，SQLi-labs GET</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-14 21:24:02" itemprop="dateCreated datePublished" datetime="2020-10-14T21:24:02+08:00">2020-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-17 22:11:01" itemprop="dateModified" datetime="2020-10-17T22:11:01+08:00">2020-10-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>21k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>35 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本lab旨在培养注入思维，提供注入思路，lab不要求找flag，别为了做题而做题！有些东西能自己动手的就自己动手试试，我重写lab的原因之一就是没有动手实践<br>搭建环境较多，可以自行百度，本lab目的是查其他表或者库里面的内容<br><a href="https://yq1ng.github.io/z_post/SQLi-Labs%20%E4%BF%AE%E7%82%BC%E6%89%8B%E5%86%8C%20%EF%BC%88Less-1-10%EF%BC%89/">第一次的lab之旅</a>随便看看，只顾抄blog了</p>
+<!-- TOC -->
+
+<ul>
+<li><a href="#less-1-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-1 GET-基于错误的-单引号-字符型注入</a></li>
+<li><a href="#less-2-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E6%95%B0%E5%AD%97%E5%9E%8B">Less-2 GET-基于错误的-数字型</a></li>
+<li><a href="#less-3-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%8F%98%E5%BD%A2%E7%9A%84%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-3 GET-基于错误的-单引号变形的字符型注入</a></li>
+<li><a href="#less-4-get-%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-4 GET-基于错误的-双引号字符型注入</a></li>
+<li><a href="#%E5%89%8D%E5%9B%9B%E9%A2%98%E5%B0%8F%E7%BB%93">前四题小结</a></li>
+<li><a href="#less-5-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">Less-5 GET-双注入-单引号字符型注入</a></li>
+<li><a href="#less-6-get-%E5%8F%8C%E6%B3%A8%E5%85%A5-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-6 GET-双注入-双引号字符型注入</a></li>
+<li><a href="#less-7-get-%E5%AF%BC%E5%87%BA%E6%96%87%E4%BB%B6-%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-7 GET-导出文件-字符型注入</a></li>
+<li><a href="#less-8-get-%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-8 GET-布尔盲注-单引号字符型注入</a></li>
+<li><a href="#less-9-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8D%95%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-9 GET-基于时间的盲注-单引号字符型注入</a></li>
+<li><a href="#less-10-get-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8-%E5%8F%8C%E5%BC%95%E5%8F%B7%E5%AD%97%E7%AC%A6%E5%9E%8B%E6%B3%A8%E5%85%A5">LESS-10 GET-基于时间的盲注-双引号字符型注入</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a></li>
+</ul>
+<!-- /TOC -->
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/z_post/%E9%87%8D%E5%90%AF%EF%BC%8CSQLi-labs-GET/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/CTF%E7%A7%80WEB-WP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1091,113 +1203,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/BJDCTF-2nd%20WEB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/xiaoxin.jpg">
-      <meta itemprop="name" content="yq1ng">
-      <meta itemprop="description" content="The best way to know your strength is to fight">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="会下雪的晴天">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/z_post/BJDCTF-2nd%20WEB/" class="post-title-link" itemprop="url">BJDCTF-2nd WEB</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-11 10:08:10" itemprop="dateCreated datePublished" datetime="2020-06-11T10:08:10+08:00">2020-06-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-11 17:05:04" itemprop="dateModified" datetime="2020-10-11T17:05:04+08:00">2020-10-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>16k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>26 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <!-- TOC -->
-
-<ul>
-<li><a href="#bjdctf-2ndfake-google">[BJDCTF 2nd]fake google</a></li>
-<li><a href="#bjdctf-2ndold-hack">[BJDCTF 2nd]old-hack</a></li>
-<li><a href="#bjdctf-2nd%E5%81%87%E7%8C%AA%E5%A5%97%E5%A4%A9%E4%B8%8B%E7%AC%AC%E4%B8%80">[BJDCTF 2nd]假猪套天下第一</a></li>
-<li><a href="#bjdctf-2nd%E7%AE%80%E5%8D%95%E6%B3%A8%E5%85%A5">[BJDCTF 2nd]简单注入</a></li>
-<li><a href="#bjdctf-2ndxss%E4%B9%8B%E5%85%89">[BJDCTF 2nd]xss之光</a></li>
-<li><a href="#bjdctf-2ndschro%CC%88dinger">[BJDCTF 2nd]Schrödinger</a></li>
-<li><a href="#bjdctf-2ndelementmaster">[BJDCTF 2nd]elementmaster</a></li>
-<li><a href="#bjdctf-2nd%E6%96%87%E4%BB%B6%E6%8E%A2%E6%B5%8B">[BJDCTF 2nd]文件探测</a></li>
-</ul>
-<!-- /TOC -->
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/z_post/BJDCTF-2nd%20WEB/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1269,7 +1274,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1339,13 +1344,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">259k</span>
+    <span title="站点总字数">269k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:11</span>
+    <span title="站点阅读时长">7:28</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
