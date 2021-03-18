@@ -30,22 +30,22 @@
 <meta property="og:site_name" content="会下雪的晴天">
 <meta property="og:description" content="只记录一些tick，不是wp随便写写  PHP文档中使用的伪类型与变量  mixed –&gt; 说明一个参数可以接受多种不同的（但不一定是所有的）类型例如 gettype() 可以接受所有的 PHP 类型，str_replace() 可以接受字符串和数组 number –&gt; 说明一个参数可以是 integer 或者 float array|object –&gt; 意思是参数既可以是 ar">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.kvcekxav6yb.png">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.5c7e8kyxt44.png">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.m751d2m1n7a.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154351.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154231.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154415.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.xqklo38zuce.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20201105182344281.png#pic_center">
-<meta property="og:image" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.wrue5gy37s.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.wrue5gy37s.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.8i160rqgpag.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.e8x3axfwwan.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.oys89ez7sjb.png">
 <meta property="article:published_time" content="2020-11-01T10:01:49.000Z">
-<meta property="article:modified_time" content="2021-03-17T15:49:11.748Z">
+<meta property="article:modified_time" content="2021-03-18T07:45:16.139Z">
 <meta property="article:author" content="yq1ng">
 <meta property="article:tag" content="...">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.kvcekxav6yb.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154351.png">
 
 <link rel="canonical" href="http://yq1ng.github.io/z_post/CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93/">
 
@@ -225,7 +225,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-17 23:49:11" itemprop="dateModified" datetime="2021-03-17T23:49:11+08:00">2021-03-17</time>
+                <time title="修改时间：2021-03-18 15:45:16" itemprop="dateModified" datetime="2021-03-18T15:45:16+08:00">2021-03-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -318,12 +318,12 @@
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;flag.php&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">&#x27;r&#x27;</span>]))&#123;</span><br><span class="line">    $r = $_GET[<span class="string">&#x27;r&#x27;</span>];</span><br><span class="line">    mt_srand(hexdec(substr(md5($flag), <span class="number">0</span>,<span class="number">8</span>)));</span><br><span class="line">    $rand = intval($r)-intval(mt_rand());</span><br><span class="line">    <span class="keyword">if</span>((!$rand))&#123;</span><br><span class="line">        <span class="keyword">if</span>($_COOKIE[<span class="string">&#x27;token&#x27;</span>]==(mt_rand()+mt_rand()))&#123;</span><br><span class="line">            <span class="keyword">echo</span> $flag;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> $rand;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">echo</span> system(<span class="string">&#x27;cat /proc/version&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>先传入r=0，得到一个随机数，再用工具求出种子，工具使用在github有详细说明，有个坑就是爆破时版本需要与环境一致，得到多个结果，逐个尝试</p>
-<p><img src="CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.kvcekxav6yb.png" alt="php_seed"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154351.png" alt="image-20210318154351182"></p>
 <p>我这里是第二个能用</p>
-<p><img src="CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.5c7e8kyxt44.png" alt="flag"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154231.png" alt="image-20210318154231557"></p>
 <h2 id="web26"><a href="#web26" class="headerlink" title="web26"></a>web26</h2><p>走运了，直接安装啥都不写连接成功了，bp抓包可以看到flag</p>
 <h2 id="web27"><a href="#web27" class="headerlink" title="web27"></a>web27</h2><p>下载学生名单，测试第一个学生，bp爆破生日，设置如下(unicode转中文下载插件<a target="_blank" rel="noopener" href="https://github.com/bit4woo/knife">knife</a>)，接着登陆即可</p>
-<p><img src="CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.m751d2m1n7a.png" alt="bp"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210318154415.png" alt="image-20210318154415359"></p>
 <h2 id="web28"><a href="#web28" class="headerlink" title="web28"></a>web28</h2><p>没啥说的，爆破目录，用最后一个爆破方式，两个均为0-100</p>
 <hr>
 <h1 id="命令执行（RCE）"><a href="#命令执行（RCE）" class="headerlink" title="命令执行（RCE）"></a>命令执行（RCE）</h1><h2 id="web29"><a href="#web29" class="headerlink" title="web29"></a>web29</h2><blockquote>
@@ -380,7 +380,7 @@
 
 
 <h2 id="web61-67"><a href="#web61-67" class="headerlink" title="web61-67"></a>web61-67</h2><p>使用蚁剑的插件绕过</p>
-<p><img src="CTFSHOW-WEB%E5%85%A5%E9%97%A8-Ttick%E6%80%BB%E7%BB%93.assets/image.wrue5gy37s.png" alt="disfun"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/image.wrue5gy37s.png" alt="disfun"></p>
 <h2 id="web67"><a href="#web67" class="headerlink" title="web67"></a>web67</h2><p>蚁剑失败了</p>
 <p><code>c=var_dump(scandir(&quot;/&quot;));</code></p>
 <p><code>c=var_dump(highlight_file(&#39;/flag.txt&#39;));</code></p>
@@ -882,7 +882,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">60</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -983,13 +983,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">333k</span>
+    <span title="站点总字数">338k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">9:15</span>
+    <span title="站点阅读时长">9:24</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
