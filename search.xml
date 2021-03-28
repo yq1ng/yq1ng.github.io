@@ -3713,8 +3713,9 @@ payload：<code>?2333=data://text/plain,todat is a happy day&amp;file=ZmpdYSZmXG
 <p>带着自己的idToken取分发session的页面，返回一个唯一id，直接访问可以看到已经是打卡页面  </p>
 <p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327200157.png" alt="image-20210327200157533"></p>
 <p>最后带着cookies和post的数据去了<code>https://yq.huanghuai.edu.cn:7992/questionAndAnser/wenjuanSubmit</code>，打卡结束</p>
-<p>脚本已上传至gayhub，<a href="">传送门</a>，代码能力较差，懒得优化了，能用就行。</p>
-<h1 id="0x03-使用"><a href="#0x03-使用" class="headerlink" title="0x03 使用"></a>0x03 使用</h1><p>需要一个vps，安装python3.x，如果是centos则自带了py2，按照下面教程  </p>
+<p>脚本已上传至gayhub，<a href="https://github.com/yq1ng/healthCheck-in">传送门</a>，代码能力较差，懒得优化了，能用就行。</p>
+<h1 id="0x03-使用"><a href="#0x03-使用" class="headerlink" title="0x03 使用"></a>0x03 使用</h1><p>脚本地址：<a href="https://github.com/yq1ng/healthCheck-in">https://github.com/yq1ng/healthCheck-in</a></p>
+<p>需要一个vps，安装python3.x，如果是centos则自带了py2，按照下面教程  </p>
 <p>先安装epel扩展源：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install epel-release</span><br></pre></td></tr></table></figure>
 
@@ -3727,7 +3728,7 @@ payload：<code>?2333=data://text/plain,todat is a happy day&amp;file=ZmpdYSZmXG
 <p>验证</p>
 <p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327200817.png" alt="image-20210327200817479"></p>
 <p>安装脚本运行环境<code>pip3 install requests</code></p>
-<p>如果想在加个邮件发送服务就看下面的，不想加的话把<code>healthCheck-in.py</code>里面的<code>import os</code>和下图两行删除  <img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327201117.png" alt="image-20210327201117346"></p>
+<p>如果想在加个邮件发送服务就看下面的，不想加的话把<code>healthCheck-in.py</code>里面的<code>import os</code>和下图两行删除    <img src="https://raw.githubusercontent.com/yq1ng/blog/master/%E6%80%BB%E7%BB%93/20210327201117.png" alt="image-20210327201117346"></p>
 <p>下载的脚本随便放个目录（强烈建议和我放的一样，不然你还要改东西，我的是<code>/opt/healthCheck-in/</code>），如果不一样请自行修改三个文件里面打开文件与关闭文件的路径（使用绝对路径！），再写个定时任务，本人定时任务如下</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">30 7 1,20 * *  /usr/local/bin/python3 /opt/healthCheck-in/getToken.py</span><br><span class="line">50 7 * * *  /usr/local/bin/python3 /opt/healthCheck-in/getSession.py</span><br><span class="line">00 8 * * *  /usr/local/bin/python3 /opt/healthCheck-in/healthCheck-in.py&gt;/tmp/healthCheck-in.log 2&gt;&amp;1&amp;</span><br></pre></td></tr></table></figure>
 
