@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+<meta name="google-site-verification" content="eFIczS6pLawspui5Sm7JUbsaANiKGnqjmDod70iSzI4" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yq1ng.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="继续跟m3学习，加油冲冲冲   第一篇Java反序列化，先从底层走吧，打好基础 本篇所有代码及工具均已上传至gayhub：https:&#x2F;&#x2F;github.com&#x2F;yq1ng&#x2F;Java [TOC]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java反序列化漏洞一RMI协议原理&#x2F;详解及流量分析">
+<meta property="og:url" content="http://yq1ng.github.io/z_post/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E4%B8%80RMI%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="会下雪的晴天">
+<meta property="og:description" content="继续跟m3学习，加油冲冲冲   第一篇Java反序列化，先从底层走吧，打好基础 本篇所有代码及工具均已上传至gayhub：https:&#x2F;&#x2F;github.com&#x2F;yq1ng&#x2F;Java [TOC]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210607220243.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608011715.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608135359.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608204143.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609203414.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609204551.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609210623.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609211043.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609211247.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230247.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230832.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230928.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610000820.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610202535.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610181636.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184445.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184605.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184643.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184754.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222000.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222212.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222229.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222452.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223632.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223944.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223852.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224118.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224303.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224320.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230325.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225615.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225405.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230036.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225846.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230343.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230539.png">
+<meta property="article:published_time" content="2021-06-02T13:36:25.000Z">
+<meta property="article:modified_time" content="2021-06-10T16:33:38.777Z">
+<meta property="article:author" content="yq1ng">
+<meta property="article:tag" content="...">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210607220243.png">
+
+<link rel="canonical" href="http://yq1ng.github.io/z_post/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E4%B8%80RMI%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java反序列化漏洞一RMI协议原理/详解及流量分析 | 会下雪的晴天</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">会下雪的晴天</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">CTF菜鸡</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yq1ng.github.io/z_post/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E4%B8%80RMI%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/xiaoxin.jpg">
+      <meta itemprop="name" content="yq1ng">
+      <meta itemprop="description" content="The best way to know your strength is to fight">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="会下雪的晴天">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java反序列化漏洞一RMI协议原理/详解及流量分析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-02 21:36:25" itemprop="dateCreated datePublished" datetime="2021-06-02T21:36:25+08:00">2021-06-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-11 00:33:38" itemprop="dateModified" datetime="2021-06-11T00:33:38+08:00">2021-06-11</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>14k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>23 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>继续跟m3学习，加油冲冲冲  </p>
+<p>第一篇Java反序列化，先从底层走吧，打好基础</p>
+<p>本篇所有代码及工具均已上传至gayhub：<a target="_blank" rel="noopener" href="https://github.com/yq1ng/Java">https://github.com/yq1ng/Java</a></p>
+<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="RMI简介"><a href="#RMI简介" class="headerlink" title="RMI简介"></a>RMI简介</h1><h2 id="RMI概述"><a href="#RMI概述" class="headerlink" title="RMI概述"></a>RMI概述</h2><ul>
+<li><p>引自<a target="_blank" rel="noopener" href="http://itmyhome.com/java-api/java/rmi/package-summary.html#package_description">Java平台标准6</a></p>
+<p>RMI 指的是远程方法调用 (Remote Method Invocation)。它是一种机制，能够让在某个 Java 虚拟机上的对象调用另一个 Java 虚拟机中的对象上的方法。可以用此方法调用的任何对象必须实现该远程接口。调用这样一个对象时，其参数为 “marshalled” 并将其从本地虚拟机发送到远程虚拟机（该远程虚拟机的参数为 “unmarshalled”）上。该方法终止时，将编组来自远程机的结果并将结果发送到调用方的虚拟机。如果方法调用导致抛出异常，则该异常将指示给调<br>用方。</p>
+</li>
+<li><p>简单来说就是：本地调用远程机器上的方法使用RMI可以像调用本地方法一样，屏蔽了通信内容，且无需担心JVM中对象的不同（跨JVM操作）</p>
+</li>
+</ul>
+<h2 id="RMI能帮我们做什么"><a href="#RMI能帮我们做什么" class="headerlink" title="RMI能帮我们做什么"></a>RMI能帮我们做什么</h2><ol>
+<li><p>跨站调用信息  </p>
+<p>比如两个网站，A网站可以使用B网站的用户信息，给A传入id查询B网站用户信息，但是数据库又不想暴露给太多ip，这时候可以用rmi调用B网站的UserDaoImpl，将数据库的信息查出来再返回给A</p>
+</li>
+<li><p>避免重复造轮子  </p>
+<p>假设服务器上有很多对象和方法，且是一系列的调用。如果想把这些都拿下来本地使用，不仅麻烦，还很不安全（服务器暴露本地文件，需要再做防护，避免被攻击，加大运行成本）；这时候使用rmi，服务器只暴露需要被调用的方法等待客户端使用即可</p>
+</li>
+</ol>
+<h1 id="RPC概述"><a href="#RPC概述" class="headerlink" title="RPC概述"></a>RPC概述</h1><h2 id="什么是RPC"><a href="#什么是RPC" class="headerlink" title="什么是RPC"></a>什么是RPC</h2><ul>
+<li><p>引自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/nice0e3/">Java安全之RMI协议分析-nice_0e3</a>  </p>
+<p>RPC（Remote Procedure Call）—远程过程调用，它是一种通过网络从远程计算机程序上请求服务，而不需要了解底层网络技术的协议。RPC协议假定某些传输协议的存在，如TCP或UDP，为通信程序之间携带信息数据。在OSI网络通信模型中，RPC跨越了传输层和应用层。RPC使得开发包括网络分布式多程序在内的应用程序更加容易。RPC采用客户机/服务器模式。请求程序就是一个客户机，而服务提供程序就是一个服务器。</p>
+</li>
+<li><p>小结：</p>
+<p>归根结底还是TCP/IP实现（最最底层来说还是二进制的传输），而上述 <strong>RMI就是使用Java实现了RPC</strong>。使用了RPC/RMI后我们就不需要再去接触底层网络协议，直接使用即可，但是RPC的使用还是过于麻烦，所以有了Java的RMI</p>
+</li>
+</ul>
+<h2 id="RPC的演变"><a href="#RPC的演变" class="headerlink" title="RPC的演变"></a>RPC的演变</h2><blockquote>
+<p>可以先去看看马老师的视频，讲的很不错，不用纠结视频代码没try没动态返回值，理解过程就好</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1zE41147Zq?from=search&amp;seid=13740626242455157002">https://www.bilibili.com/video/BV1zE41147Zq?from=search&amp;seid=13740626242455157002</a></p>
+</blockquote>
+<p>RPC的诞生还是起源于分布式的使用，最开始的系统都是在一台服务器上，这样本地调用本无问题，随着网络爆炸式的增长，单台服务器已然不满足，出现了分布式，接口和实现类分别放到了两个服务器上，怎么调用？JVM不同，内存地址不同，不可能直接访问调用。    </p>
+<p><del>周末去摸鱼了</del></p>
+<p>比如在A服务器上有UserDaoImpl类，B服务器没有，但是只想调用UserDaoImpl.getUserInfo，那么可以仿造B/S架构，A暴露接口，B调用接口间接调用UserDaoImpl.getUserInfo。但是这种写法每次都要写一大串的http requests response，服务端也要写接收，过于麻烦；且改动UserDaoImpl类客户端与服务端都要修改。这就是马士兵老师讲的第一版RPC。  </p>
+<p>能不能将http request代码封装起来，屏蔽底层的网络协议，用代理生成一个对象直接进行调用，岂不美哉。  </p>
+<p>简略说说演变，不想看的请点击左侧导航跳转</p>
+<h3 id="第一版RPC"><a href="#第一版RPC" class="headerlink" title="第一版RPC"></a>第一版RPC</h3><p>最开始的通信就是利用TCP/IP，而在Java中使用Socket编程抽象使用TCP/IP</p>
+<p>client：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.User;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.DataInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.DataOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//  创建对象，写入需要查询的id</span></span><br><span class="line">        Socket socket = <span class="keyword">new</span> Socket(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>);</span><br><span class="line">        ByteArrayOutputStream byteArrayOutputStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        DataOutputStream dataOutputStream = <span class="keyword">new</span> DataOutputStream(byteArrayOutputStream);</span><br><span class="line">        dataOutputStream.writeInt(<span class="number">888</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//  转为二进制，清除缓存（否则会下次转二进制为空）</span></span><br><span class="line">        socket.getOutputStream().write(byteArrayOutputStream.toByteArray());</span><br><span class="line">        socket.getOutputStream().flush();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  获取server返回值</span></span><br><span class="line">        DataInputStream dataInputStream = <span class="keyword">new</span> DataInputStream(socket.getInputStream());</span><br><span class="line">        <span class="keyword">int</span> id = dataInputStream.readInt();</span><br><span class="line">        String name = dataInputStream.readUTF();</span><br><span class="line">        User user = <span class="keyword">new</span> User(id,name);</span><br><span class="line"></span><br><span class="line">        System.out.println(user);</span><br><span class="line"></span><br><span class="line">        dataOutputStream.close();</span><br><span class="line">        socket.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.User;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">server</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> is_running = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">8888</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (is_running) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;服务端已启动，正在监听 8888 端口，等待客户端连接...&quot;</span>);</span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            System.out.println(<span class="string">&quot;捕获到客户端请求...&quot;</span>);</span><br><span class="line">            process(socket);</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        serverSocket.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Socket socket)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//  接收client请求参数</span></span><br><span class="line">        InputStream in = socket.getInputStream();</span><br><span class="line">        OutputStream out = socket.getOutputStream();</span><br><span class="line">        DataInputStream dataInputStream = <span class="keyword">new</span> DataInputStream(in);</span><br><span class="line">        DataOutputStream dataOutputStream = <span class="keyword">new</span> DataOutputStream(out);</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> id = dataInputStream.readInt();</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端请求id = &quot;</span> + id);</span><br><span class="line">        UserService userService = <span class="keyword">new</span> UserServiceImpl();</span><br><span class="line">        <span class="comment">//  调用函数（调用其他函数还需更改，很麻烦）</span></span><br><span class="line">        User user = userService.findUserById(id);</span><br><span class="line">        dataOutputStream.writeInt(user.getId());</span><br><span class="line">        dataOutputStream.writeUTF(user.getName());</span><br><span class="line">        dataOutputStream.flush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210607220243.png" alt="image-20210607220241903"></p>
+<p>如同B/S一样，服务端处理，客户端只需请求。但从代码可以看出弊端，代码量很大，且更改user后client和server都需要更改，程序员还需要掌握底层网络协议的知识。而且网络传输代码与业务代码混淆在一起很不便于维护。</p>
+<h3 id="第二版RPC"><a href="#第二版RPC" class="headerlink" title="第二版RPC"></a>第二版RPC</h3><p>在写第一版的时候应该就想到了直接把网络传输部分抽出来不就与业务代码不混淆了嘛，还能重复利用。聪明，确实如此，抽出来以后的网络传输部分叫做stub。<del>生不逢时啊大人物。</del>这就是第二版rpc，不写啦  </p>
+<p>但是这样还是不行鸭，只能使用findUserById，我要是用findUserByName呢，还要改。。。我想要动态代理（没学过？自己去补习辣）这不就省事了嘛，来看第三版</p>
+<h3 id="第三版RPC"><a href="#第三版RPC" class="headerlink" title="第三版RPC"></a>第三版RPC</h3><p>使用JDK动态代理来实现只写一个代理就可以调用所有想调用的函数，此版本改动很大   </p>
+<p>client：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        UserService service = Stub.getStub();</span><br><span class="line">        System.out.println(service.findUserById(<span class="number">666</span>));</span><br><span class="line">        System.out.println(service.findUserByName(<span class="string">&quot;yq1ng&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Stub：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.User;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.DataInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> UserService <span class="title">getStub</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        InvocationHandler handler = <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">                Socket socket = <span class="keyword">new</span> Socket(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>);</span><br><span class="line"></span><br><span class="line">                ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</span><br><span class="line"></span><br><span class="line">                String methodName = method.getName();</span><br><span class="line">                Class[] parameterTypes = method.getParameterTypes();</span><br><span class="line">                objectOutputStream.writeUTF(methodName);</span><br><span class="line">                objectOutputStream.writeObject(parameterTypes);</span><br><span class="line">                objectOutputStream.writeObject(args);</span><br><span class="line">                objectOutputStream.flush();</span><br><span class="line"></span><br><span class="line">                ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">                User user = (User) objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">                objectOutputStream.close();</span><br><span class="line">                socket.close();</span><br><span class="line">                <span class="keyword">return</span> user;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Object object = Proxy.newProxyInstance(UserService.class.getClassLoader(),</span><br><span class="line">                <span class="keyword">new</span> Class[] &#123;UserService.class&#125;,</span><br><span class="line">                handler);</span><br><span class="line">        <span class="keyword">return</span> (UserService) object;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.User;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserService;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserServiceImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">server</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> is_running = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">8888</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (is_running) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;服务端已启动，正在监听 8888 端口，等待客户端连接...&quot;</span>);</span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            System.out.println(<span class="string">&quot;捕获到客户端请求...&quot;</span>);</span><br><span class="line">            process(socket);</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        serverSocket.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Socket socket)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  接收client请求参数</span></span><br><span class="line">        InputStream in = socket.getInputStream();</span><br><span class="line">        OutputStream out = socket.getOutputStream();</span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(in);</span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(out);</span><br><span class="line"></span><br><span class="line">        String methodName = objectInputStream.readUTF();</span><br><span class="line">        Class[] parameterTypes = (Class[]) objectInputStream.readObject();</span><br><span class="line">        Object[] args = (Object[]) objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;客户端请求方法为：&quot;</span> + methodName);</span><br><span class="line"></span><br><span class="line">        UserService userService = <span class="keyword">new</span> UserServiceImpl();</span><br><span class="line">        Method method = userService.getClass().getMethod(methodName, parameterTypes);</span><br><span class="line">        User user = (User) method.invoke(userService, args);</span><br><span class="line"></span><br><span class="line">        objectOutputStream.writeObject(user);</span><br><span class="line">        objectOutputStream.flush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608011715.png" alt="image-20210608011711141"></p>
+<p>这样写客户端方面 UserService 接口的所有方法都可以被代理，即使新增其他方法，Stub也不用修改  </p>
+<p>服务端返回的是 user 对象，即使实体类新增/删除属性也可以正常返回而不做修改  </p>
+<p>此版本可以说是飞一样的进步，但是弊端也很明显，只能代理 UserService ，如果新增接口呢？</p>
+<h3 id="第四版RPC"><a href="#第四版RPC" class="headerlink" title="第四版RPC"></a>第四版RPC</h3><p>此版本已经是比较成型的 rpc 辣，不仅屏蔽了底层网络协议的代码，还支持动态代理任意服务器可被代理的方法</p>
+<p>client：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.StudentService;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">client</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        StudentService studentService = (StudentService) Stub.getStub(StudentService.class);</span><br><span class="line">        System.out.println(studentService.findStudentById(<span class="number">888</span>));</span><br><span class="line">        System.out.println(studentService.findStudentByName(<span class="string">&quot;yq1ng&quot;</span>));</span><br><span class="line">        UserService userService = (UserService) Stub.getStub(UserService.class);</span><br><span class="line">        System.out.println(userService.findUserById(<span class="number">888</span>));</span><br><span class="line">        System.out.println(userService.findUserByName(<span class="string">&quot;yq1ng&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Stub：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Stub</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getStub</span><span class="params">(<span class="keyword">final</span> Class clazz)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        InvocationHandler handler = <span class="keyword">new</span> InvocationHandler() &#123;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">                Socket socket = <span class="keyword">new</span> Socket(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>);</span><br><span class="line"></span><br><span class="line">                ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</span><br><span class="line"></span><br><span class="line">                String clazzName = clazz.getName();</span><br><span class="line">                String methodName = method.getName();</span><br><span class="line">                Class[] parameterTypes = method.getParameterTypes();</span><br><span class="line"></span><br><span class="line">                objectOutputStream.writeUTF(clazzName);</span><br><span class="line">                objectOutputStream.writeUTF(methodName);</span><br><span class="line">                objectOutputStream.writeObject(parameterTypes);</span><br><span class="line">                objectOutputStream.writeObject(args);</span><br><span class="line">                objectOutputStream.flush();</span><br><span class="line"></span><br><span class="line">                ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">                Object response = objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">                objectInputStream.close();</span><br><span class="line">                objectOutputStream.close();</span><br><span class="line">                socket.close();</span><br><span class="line">                <span class="keyword">return</span> response;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        Object object = Proxy.newProxyInstance(clazz.getClassLoader(),</span><br><span class="line">                <span class="keyword">new</span> Class[] &#123;clazz&#125;,</span><br><span class="line">                handler);</span><br><span class="line">        <span class="keyword">return</span> object;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>server：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.yq1ng.rpc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.StudentServiceImpl;</span><br><span class="line"><span class="keyword">import</span> com.yq1ng.common.UserServiceImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket;</span><br><span class="line"><span class="keyword">import</span> java.net.Socket;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">server</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">boolean</span> is_running = <span class="keyword">true</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> HashMap&lt;String, Object&gt; REGISTRY_MAP = <span class="keyword">new</span> HashMap();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 向注册中心注册服务</span></span><br><span class="line">        REGISTRY_MAP.put(<span class="string">&quot;com.yq1ng.common.UserService&quot;</span>, <span class="keyword">new</span> UserServiceImpl());</span><br><span class="line">        REGISTRY_MAP.put(<span class="string">&quot;com.yq1ng.common.StudentService&quot;</span>, <span class="keyword">new</span> StudentServiceImpl());</span><br><span class="line"></span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(<span class="number">8888</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (is_running) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;服务端已启动，正在监听 8888 端口，等待客户端连接...&quot;</span>);</span><br><span class="line">            Socket socket = serverSocket.accept();</span><br><span class="line">            System.out.println(<span class="string">&quot;捕获到客户端请求...&quot;</span>);</span><br><span class="line">            process(socket);</span><br><span class="line">            socket.close();</span><br><span class="line">        &#125;</span><br><span class="line">        serverSocket.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(Socket socket)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  接收client请求参数</span></span><br><span class="line">        InputStream in = socket.getInputStream();</span><br><span class="line">        OutputStream out = socket.getOutputStream();</span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(in);</span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(out);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  获取服务名、方法名、形参类型、参数</span></span><br><span class="line">        String serviceName  = objectInputStream.readUTF();</span><br><span class="line">        String methodName = objectInputStream.readUTF();</span><br><span class="line">        Class[] parameterTypes = (Class[]) objectInputStream.readObject();</span><br><span class="line">        Object[] args = (Object[]) objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;代理接口为：&quot;</span> + serviceName);</span><br><span class="line">        System.out.println(<span class="string">&quot;客户端请求方法为：&quot;</span> + methodName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  从注册中心获取服务</span></span><br><span class="line">        Object serverObject = REGISTRY_MAP.get(serviceName);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//  通过反射调用服务方法</span></span><br><span class="line">        Method method = serverObject.getClass().getMethod(methodName, parameterTypes);</span><br><span class="line">        Object resp = method.invoke(serverObject, args);</span><br><span class="line"></span><br><span class="line">        objectOutputStream.writeObject(resp);</span><br><span class="line">        objectOutputStream.flush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这就是最基础的rpc了，剩下的就是细节优化，jdk的序列化太过臃肿，需要使用其他框架代替，常用Hessian，grpc等等，不再赘述。想说的一点就是序列化和反序列化是rpc中的重要一环，这也是为什么Java安全反序列化为何要从rmi说起  </p>
+<h3 id="演变小结"><a href="#演变小结" class="headerlink" title="演变小结"></a>演变小结</h3><p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608135359.png" alt="image-20210608135356852"></p>
+<h2 id="RPC通信流程"><a href="#RPC通信流程" class="headerlink" title="RPC通信流程"></a>RPC通信流程</h2><p>自己画的不知道能看懂不</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210608204143.png" alt="image-20210608204133043"></p>
+<p>Client Stub（客户端存根）：存放服务器地址消息，将客户端请求参数打包为网络消息，发送给服务端  </p>
+<p>Server Stub（服务端存根）：接收客户端请求消息，解包，调用本地服务，返回调用结果   </p>
+<p>可以看出来，最主要的还是网络协议，双方约定好了如何打包，如何解包，所以RPC较为开放，你可以使用TCP、UDP、HTTP甚至是自定义协议</p>
+<h3 id="RPC与HTTP有差吗"><a href="#RPC与HTTP有差吗" class="headerlink" title="RPC与HTTP有差吗"></a>RPC与HTTP有差吗</h3><ul>
+<li>传输协议<ul>
+<li>RPC：较为灵活</li>
+<li>HTTP：基于TCP</li>
+</ul>
+</li>
+<li>传输效率<ul>
+<li>RPC：使用二进制进行网络传输，体积更小，效率更高</li>
+<li>HTTP：如果是基于HTTP1.1的协议，请求中会包含很多无用的内容，如果是基于HTTP2.0，那么简单的封装以下是可以作为一个RPC来使用的</li>
+</ul>
+</li>
+</ul>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>RPC需要双方使用相同协议，约定如何实现打包、解包；比如都使用Hession/dubbo等。而HTTP不用关心这些，双方只需遵循rest规范即可  </p>
+<p>RPC相对于开发而言要求较多，需要服务端提供接口代码</p>
+<h1 id="RMI执行流程"><a href="#RMI执行流程" class="headerlink" title="RMI执行流程"></a>RMI执行流程</h1><p>RMI就是RPC的实现，原理基本一致，也是注册服务实现，直接看代码，在代码那里细说<del>（原谅我，远程没调试出来，有空再继续）</del>  </p>
+<p>和RPC一样，可以看看演变过程，到这里就会清晰很多。  </p>
+<ol>
+<li><p>首先定义一个接口，既然要提供服务那么接口一定不可少的  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609203414.png" alt="image-20210609203405124"></p>
+<ul>
+<li><p>需要供客户端使用的接口必须继承或实现<code>java.rmi.Remote</code>。  </p>
+</li>
+<li><p>为什么？因为远程对象可能有很多方法，但是只有被Remote标识的接口内方法才可以被远程调用。</p>
+</li>
+<li><p>由于其本质还是网络传输，而网络传输是不安全的，异常经常会有，所以接口内的每个方法都要声明抛出<code>java.rmi.RemoteException</code>异常，而这个异常的父类其实是<code>IOException</code> </p>
+</li>
+</ul>
+</li>
+<li><p>有了接口还要一个实现类  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609204551.png" alt="image-20210609204551541"></p>
+<ul>
+<li><p>接口实现类应直接或间接继承<code>java.rmi.server.UnicastRemoteObject</code>类</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://nowjava.com/docs/java-api-11/java.rmi/java/rmi/server/UnicastRemoteObject.html"><code>java.rmi.server.UnicastRemoteObject</code>类 </a>构造函数通过JRMP导出远程对象并获取与远程对象通信的Stub(存根)，Stub将在运行时使用动态代理对象生成（或者在构建时静态生成，通常使用<code>rmic</code>工具）  </p>
+<p>但现在不推荐使用静态存根，该方法已被废弃（Java1.5之后）</p>
+</li>
+<li><p><code>serialVersionUID</code>属性必须存在且需要和客户端一致才可进行反序列化，否则会报错</p>
+</li>
+</ul>
+</li>
+<li><p>万事俱备，写服务端，注册服务</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609210623.png" alt="image-20210609210623157"></p>
+<ul>
+<li>第九行 实例化对象时会自动调用父类构造函数，返回Stub</li>
+<li>第十行 监听端口，默认为1099</li>
+<li>第十一行 将hello对象绑定至URL<code>rmi://localhost:1099/hello</code>，这样客户端只需访问此URL即可远程调用服务，不必知道服务端实例化的名称是什么</li>
+</ul>
+</li>
+<li><p>编写客户端</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609211043.png" alt="image-20210609211043382"></p>
+<p>客户端就比较简单，只需要通过``Naming.lookup()`将远程对象拿到手即可调用服务</p>
+</li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609211247.png" alt="image-20210609211247109"></p>
+<h1 id="Wireshark抓包分析"><a href="#Wireshark抓包分析" class="headerlink" title="Wireshark抓包分析"></a>Wireshark抓包分析</h1><p>过滤器使用<code>rmi</code>即可过滤出rmi协议包。选择第一个，跟踪TCP流，首先就是经典的TCP三次握手</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230247.png" alt="image-20210609230245672"></p>
+<p>然后是一个协议确认，<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/platform/rmi/spec/rmi-protocol3.html">文档传送门</a>，客户端向服务器发送了<em>StreamProtocol</em>用于确认服务器是否支持此协议</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230832.png" alt="image-20210609230831881"></p>
+<blockquote>
+<p>插一句：每一个RMI包下的TCP包都是一个数据确认包</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210609230928.png" alt="image-20210609230928051"></p>
+</blockquote>
+<p>再往下就是服务器的确认包，还是上面那个文档，确认包包含了服务器可以看到的客户端的hostname及port   </p>
+<p>后面的包都是从宿主机与kali的通信，看起来舒服些，ip不同了</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610000820.png" alt="image-20210610000818813"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610202535.png" alt="image-20210610202534502"></p>
+<p>然后是客户端发给服务器一个ip地址，这个地址是回环地址，我太菜了，不知道。而且这个ip怎么来的我也不知道，用kali开了一个服务去调用也是这样，没在去追究底层源码，谷歌也没搜到，暂时搁置，有空debug底层。  </p>
+<p>右方的是kali里面抓的包  </p>
+<p>我个人猜测是client的ip，毕竟官方文档说是服务器看见的客户端的ip，但是客户端的真实ip不一定是你（服务端）看到的</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610181636.png" alt="image-20210610181631314"></p>
+<p>下面这个包是客户端向服务器发送编码过的类名（晚上太晚了，流量包没存下来，又在kali上重新抓的包，看起来也更舒服，win下抓的包太多了），可以看到是序列化过的（0xACED就是反序列化的标识），可以使用<a target="_blank" rel="noopener" href="https://github.com/NickstaDB/SerializationDumper">SerializationDumper工具</a>来查看内容，总的来说就是获取远程调用对象</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184445.png" alt="image-20210610184445137"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184605.png" alt="image-20210610184604978"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184643.png" alt="image-20210610184643600"></p>
+<blockquote>
+<p> 翻看<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/7/docs/platform/rmi/spec/rmi-protocol3.html">文档</a>可以知道，rmi有三个输出消息： Call  <em>Ping</em> DgcAck</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610184754.png" alt="image-20210610184754510"></p>
+</blockquote>
+<p>既然客户端发送了需求类名，那么服务器也会返回一个调用信息，看JRMI，ReturnData包，这其实是一个<code>java.lang.reflect.Proxy</code>对象  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222000.png" alt="image-20210610221954423"></p>
+<p>用工具看看包内容，在<code>objectAnnotation</code>中记录了RMI Server的地址与端口  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222212.png" alt="image-20210610222212438"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222229.png" alt="image-20210610222228926"></p>
+<p>拿到RMI Server的地址与端口后，Client就会真正调用远程方法，但此时wireshark并未识别出rmi，一个一个往下看，在21号包找到调用信息，看下面的Data字段，50正是RMI Call Data  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610222452.png" alt="image-20210610222452681"></p>
+<p>23号包为响应包</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223632.png" alt="image-20210610223632821"></p>
+<p>上面俩暂时没看懂，不做深究，看P牛说是修改<code>classAnnotations</code>的值，就能控制codebase，使其指向攻击者的恶意网站，但是前面的两个漫谈我没看，暂时搁置  </p>
+<p>下面是服务器与客户端的jrmi ping，没啥说的  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223944.png" alt="image-20210610223944049"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610223852.png" alt="image-20210610223851937"></p>
+<p>在下面的DgcAck上面说了，是是指向服务器的分布式垃圾收集器的确认，它指示客户端已接收到服务器返回值中的远程对象</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224118.png" alt="image-20210610224118068"></p>
+<p>在下面就是客户端向服务器发送参数，服务器执行后将结果返回给客户端  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224303.png" alt="image-20210610224303502"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610224320.png" alt="image-20210610224319956"></p>
+<p>然后？然后就没然后了，RMI调用完成，TCP断开连接</p>
+<h1 id="关于真正的远程调用（server与client不在一台机器上）"><a href="#关于真正的远程调用（server与client不在一台机器上）" class="headerlink" title="关于真正的远程调用（server与client不在一台机器上）"></a>关于真正的远程调用（server与client不在一台机器上）</h1><h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230325.png" alt="image-20210610230325841"></p>
+<p>先看服务端ip，接着在函数最开始处加上一句话<code>System.setProperty(&quot;java.rmi.server.hostname&quot;, &quot;192.168.174.144&quot;);</code> ，必须是开始处，不然会报错，详情看<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/7/docs/technotes/guides/rmi/faq.html#domain">官方文档</a>，启动服务器时，也就是脚本启动时，放到函数最开始就行了  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225615.png" alt="image-20210610225615139"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225405.png" alt="image-20210610225405508"></p>
+<p>然后生成存根<code>rmic rmi.server.HelloImpl </code>，在idea不需要这样但是命令行运行客户端需要有存根不然会not found</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230036.png" alt="image-20210610230036471"></p>
+<p>然后执行<code>javac rmi/server/\*.java -classpath rmi/server/</code>，Linux编译时需添加classpath，接着<code>java rmi.server.HelloServer</code>运行  </p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610225846.png" alt="image-20210610225845960"></p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230343.png" alt="image-20210610230343532"></p>
+<p>看好服务端的包名，就是脚本最开始的<code>package rmi.server;</code>，客户端包名也要一样不然会报错（至少我的是这样的），再创建一个和server一样的目录  </p>
+<p>将服务器生成的存根拷贝到client，编译，运行</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/Java%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E4%B9%8B%E8%B7%AF/20210610230539.png" alt="image-20210610230539151"></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.guildhab.top/2020/03/java-rmi-ldap-%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90/">Java 反序列化漏洞(1) – Java RMI 原理/流程</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/wNu73p5cnZJyuGFiiCCxKw">Java安全漫谈 - 06.RMI篇(3)</a>  </p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/lmy86263/article/details/72594760">从懵逼到恍然大悟之Java中RMI的使用</a></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="yq1ng 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="yq1ng 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>yq1ng
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yq1ng.github.io/z_post/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E%E4%B8%80RMI%E5%8D%8F%E8%AE%AE%E5%8E%9F%E7%90%86-%E8%AF%A6%E8%A7%A3%E5%8F%8A%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90/" title="Java反序列化漏洞一RMI协议原理&#x2F;详解及流量分析">http://yq1ng.github.io/z_post/Java反序列化漏洞一RMI协议原理-详解及流量分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/" rel="tag"><i class="fa fa-tag"></i> ...</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/z_post/CVE-2020-1938-%E5%B9%BD%E7%81%B5%E7%8C%AB-GhostCat-Tomcat-Ajp%E5%8D%8F%E8%AE%AE-%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96-JSP%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" rel="prev" title="CVE-2020-1938 幽灵猫( GhostCat ) Tomcat-Ajp协议 任意文件读取/JSP文件包含漏洞分析">
+      <i class="fa fa-chevron-left"></i> CVE-2020-1938 幽灵猫( GhostCat ) Tomcat-Ajp协议 任意文件读取/JSP文件包含漏洞分析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#RMI%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">RMI简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RMI%E6%A6%82%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">RMI概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMI%E8%83%BD%E5%B8%AE%E6%88%91%E4%BB%AC%E5%81%9A%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.</span> <span class="nav-text">RMI能帮我们做什么</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RPC%E6%A6%82%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">RPC概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFRPC"><span class="nav-number">2.1.</span> <span class="nav-text">什么是RPC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E7%9A%84%E6%BC%94%E5%8F%98"><span class="nav-number">2.2.</span> <span class="nav-text">RPC的演变</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%89%88RPC"><span class="nav-number">2.2.1.</span> <span class="nav-text">第一版RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%89%88RPC"><span class="nav-number">2.2.2.</span> <span class="nav-text">第二版RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%89%88RPC"><span class="nav-number">2.2.3.</span> <span class="nav-text">第三版RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%89%88RPC"><span class="nav-number">2.2.4.</span> <span class="nav-text">第四版RPC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BC%94%E5%8F%98%E5%B0%8F%E7%BB%93"><span class="nav-number">2.2.5.</span> <span class="nav-text">演变小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPC%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">RPC通信流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RPC%E4%B8%8EHTTP%E6%9C%89%E5%B7%AE%E5%90%97"><span class="nav-number">2.3.1.</span> <span class="nav-text">RPC与HTTP有差吗</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RMI%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">RMI执行流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Wireshark%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90"><span class="nav-number">4.</span> <span class="nav-text">Wireshark抓包分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%9C%9F%E6%AD%A3%E7%9A%84%E8%BF%9C%E7%A8%8B%E8%B0%83%E7%94%A8%EF%BC%88server%E4%B8%8Eclient%E4%B8%8D%E5%9C%A8%E4%B8%80%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">关于真正的远程调用（server与client不在一台机器上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-number">5.1.</span> <span class="nav-text">服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">5.2.</span> <span class="nav-text">客户端</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="yq1ng"
+      src="/images/xiaoxin.jpg">
+  <p class="site-author-name" itemprop="name">yq1ng</p>
+  <div class="site-description" itemprop="description">The best way to know your strength is to fight</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yq1ng" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yq1ng" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/weixin_43578492" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;weixin_43578492" rel="noopener" target="_blank"><i class="heartbeat fa-fw"></i>CSDN</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1578422748@qq.com" title="E-Mail → mailto:1578422748@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=%271578422748++%27&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;&#39;1578422748++&#39;&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="qq fa-fw"></i>QQ</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      大师傅们'blog
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://m3wsec.github.io/" title="http:&#x2F;&#x2F;m3wsec.github.io&#x2F;" rel="noopener" target="_blank">m3w</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://psyduck0409.github.io/" title="https:&#x2F;&#x2F;psyduck0409.github.io&#x2F;" rel="noopener" target="_blank">DaiDai</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://snowywar.top/" title="http:&#x2F;&#x2F;snowywar.top&#x2F;" rel="noopener" target="_blank">snow</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://blog.y4tacker.top/" title="http:&#x2F;&#x2F;blog.y4tacker.top&#x2F;" rel="noopener" target="_blank">Y4tacker</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_46091464" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_46091464" rel="noopener" target="_blank">Firebasky</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/WFC1006848997" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;WFC1006848997" rel="noopener" target="_blank">spaceman</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/erR0Ratao" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;erR0Ratao" rel="noopener" target="_blank">atao</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/anweilx/" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;anweilx&#x2F;" rel="noopener" target="_blank">anweilx</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <script
+  async
+  src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"
+></script>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yq1ng</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">408k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">11:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+<br />
+<!-- 网站运行时间的设置 -->
+<span id="timeDate">载入天数...</span>
+<span id="times">载入时分秒...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/27/2020 00:00:00");//此处修改你的建站时间或者网站上线时间
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 ";
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒";
+    }
+setInterval("createtime()",250);
+</script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/clicklove.js"></script>
+</body>
+</html>
