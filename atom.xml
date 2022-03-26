@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>会下雪的晴天</title>
+  
+  <subtitle>yq1ng</subtitle>
+  <link href="http://yq1ng.github.io/atom.xml" rel="self"/>
+  
+  <link href="http://yq1ng.github.io/"/>
+  <updated>2022-02-08T18:06:42.061Z</updated>
+  <id>http://yq1ng.github.io/</id>
+  
+  <author>
+    <name>yq1ng</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>blog与语雀同时更新啦~</title>
+    <link href="http://yq1ng.github.io/2022/02/09/blog-yu-yu-que-tong-shi-geng-xin-la/"/>
+    <id>http://yq1ng.github.io/2022/02/09/blog-yu-yu-que-tong-shi-geng-xin-la/</id>
+    <published>2022-02-08T17:08:44.000Z</published>
+    <updated>2022-02-08T18:06:42.061Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;捣鼓好了，博客与语雀同步更新！语雀地址：&lt;a</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Jboss</title>
+    <link href="http://yq1ng.github.io/2022/01/26/jboss/"/>
+    <id>http://yq1ng.github.io/2022/01/26/jboss/</id>
+    <published>2022-01-26T04:47:28.000Z</published>
+    <updated>2022-02-08T18:04:49.855Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;Jboss 是一个基于 J2EE 的&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="组件漏洞" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>weblogic</title>
+    <link href="http://yq1ng.github.io/2022/01/22/weblogic/"/>
+    <id>http://yq1ng.github.io/2022/01/22/weblogic/</id>
+    <published>2022-01-22T10:50:04.000Z</published>
+    <updated>2022-02-08T18:04:49.998Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;以下内容摘自：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="组件漏洞" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>杂记</title>
+    <link href="http://yq1ng.github.io/2022/01/12/za-ji/"/>
+    <id>http://yq1ng.github.io/2022/01/12/za-ji/</id>
+    <published>2022-01-12T02:41:38.000Z</published>
+    <updated>2022-02-08T18:04:50.026Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;这玩意比较抽象，全靠自己理解。推荐两个入门文章&lt;br&gt;&lt;a href=&quot;https://me.xxf.world/post/codeql-huan-jing-da-jian/&quot;&gt;codeQL 入门&lt;/a&gt;，&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="codeql" scheme="http://yq1ng.github.io/categories/codeql/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/codeql/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>FastJson</title>
+    <link href="http://yq1ng.github.io/2021/12/22/fastjson/"/>
+    <id>http://yq1ng.github.io/2021/12/22/fastjson/</id>
+    <published>2021-12-22T13:31:26.000Z</published>
+    <updated>2022-02-08T18:04:50.225Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;Fastjson 是一个 Java 库，可以将 Java 对象转换为 JSON 格式，当然它也可以将 JSON 字符串转换为 Java 对象&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre class=&quot;line-numbers</summary>
+        
+      
+    
+    
+    
+    <category term="组件漏洞" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E7%BB%84%E4%BB%B6%E6%BC%8F%E6%B4%9E/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Agent内存马</title>
+    <link href="http://yq1ng.github.io/2021/12/11/agent-nei-cun-ma/"/>
+    <id>http://yq1ng.github.io/2021/12/11/agent-nei-cun-ma/</id>
+    <published>2021-12-11T15:42:17.000Z</published>
+    <updated>2022-02-08T18:04:50.301Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Agent-简单使用&quot;&gt;&lt;a href=&quot;#Agent-简单使用&quot; class=&quot;headerlink&quot; title=&quot;Agent 简单使用&quot;&gt;&lt;/a&gt;Agent 简单使用&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="内存马" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Servlet内存马</title>
+    <link href="http://yq1ng.github.io/2021/12/08/servlet-nei-cun-ma/"/>
+    <id>http://yq1ng.github.io/2021/12/08/servlet-nei-cun-ma/</id>
+    <published>2021-12-08T09:10:27.000Z</published>
+    <updated>2022-02-08T18:04:50.316Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Servlet-简单示例&quot;&gt;&lt;a href=&quot;#Servlet-简单示例&quot; class=&quot;headerlink&quot; title=&quot;Servlet 简单示例&quot;&gt;&lt;/a&gt;Servlet 简单示例&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="内存马" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Listener内存马</title>
+    <link href="http://yq1ng.github.io/2021/12/07/listener-nei-cun-ma/"/>
+    <id>http://yq1ng.github.io/2021/12/07/listener-nei-cun-ma/</id>
+    <published>2021-12-07T09:47:42.000Z</published>
+    <updated>2022-02-08T18:04:50.338Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;熟悉-Listener&quot;&gt;&lt;a href=&quot;#熟悉-Listener&quot; class=&quot;headerlink&quot; title=&quot;熟悉 Listener&quot;&gt;&lt;/a&gt;熟悉 Listener&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="内存马" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深育杯2021 Web-log</title>
+    <link href="http://yq1ng.github.io/2021/12/07/shen-yu-bei-2021-web-log/"/>
+    <id>http://yq1ng.github.io/2021/12/07/shen-yu-bei-2021-web-log/</id>
+    <published>2021-12-07T07:50:27.000Z</published>
+    <updated>2022-02-08T18:04:50.343Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;看 jar 包源码&lt;br&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="反序列化" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    
+    <category term="CTF" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CTF/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CTF/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>东华杯2021 EzGadget</title>
+    <link href="http://yq1ng.github.io/2021/12/07/dong-hua-bei-2021-ezgadget/"/>
+    <id>http://yq1ng.github.io/2021/12/07/dong-hua-bei-2021-ezgadget/</id>
+    <published>2021-12-07T07:40:26.000Z</published>
+    <updated>2022-02-08T18:04:50.351Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;附件传不上来欸，直接看题吧&lt;br&gt;首先看路由发现反序列化的点&lt;br&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="反序列化" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/"/>
+    
+    <category term="CTF" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CTF/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CTF/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>readme</title>
+    <link href="http://yq1ng.github.io/2021/12/07/readme/"/>
+    <id>http://yq1ng.github.io/2021/12/07/readme/</id>
+    <published>2021-12-07T07:39:50.000Z</published>
+    <updated>2022-02-08T18:04:50.357Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;记录一些 ctf 里面的 Java</summary>
+        
+      
+    
+    
+    
+    <category term="CTF" scheme="http://yq1ng.github.io/categories/CTF/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/CTF/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Filter内存马</title>
+    <link href="http://yq1ng.github.io/2021/12/05/filter-nei-cun-ma/"/>
+    <id>http://yq1ng.github.io/2021/12/05/filter-nei-cun-ma/</id>
+    <published>2021-12-05T03:56:57.000Z</published>
+    <updated>2022-02-08T18:04:50.396Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Filter-流程&quot;&gt;&lt;a href=&quot;#Filter-流程&quot; class=&quot;headerlink&quot; title=&quot;Filter 流程&quot;&gt;&lt;/a&gt;Filter 流程&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;图片来源：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="内存马" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前置知识</title>
+    <link href="http://yq1ng.github.io/2021/12/05/qian-zhi-zhi-shi/"/>
+    <id>http://yq1ng.github.io/2021/12/05/qian-zhi-zhi-shi/</id>
+    <published>2021-12-05T03:38:32.000Z</published>
+    <updated>2022-02-08T18:04:50.429Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;Tomcat-架构&quot;&gt;&lt;a href=&quot;#Tomcat-架构&quot; class=&quot;headerlink&quot; title=&quot;Tomcat 架构&quot;&gt;&lt;/a&gt;Tomcat 架构&lt;/h2&gt;&lt;p&gt;之前分析 Tomcat Ajp 的时候看了一些 Tomcat</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="内存马" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E5%86%85%E5%AD%98%E9%A9%AC/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JDK7U21分析</title>
+    <link href="http://yq1ng.github.io/2021/12/01/jdk7u21-fen-xi/"/>
+    <id>http://yq1ng.github.io/2021/12/01/jdk7u21-fen-xi/</id>
+    <published>2021-12-01T09:37:58.000Z</published>
+    <updated>2022-02-08T18:04:50.458Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;JDK7U21：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="yso gadget分析" scheme="http://yq1ng.github.io/categories/yso-gadget%E5%88%86%E6%9E%90/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/yso-gadget%E5%88%86%E6%9E%90/java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>JNDI简介</title>
+    <link href="http://yq1ng.github.io/2021/12/01/jndi-jian-jie/"/>
+    <id>http://yq1ng.github.io/2021/12/01/jndi-jian-jie/</id>
+    <published>2021-12-01T08:28:37.000Z</published>
+    <updated>2022-02-08T18:04:50.467Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;JNDI 全称为 Java Naming and DirectoryInterface（Java 命名和目录接口），是一组应用程序接口，为开发人员查找和访问各种资源提供了统一的通用接口，可以用来定义用户、网络、机器、对象和服务等各种资源。&lt;br&gt;JNDI</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>前言</title>
+    <link href="http://yq1ng.github.io/2021/12/01/qian-yan/"/>
+    <id>http://yq1ng.github.io/2021/12/01/qian-yan/</id>
+    <published>2021-12-01T02:46:32.000Z</published>
+    <updated>2022-02-08T18:04:50.472Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;这部分是 Java</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RMI协议原理/详解及流量分析</title>
+    <link href="http://yq1ng.github.io/2021/12/01/rmi-xie-yi-yuan-li-xiang-jie-ji-liu-liang-fen-xi/"/>
+    <id>http://yq1ng.github.io/2021/12/01/rmi-xie-yi-yuan-li-xiang-jie-ji-liu-liang-fen-xi/</id>
+    <published>2021-12-01T02:41:52.000Z</published>
+    <updated>2022-02-08T18:04:50.679Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;hr&gt;
+&lt;p&gt;title: Java 反序列化漏洞(一)–RMI 协议原理/详解及流量分析&lt;br&gt;date: 2021-06-02 21:36:25&lt;br&gt;categories: Java 安全&lt;/p&gt;
+&lt;p&gt;[TOC]&lt;/p&gt;
+&lt;h1 id=&quot;0x00-前言&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/java/"/>
+    
+    
+    <category term="..." scheme="http://yq1ng.github.io/tags/"/>
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ClassLoader(类加载器)</title>
+    <link href="http://yq1ng.github.io/2021/12/01/classloader-lei-jia-zai-qi/"/>
+    <id>http://yq1ng.github.io/2021/12/01/classloader-lei-jia-zai-qi/</id>
+    <published>2021-12-01T02:41:08.000Z</published>
+    <updated>2022-02-08T18:04:50.787Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;hr&gt;
+&lt;p&gt;title: Java 反序列化漏洞(二)–ClassLoader(类加载器)&lt;br&gt;date: 2021-06-12 14:38:38&lt;br&gt;categories: Java 安全&lt;/p&gt;
+&lt;p&gt;章首发于奇安信攻防社区：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java反射</title>
+    <link href="http://yq1ng.github.io/2021/12/01/java-fan-she/"/>
+    <id>http://yq1ng.github.io/2021/12/01/java-fan-she/</id>
+    <published>2021-12-01T02:36:27.000Z</published>
+    <updated>2022-02-08T18:04:50.808Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;hr&gt;
+&lt;p&gt;title: Java 反序列化漏洞(三)–Java 反射&lt;br&gt;date: 2021-06-22 17:04:08&lt;br&gt;categories: Java 安全&lt;/p&gt;
+&lt;h1 id=&quot;Java-反射概述&quot;&gt;&lt;a href=&quot;#Java-反射概述&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="基础知识" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>CommonsBeanutils gadget与不依赖cc的gadget</title>
+    <link href="http://yq1ng.github.io/2021/11/28/commonsbeanutils-gadget-yu-bu-yi-lai-cc-de-gadget/"/>
+    <id>http://yq1ng.github.io/2021/11/28/commonsbeanutils-gadget-yu-bu-yi-lai-cc-de-gadget/</id>
+    <published>2021-11-28T15:09:48.000Z</published>
+    <updated>2022-02-08T18:04:50.839Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;pre class=&quot;line-numbers language-xml&quot; data-language=&quot;xml&quot;&gt;&lt;code class=&quot;language-xml&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span</summary>
+        
+      
+    
+    
+    
+    <category term="yso gadget分析" scheme="http://yq1ng.github.io/categories/yso-gadget%E5%88%86%E6%9E%90/"/>
+    
+    <category term="java" scheme="http://yq1ng.github.io/categories/yso-gadget%E5%88%86%E6%9E%90/java/"/>
+    
+    
+    <category term="Java" scheme="http://yq1ng.github.io/tags/Java/"/>
+    
+  </entry>
+  
+</feed>
